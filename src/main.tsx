@@ -6,6 +6,8 @@ import App from "./App.tsx"
 import Home from "./pages/home/Home.tsx"
 import Movies from "./pages/movies/Movies.tsx"
 import MoviesHome from "./pages/movies/home/MoviesHome.tsx"
+import MoviesHomev2 from "./pages/movies/home/MovieHomev2.tsx"
+import MovieDetail from "./pages/movies/movieDetail/MovieDetail.tsx"
 
 const router = createBrowserRouter([
   {
@@ -16,7 +18,10 @@ const router = createBrowserRouter([
       {
         path: "movies",
         Component: Movies,
-        children: [{ index: true, Component: MoviesHome }],
+        children: [
+          { index: true, Component: MoviesHomev2 },
+          { path: "moviedetail", Component: MovieDetail },
+        ],
       },
     ],
   },
