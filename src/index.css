@@ -1,1 +1,16 @@
 @import "tailwindcss";
+
+@font-face {
+  font-family: Nunito;
+  src: url("/src/assets/fonts/Nunito.ttf");
+}
+
+@font-face {
+  font-family: BebasNeue;
+  src: url("/src/assets/fonts/BebasNeue.ttf");
+}
+
+@theme {
+  --font-nunito: Nunito, sans-serif;
+  --font-bebasneue: BebasNeue, sans-serif;
+}
