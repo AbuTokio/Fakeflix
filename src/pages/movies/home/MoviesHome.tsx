@@ -1,8 +1,8 @@
-<<<<<<< HEAD
 import { useState } from "react"
 import MovieCard from "../../../components/movieCard/MovieCard"
 import type { DialogMovieData } from "../../../components/movieDialog/MovieDialog"
 import MovieDialog from "../../../components/movieDialog/MovieDialog"
+import Carousel from "../../../components/carousel/Carousel"
 
 export default function MoviesHome() {
   const [open, setOpen] = useState(false)
@@ -28,30 +28,24 @@ export default function MoviesHome() {
   }
 
   return (
-    <section className="p-6">
-      <MovieCard movie="Mein Nachbar Totoro" onOpen={handleOpen} />
-
-      {/* Dialog */}
-      {selectedMovie && (
-        <MovieDialog
-          open={open}
-          onClose={() => setOpen(false)}
-          data={selectedMovie}
-          ctaHref="/movies/1"
-          onCtaClick={() => {
-            console.log("Weiter zu Details für:", selectedMovie.id)
-          }}
-        />
-      )}
-    </section>
-=======
-import Carousel from "../../../components/carousel/Carousel"
-
-export default function MoviesHome() {
-  return (
     <>
+      <section className="p-6">
+        <MovieCard movie="Mein Nachbar Totoro" onOpen={handleOpen} />
+
+        {/* Dialog */}
+        {selectedMovie && (
+          <MovieDialog
+            open={open}
+            onClose={() => setOpen(false)}
+            data={selectedMovie}
+            ctaHref="/movies/1"
+            onCtaClick={() => {
+              console.log("Weiter zu Details für:", selectedMovie.id)
+            }}
+          />
+        )}
+      </section>
       <Carousel />
     </>
->>>>>>> feature/design
   )
 }
