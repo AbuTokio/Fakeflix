@@ -18,16 +18,19 @@ export default function StarRating({
 
   return (
     <div className={`inline-flex items-center gap-2 ${className}`}>
-      <div className="relative" style={{ width: size * max, height: size }}>
-        <div className="absolute inset-0 text-neutral-600">
-          <StarsRow count={max} size={size} />
+      {showNumber ? (
+        <div className="relative" style={{ width: size * max, height: size }}>
+          <div className="absolute inset-0 text-neutral-600">
+            <StarsRow count={max} size={size} />
+          </div>
+          <div className="absolute inset-y-0 left-0 overflow-hidden text-yellow-400" style={{ width: `${pct}%` }}>
+            <StarsRow count={max} size={size} />
+          </div>
         </div>
-        <div className="absolute inset-y-0 left-0 overflow-hidden text-yellow-400" style={{ width: `${pct}%` }}>
-          <StarsRow count={max} size={size} />
-        </div>
-      </div>
-
-      {showNumber && <span className="text-sm text-yellow-300 tabular-nums">{v.toFixed(1)}</span>}
+      ) : (
+        <Star size={size} className="text-yellow-400" />
+      )}
+      <span className="text-sm text-yellow-400 tabular-nums">{v.toFixed(1)}</span>
     </div>
   )
 }
@@ -42,9 +45,15 @@ function StarsRow({ count, size }: { count: number; size: number }) {
   )
 }
 
-function Star({ size = 18 }: { size?: number }) {
+function Star({ size = 18, className = "" }: { size?: number; className?: string }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 24 24" className="shrink-0" aria-hidden="true" focusable="false">
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      className={`shrink-0 ${className}`}
+      aria-hidden="true"
+      focusable="false">
       <path
         d="M12 2l2.937 6.07 6.7.974-4.818 4.695 1.137 6.632L12 17.77 6.044 20.37l1.137-6.632L2.363 9.044l6.7-.974L12 2z"
         fill="currentColor"
