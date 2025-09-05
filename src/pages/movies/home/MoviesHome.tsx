@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { useState } from "react"
 import MovieCard from "../../../components/movieCard/MovieCard"
 import type { DialogMovieData } from "../../../components/movieDialog/MovieDialog"
@@ -43,5 +44,14 @@ export default function MoviesHome() {
         />
       )}
     </section>
+=======
+import Carousel from "../../../components/carousel/Carousel"
+
+export default function MoviesHome() {
+  return (
+    <>
+      <Carousel />
+    </>
+>>>>>>> feature/design
   )
 }
