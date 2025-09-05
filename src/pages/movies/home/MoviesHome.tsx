@@ -1,16 +1,8 @@
-import { useCallback, useState } from "react"
-import MovieCard from "../../../components/movieCard/MovieCard"
-import MovieSection from "../../../components/movieSection/MovieSection"
+import { useCallback } from "react"
 import type { DialogMovieData } from "../../../components/movieDialog/MovieDialog"
-import MovieDialog from "../../../components/movieDialog/MovieDialog"
 import Carousel from "../../../components/carousel/Carousel"
-
-type Movie = {
-  id: number
-  title: string
-  posterUrl: string
-  rating: number
-}
+import type { Movie } from "../../../components/movieOpenController/MovieOpenController"
+import MovieOpenController from "../../../components/movieOpenController/MovieOpenController"
 
 const movies: Movie[] = [
   { id: 1, title: "Ghosted", posterUrl: "/246907730f03f9d29d217e7943f72688.png", rating: 7.1 },
@@ -28,10 +20,7 @@ const movies: Movie[] = [
   { id: 23, title: "The Night Agent", posterUrl: "/246907730f03f9d29d217e7943f72688.png", rating: 7.9 },
 ]
 
-export default function MoviesHomev2() {
-  const [open, setOpen] = useState(false)
-  const [selectedMovie, setSelectedMovie] = useState<DialogMovieData | null>(null)
-
+export default function MoviesHome() {
   const toDialogData = useCallback((m: Movie): DialogMovieData => {
     return {
       id: m.id,
@@ -45,40 +34,18 @@ export default function MoviesHomev2() {
       overview: "Kurzbeschreibung / Overview zum Film. Ersetze das mit echten Daten aus deiner Quelle.",
     }
   }, [])
-
-  const handleOpen = useCallback(
-    (id: number) => {
-      const movie = movies.find((movieId) => movieId.id === id)
-      if (!movie) return
-      setSelectedMovie(toDialogData(movie))
-      setOpen(true)
-    },
-    [toDialogData]
-  )
-
   return (
     <>
+      <Carousel />
       <section className="p-6">
-        <MovieSection
+        <MovieOpenController
           title="New Release – Movies"
-          viewAllHref={`/movies/section`}
+          viewAllHref="/movies/section"
           items={movies}
           limit={8}
-          renderItem={(movie) => <MovieCard movie={movie} onOpen={handleOpen} />}
+          toDialogData={toDialogData}
         />
-
-        {selectedMovie && (
-          <MovieDialog
-            open={open}
-            onClose={() => setOpen(false)}
-            data={selectedMovie}
-            ctaHref={`/movies/moviedetail`}
-            ctaLabel="Details"
-            onCtaClick={() => console.log("Weiter zu Details für:", selectedMovie.id)}
-          />
-        )}
       </section>
-      <Carousel />
     </>
   )
 }

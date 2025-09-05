@@ -21,7 +21,7 @@ export default function MovieCard({ movie, onOpen }: { movie: Movie; onOpen?: (i
         </div>
 
         <div className="mt-1 flex flex-row justify-between px-2 items-start gap-0.5">
-          <p className="text-sm font-semibold text-black">{title}</p>
+          <p className="text-sm font-semibold text-red-500">{title}</p>
           <p>
             <StarRating value={rating} max={10} size={16} />
           </p>

@@ -1,6 +1,7 @@
 import React, { useEffect } from "react"
 import StarRating from "../starRating/StarRating"
 import { Link } from "react-router"
+import Badge from "../badge/Badge"
 
 export type DialogMovieData = {
   id: number
@@ -14,7 +15,7 @@ export type DialogMovieData = {
   rating?: number
 }
 
-type Props = {
+type MovieDialogProps = {
   open: boolean
   onClose: () => void
   data: DialogMovieData
@@ -32,7 +33,7 @@ export default function MovieDialog({
   ctaHref,
   onCtaClick,
   className,
-}: Props) {
+}: MovieDialogProps) {
   useEffect(() => {
     if (!open) return
     const prev = document.body.style.overflow
@@ -131,16 +132,5 @@ export default function MovieDialog({
         </div>
       </div>
     </div>
-  )
-}
-
-function Badge({ children, muted = false }: { children: React.ReactNode; muted?: boolean }) {
-  return (
-    <span
-      className={
-        "rounded-md px-2 py-1 text-xs font-semibold " + (muted ? "bg-white/15 text-white/90" : "bg-white/20 text-white")
-      }>
-      {children}
-    </span>
   )
 }
