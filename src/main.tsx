@@ -7,6 +7,7 @@ import Home from "./pages/home/Home.tsx"
 import Movies from "./pages/movies/Movies.tsx"
 import MoviesHome from "./pages/movies/home/MoviesHome.tsx"
 import MovieDetail from "./pages/movies/movieDetail/MovieDetail.tsx"
+import NotFound from "./pages/notFound/NotFound.tsx"
 
 const router = createBrowserRouter([
   {
@@ -22,6 +23,7 @@ const router = createBrowserRouter([
           { path: "moviedetail", Component: MovieDetail },
         ],
       },
+      { path: "*", Component: NotFound },
     ],
   },
 ])
