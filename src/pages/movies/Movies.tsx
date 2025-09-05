@@ -1,11 +1,9 @@
 import { Outlet } from "react-router"
 
-function App() {
+export default function Movies() {
   return (
     <>
       <Outlet />
     </>
   )
 }
-
-export default App
