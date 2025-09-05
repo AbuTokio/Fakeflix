@@ -5,7 +5,9 @@ export default function Movies() {
   return (
     <>
       <Header />
-      <Outlet />
+      <main>
+        <Outlet />
+      </main>
     </>
   )
 }
