@@ -57,7 +57,7 @@ export default function MovieDialog({
       onMouseDown={(event) => {
         if (event.target === event.currentTarget) onClose()
       }}>
-      <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
+      <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={onClose} />
 
       <div
         className={[
