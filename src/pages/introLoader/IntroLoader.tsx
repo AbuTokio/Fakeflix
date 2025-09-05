@@ -1,4 +1,3 @@
-import React from "react"
 import "./IntroLoader.css"
 
 export default function IntroLoader({
@@ -29,7 +28,7 @@ export default function IntroLoader({
 
   return (
     <div className={className}>
-      <div className="netflixintro" data-letter={letter}>
+      <div className="fakeflixintro" data-letter={letter}>
         <div className="helper-1">
           <Brush />
           <Lumieres />
