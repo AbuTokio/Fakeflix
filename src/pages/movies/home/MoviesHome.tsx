@@ -29,6 +29,7 @@ export default function MoviesHome() {
 
   return (
     <>
+      <Carousel />
       <section className="p-6">
         <MovieCard movie="Mein Nachbar Totoro" onOpen={handleOpen} />
 
@@ -45,7 +46,6 @@ export default function MoviesHome() {
           />
         )}
       </section>
-      <Carousel />
     </>
   )
 }
