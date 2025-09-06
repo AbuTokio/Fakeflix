@@ -1,4 +1,4 @@
-import { act, useState } from "react"
+import { act, useEffect, useState } from "react"
 import CarouselCard from "../carouselCard/CarouselCard"
 
 const movies = [
@@ -43,12 +43,36 @@ export default function Carousel() {
   const [activeCard, setActiveCard] = useState<number>(0)
   const [moveActiveCard, setMoveActiveCard] = useState<boolean>(false)
 
+  const switchSlide = () => {
+    if (activeCard < movies.length - 1) {
+      setMoveActiveCard(true)
+      act(() => {
+        setTimeout(() => {
+          setActiveCard(activeCard + 1)
+          setMoveActiveCard(false)
+        }, 600)
+      })
+    } else {
+      setMoveActiveCard(true)
+      act(() => {
+        setTimeout(() => {
+          setActiveCard(0)
+          setMoveActiveCard(false)
+        }, 600)
+      })
+    }
+  }
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      switchSlide()
+    }, 5000)
+    return () => clearInterval(intervalId)
+  })
+
   return (
     <div className="relative w-screen h-fit max-h-[80vh] border overflow-hidden bg-black">
       {movies.map((movie, index) => {
-        console.log("previous movie:", movies[activeCard - 1]?.title)
-        console.log("current movie:", movies[activeCard].title)
-        console.log("next movie:", movies[activeCard + 1]?.title)
         return (
           <div key={index}>
             {index === activeCard && (
@@ -77,23 +101,13 @@ export default function Carousel() {
                 activeCard === index ? "w-15 bg-red-600" : "w-5 bg-white cursor-pointer"
               } h-5 rounded-full transition-all duration-150`}
               onClick={() => {
-                if (activeCard > index) {
-                  setMoveActiveCard(true)
-                  act(() => {
-                    setTimeout(() => {
-                      setActiveCard(index)
-                      setMoveActiveCard(false)
-                    }, 600)
-                  })
-                } else if (activeCard < index) {
-                  setMoveActiveCard(true)
-                  act(() => {
-                    setTimeout(() => {
-                      setActiveCard(index)
-                      setMoveActiveCard(false)
-                    }, 600)
-                  })
-                }
+                setMoveActiveCard(true)
+                act(() => {
+                  setTimeout(() => {
+                    setActiveCard(index)
+                    setMoveActiveCard(false)
+                  }, 600)
+                })
               }}></div>
           </div>
         ))}
