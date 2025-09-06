@@ -39,15 +39,9 @@ const movies = [
   },
 ]
 
-enum MoveTo {
-  NONE = 0,
-  LEFT = "moveToLeft",
-  RIGHT = "moveToRight",
-}
-
 export default function Carousel() {
   const [activeCard, setActiveCard] = useState<number>(0)
-  const [moveActiveCard, setMoveActiveCard] = useState<MoveTo>(MoveTo.NONE)
+  const [moveActiveCard, setMoveActiveCard] = useState<boolean>(false)
 
   return (
     <div className="relative w-screen h-fit max-h-[80vh] border overflow-hidden bg-black">
@@ -60,44 +54,14 @@ export default function Carousel() {
             {index === activeCard && (
               <div
                 key={index}
-                className={`w-full h-full ${moveActiveCard === MoveTo.RIGHT && "animate-moveToRight"} ${
-                  moveActiveCard === MoveTo.LEFT && "animate-moveToLeft"
+                className={`animate-blendin w-full h-full transition-all duration-300 ${
+                  moveActiveCard && "animate-blendout"
                 }`}>
                 <CarouselCard
                   title={movie.title}
                   tags={movie.tags}
                   description={movie.description}
                   imgUrl={movie.imgUrl}
-                />
-              </div>
-            )}
-
-            {activeCard < movies.length - 1 && (
-              <div
-                key={index}
-                className={`absolute top-0 left-0 w-full h-full -translate-x-full ${!moveActiveCard && "hidden"} ${
-                  moveActiveCard === MoveTo.RIGHT && "animate-moveFromLeft"
-                } ${moveActiveCard === MoveTo.LEFT && "animate-moveFromRight"}`}>
-                <CarouselCard
-                  title={movies[activeCard + 1].title}
-                  tags={movies[activeCard + 1].tags}
-                  description={movies[activeCard + 1].description}
-                  imgUrl={movies[activeCard + 1].imgUrl}
-                />
-              </div>
-            )}
-
-            {activeCard > 0 && (
-              <div
-                key={index}
-                className={`absolute top-0 left-0 w-full h-full translate-x-full ${!moveActiveCard && "hidden"} ${
-                  moveActiveCard === MoveTo.RIGHT && "animate-moveFromLeft"
-                } ${moveActiveCard === MoveTo.LEFT && "animate-moveFromRight"}`}>
-                <CarouselCard
-                  title={movies[activeCard - 1].title}
-                  tags={movies[activeCard - 1].tags}
-                  description={movies[activeCard - 1].description}
-                  imgUrl={movies[activeCard - 1].imgUrl}
                 />
               </div>
             )}
@@ -114,20 +78,20 @@ export default function Carousel() {
               } h-5 rounded-full transition-all duration-150`}
               onClick={() => {
                 if (activeCard > index) {
-                  setMoveActiveCard(MoveTo.LEFT)
+                  setMoveActiveCard(true)
                   act(() => {
                     setTimeout(() => {
                       setActiveCard(index)
-                      setMoveActiveCard(MoveTo.NONE)
-                    }, 1000)
+                      setMoveActiveCard(false)
+                    }, 600)
                   })
                 } else if (activeCard < index) {
-                  setMoveActiveCard(MoveTo.RIGHT)
+                  setMoveActiveCard(true)
                   act(() => {
                     setTimeout(() => {
                       setActiveCard(index)
-                      setMoveActiveCard(MoveTo.NONE)
-                    }, 1000)
+                      setMoveActiveCard(false)
+                    }, 600)
                   })
                 }
               }}></div>

@@ -13,44 +13,24 @@
 @theme {
   --font-nunito: Nunito, sans-serif;
   --font-bebasneue: BebasNeue, sans-serif;
-  --animate-moveToLeft: moveToLeft 1s ease-out forwards;
-  --animate-moveToRight: moveToRight 1s ease-out forwards;
-  --animate-moveFromLeft: moveFromLeft 1s ease-out forwards;
-  --animate-moveFromRight: moveFromRight 1s ease-out forwards;
+  --animate-blendout: blendout 0.3s ease-out forwards;
+  --animate-blendin: blendin 0.3s ease-out forwards;
 }
 
-@keyframes moveToLeft {
+@keyframes blendout {
   0% {
-    transform: translateX(0);
+    opacity: 1;
   }
   100% {
-    transform: translateX(-100%);
-  }
-}
-
-@keyframes moveToRight {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(100%);
+    opacity: 0;
   }
 }
 
-@keyframes moveFromLeft {
+@keyframes blendin {
   0% {
-    transform: translateX(-100%);
+    opacity: 0;
   }
   100% {
-    transform: translateX(0);
-  }
-}
-
-@keyframes moveFromRight {
-  0% {
-    transform: translateX(100%);
-  }
-  100% {
-    transform: translateX(0);
+    opacity: 1;
   }
 }
