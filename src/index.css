@@ -13,4 +13,24 @@
 @theme {
   --font-nunito: Nunito, sans-serif;
   --font-bebasneue: BebasNeue, sans-serif;
+  --animate-blendout: blendout 0.3s ease-out forwards;
+  --animate-blendin: blendin 0.3s ease-out forwards;
+}
+
+@keyframes blendout {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes blendin {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
