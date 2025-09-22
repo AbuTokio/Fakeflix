@@ -4,6 +4,7 @@ import MovieCard from "../movieCard/MovieCard"
 import MovieDialog from "../movieDialog/MovieDialog"
 import type { DialogMovieData } from "../movieDialog/MovieDialog"
 
+// FIXME Lösen wenn eine Bessere Lösung da ist
 export type Movie = {
   id: number
   title: string
@@ -19,6 +20,7 @@ type MovieOpenControllerProps = {
   toDialogData: (m: Movie) => DialogMovieData
 }
 
+//# Was habe ich hier gemacht ?
 export default function MovieOpenController({
   title,
   viewAllHref,

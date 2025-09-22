@@ -1,4 +1,4 @@
-// Popular
+//# Popular
 export interface MovieListPopular {
   page: number
   results: ResultPopular[]
@@ -30,7 +30,7 @@ export enum OriginalLanguage {
   Nl = "nl",
 }
 
-// Top Rated
+//# Top Rated
 export interface MovieListTopRated {
   page: number
   results: ResultTopRated[]
@@ -55,7 +55,7 @@ export interface ResultTopRated {
   vote_count: number
 }
 
-// Upcomming
+//# Upcoming
 export interface MovieListUpcoming {
   dates: Dates
   page: number

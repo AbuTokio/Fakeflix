@@ -1,5 +1,7 @@
 import React from "react"
 
+// TODO: "CarouselTag" mit in diese Komponente einbauen.
+
 type BadgeProps = {
   children: React.ReactNode
   muted?: boolean

@@ -9,6 +9,7 @@ type MovieSectionProps<T> = {
   limit?: number
 }
 
+// TODO Segment überarbeiten
 export default function MovieSection<T>({ title, viewAllHref, items, renderItem, limit }: MovieSectionProps<T>) {
   const visibleItems = typeof limit === "number" ? items.slice(0, limit) : items
   return (

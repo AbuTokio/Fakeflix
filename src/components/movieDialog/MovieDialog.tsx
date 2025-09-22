@@ -25,7 +25,7 @@ type MovieDialogProps = {
   className?: string
 }
 
-// TODO Reponsiv machen
+// TODO Reponsiv machen die höhe passt noch nicht
 export default function MovieDialog({
   open,
   onClose,
