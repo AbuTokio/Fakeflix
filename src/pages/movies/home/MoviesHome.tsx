@@ -3,7 +3,9 @@ import type { DialogMovieData } from "../../../components/movieDialog/MovieDialo
 import Carousel from "../../../components/carousel/Carousel"
 import type { Movie } from "../../../components/movieOpenController/MovieOpenController"
 import MovieOpenController from "../../../components/movieOpenController/MovieOpenController"
+import { SkeletonCard } from "../../../components/skeletonCard/SkeletonCard"
 
+// TODO Data entfernen
 const movies: Movie[] = [
   { id: 1, title: "Ghosted", posterUrl: "/246907730f03f9d29d217e7943f72688.png", rating: 7.1 },
   { id: 2, title: "John Wick 4", posterUrl: "/246907730f03f9d29d217e7943f72688.png", rating: 8.0 },
@@ -45,6 +47,9 @@ export default function MoviesHome() {
           limit={8}
           toDialogData={toDialogData}
         />
+      </section>
+      <section>
+        <SkeletonCard />
       </section>
     </>
   )

@@ -25,6 +25,7 @@ type MovieDialogProps = {
   className?: string
 }
 
+// TODO Reponsiv machen
 export default function MovieDialog({
   open,
   onClose,

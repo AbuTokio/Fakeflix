@@ -22,10 +22,10 @@ export default function MovieCard({ movie, onOpen }: { movie: Movie; onOpen?: (i
         </div>
 
         <div className="mt-1 flex flex-row justify-between px-2 items-start gap-0.5">
-          <p className="text-sm font-semibold text-red-500">{title}</p>
-          <p>
+          <div className="text-sm font-semibold text-red-500">{title}</div>
+          <div>
             <StarRating value={rating} max={10} size={16} />
-          </p>
+          </div>
         </div>
       </div>
     </>
