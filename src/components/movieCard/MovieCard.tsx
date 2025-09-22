@@ -1,5 +1,6 @@
 import StarRating from "../starRating/StarRating"
 
+// FIXME Typesierung ändern
 type Movie = {
   id: number
   title: string
