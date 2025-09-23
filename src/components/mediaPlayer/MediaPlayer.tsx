@@ -44,7 +44,7 @@ export default function MediaPlayer({ youtubeKey, posterUrl, className = "", aut
 
           {/* Gradient & Play-Button */}
           <div className="absolute inset-0 bg-gradient-to-t from-black to-black/30 to-transparent" />
-          <div className="">
+          <div className="absolute inset-0 grid place-items-center">
             <div className="">
               <span className="text-white/90 font-semibold text-lg">Play Trailer</span>
             </div>
