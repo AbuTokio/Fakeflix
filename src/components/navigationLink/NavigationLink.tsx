@@ -1,21 +1,27 @@
 import { NavLink } from "react-router"
+import { useResponsive } from "../../hooks/ResponsiveHooks"
+import NavIcon from "../navIcon/NavIcon"
 
 interface NavigationLinkProps {
-  label: string
+  label?: string
+  icon?: "home" | "watchlist" | "login" | null
   to: string
 }
 
-export default function NavigationLink({ label, to }: NavigationLinkProps) {
+export default function NavigationLink({ label, icon, to }: NavigationLinkProps) {
+  const bp = useResponsive()
+
   return (
     <NavLink
       className={(state) =>
-        `p-2 ${
+        `p-2 flex gap-2 ${
           state.isActive &&
-          "relative after:absolute after:w-1 after:h-1 after:rounded-full after:bg-red-600 after:bottom-0.5 after:left-1/2 after:-translate-x-1/2"
+          "text-red-600 md:text-white md:relative md:after:absolute md:after:w-1 md:after:h-1 md:after:rounded-full md:after:bg-red-600 md:after:bottom-0.5 md:after:left-1/2 md:after:-translate-x-1/2"
         }`
       }
       to={to}>
-      {label}
+      {icon && <NavIcon icon={icon} />}
+      {label && label}
     </NavLink>
   )
 }
