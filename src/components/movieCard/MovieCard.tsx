@@ -17,7 +17,7 @@ export default function MovieCard({ movie, onOpen }: { movie: Movie; onOpen?: (i
       tabIndex={0}
       onClick={() => {}}
       onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && onOpen?.(id)}
-      className="group cursor-pointer select-none outline-none flex flex-col">
+      className="group cursor-pointer select-none outline-none w-full flex flex-col">
       {/* Poster mit Ratio */}
       <div className="w-full aspect-[2/3] overflow-hidden rounded-md bg-neutral-900">
         <img
