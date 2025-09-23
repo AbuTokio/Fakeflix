@@ -42,6 +42,7 @@ export default function Movies() {
       <section className="p-6">
         <MovieOpenController
           title="New Release – Movies"
+          // TODO Route anpassen
           viewAllHref="/movies/section"
           items={movies}
           limit={4}

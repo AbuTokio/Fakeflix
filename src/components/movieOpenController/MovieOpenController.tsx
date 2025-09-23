@@ -56,6 +56,7 @@ export default function MovieOpenController({
           open={open}
           onClose={() => setOpen(false)}
           data={selectedMovie}
+          // TODO Route anpassen
           ctaHref={`/movies/moviedetail`}
           ctaLabel="Details"
           onCtaClick={() => console.log("Weiter zu Details für:", selectedMovie.id)}

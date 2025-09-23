@@ -7,6 +7,7 @@ export default function Header() {
       <nav className="flex justify-between items-center font-nunito">
         <p className="font-bebasneue text-4xl text-red-600 select-none">Fakeflix</p>
         <div className="flex justify-center items-center gap-4">
+          {/* TODO routes anpassen */}
           <NavigationLink label="Home" to="/movies" />
           <NavigationLink label="Genre" to="/genres" />
           <Searchbar />
