@@ -1,30 +1,38 @@
 import React from "react"
 import { Link } from "react-router"
 
-type MovieSectionProps<T> = {
+type MovieSectionProps = {
   title: string
   viewAllHref?: string
-  items: T[]
-  renderItem: (item: T, index: number) => React.ReactNode
-  limit?: number
+  children: React.ReactNode
+  className?: string
 }
 
-// TODO Segment überarbeiten
-export default function MovieSection<T>({ title, viewAllHref, items, renderItem, limit }: MovieSectionProps<T>) {
-  const visibleItems = typeof limit === "number" ? items.slice(0, limit) : items
+export default function MovieSection({ title, viewAllHref, children, className }: MovieSectionProps) {
   return (
-    <>
-      <section className="space-y-4 w-[90%] m-auto">
-        <div className="flex items-center justify-between">
-          <h3 className="text-lg font-semibold">{title}</h3>
-          {viewAllHref && <Link to={viewAllHref}>View All →</Link>}
-        </div>
-        <div className="grid grid-cols-4 justify-around">
-          {visibleItems.map((item, i) => (
-            <React.Fragment key={i}>{renderItem(item, i)}</React.Fragment>
-          ))}
-        </div>
-      </section>
-    </>
+    <section className={["mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 space-y-4", className || ""].join(" ")}>
+      {/* Header */}
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <h3 className="text-red-500  text-lg font-semibold">{title}</h3>
+        {viewAllHref && (
+          <Link
+            to={viewAllHref}
+            className="text-sm font-medium text-red-500 hover:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-400 rounded">
+            View All →
+          </Link>
+        )}
+      </div>
+
+      {/* Grid */}
+      <div
+        className="
+  grid gap-3 sm:gap-4 justify-center
+  [grid-template-columns:repeat(auto-fit,minmax(140px,160px))]
+  md:[grid-template-columns:repeat(auto-fit,minmax(180px,220px))]
+  lg:[grid-template-columns:repeat(auto-fit,minmax(220px,260px))]
+">
+        {children}
+      </div>
+    </section>
   )
 }

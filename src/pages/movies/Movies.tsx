@@ -1,9 +1,12 @@
-import { useCallback } from "react"
+import { useCallback, useState } from "react"
 import type { Movie } from "../../components/movieOpenController/MovieOpenController"
 import type { DialogMovieData } from "../../components/movieDialog/MovieDialog"
 import MovieOpenController from "../../components/movieOpenController/MovieOpenController"
 import { SkeletonCard } from "../../components/skeletonCard/SkeletonCard"
 import Carousel from "../../components/carousel/Carousel"
+import MovieSection from "../../components/movieSection/MovieSection"
+import MovieCard from "../../components/movieCard/MovieCard"
+import MovieDialog from "../../components/movieDialog/MovieDialog"
 
 // TODO Data entfernen
 const movies: Movie[] = [
@@ -23,31 +26,49 @@ const movies: Movie[] = [
 ]
 
 export default function Movies() {
-  const toDialogData = useCallback((m: Movie): DialogMovieData => {
-    return {
-      id: m.id,
-      title: m.title,
-      backdropUrl: m.posterUrl,
-      rating: m.rating,
-      year: "2023",
-      certification: "PG-13",
-      kindLabel: "Film",
-      genres: ["Action", "Thriller"],
-      overview: "Kurzbeschreibung / Overview zum Film. Ersetze das mit echten Daten aus deiner Quelle.",
-    }
-  }, [])
+  const [open, setOpen] = useState(false)
+  const [dialogData, setDialogData] = useState<DialogMovieData | null>(null)
+
+  function handleOpenById(id: number) {
+    const m = movies.find((x) => x.id === id)
+    if (!m) return
+    setDialogData(toDialogData(m))
+    setOpen(true)
+  }
+
+  function handleClose() {
+    setOpen(false)
+    // optional: setDialogData(null)
+  }
+
   return (
     <>
       <Carousel />
       <section className="p-6">
-        <MovieOpenController
+        {/* <MovieOpenController
           title="New Release – Movies"
           // TODO Route anpassen
           viewAllHref="/movies/section"
           items={movies}
           limit={4}
           toDialogData={toDialogData}
-        />
+        /> */}
+
+        <MovieSection title="Top Rated" viewAllHref="/movies/top">
+          {movies.map((movie) => (
+            <MovieCard key={movie.id} movie={movie} onOpen={handleOpenById} />
+          ))}
+        </MovieSection>
+
+        {dialogData && (
+          <MovieDialog
+            open={open}
+            onClose={handleClose}
+            data={dialogData}
+            ctaLabel="Details"
+            ctaHref={`/movie/detail/${dialogData.id}`}
+          />
+        )}
       </section>
       <section>
         <SkeletonCard />
