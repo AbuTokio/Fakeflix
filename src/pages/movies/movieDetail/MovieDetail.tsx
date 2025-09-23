@@ -3,7 +3,6 @@ import { useParams } from "react-router"
 import StarRating from "../../../components/starRating/StarRating"
 import Badge from "../../../components/badge/Badge"
 import CarouselTag from "../../../components/carouselTag/CarouselTag"
-  return {
 import { dummyMovieDetails, dummyMoviePopular } from "../../../dummy/data"
 import { TMDB_IMG_BASE, TmdbImageSize } from "../../../enum/TmdbImage"
 import MovieSection from "../../../components/movieSection/MovieSection"
@@ -90,23 +89,13 @@ export default function MovieDetail() {
 
   return (
     <>
-      <section className="">
+      {/* TODO Youtube Link richtig einbinden nicht hardcoden */}
+      <section className="border border-red-500">
         <MediaPlayer youtubeKey={"3SgL3ygGm1s"} posterUrl={data.backdropUrl} />
       </section>
-      <section className="min-h-screen bg-black text-zinc-100">
-        {/* Optional: Hero mit Backdrop */}
-        {/* {data.backdropUrl && (
-          <div className="relative h-[clamp(260px,40svh,420px)]">
-            <img
-              src={data.backdropUrl}
-              alt={`${data.title} backdrop`}
-              className="absolute inset-0 h-full w-full object-cover object-center"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
-          </div> */}
-        {/* )} */}
-
-        <div className="grid grid-cols-[352px_1fr] gap-10 w-[80%] m-auto py-12">
+      <section className="bg-black text-zinc-100 border border-green-500">
+        {/* FIXME Layout anpassen */}
+        <div className="grid grid-cols-[352px_1fr] gap-10 w-[80%] m-auto py-12 border border-pink-600">
           {/* Poster */}
           <div className="mx-auto -mt-24">
             {data.posterUrl ? (
@@ -155,7 +144,8 @@ export default function MovieDetail() {
           </div>
         </div>
       </section>
-      <section>
+      <section className="border border-yellow-500">
+        {/* FIXME BUG Dialogfenster bleibt offen */}
         <MovieSection title="You max also like">
           {loading
             ? Array.from({ length: 10 }).map((_, i) => <SkeletonCard key={i} />)
