@@ -3,7 +3,6 @@ import StarRating from "../starRating/StarRating"
 // FIXME Typesierung ändern
 type MovieInput = {
   id: number
-  // Titel-Varianten (Movies / TV / Originaltitel)
   title?: string
   original_title?: string
   name?: string
@@ -11,7 +10,7 @@ type MovieInput = {
   // Bild-Varianten
   poster_path?: string | null
   backdrop_path?: string | null
-  posterUrl?: string | null // falls du irgendwo schon eine fertige URL hast
+  posterUrl?: string | null
 
   // Rating-Varianten
   vote_average?: number
@@ -21,7 +20,7 @@ type MovieInput = {
 type MovieCardProps = {
   movie: MovieInput
   onOpen?: (id: number) => void
-  imgSize?: "w185" | "w342" | "w500" | "original" // optional steuerbar
+  imgSize?: "w185" | "w342" | "w500" | "original"
   className?: string
   showRating?: boolean
 }
