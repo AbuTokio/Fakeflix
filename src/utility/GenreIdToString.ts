@@ -1,20 +1,12 @@
 import { dummyMovieGenres, dummyTVGenres } from "../dummy/data"
 
-export default function GenreIdToString(type: "movie" | "TV", genreId: number) {
+export default function GenreIdToString(type: "movie" | "TV", genreId: number): string {
   if (type === "movie") {
-    dummyMovieGenres.genres.forEach(({ id, name }) => {
-      if (id === genreId) {
-        console.log(name)
-        return name
-      }
-    })
+    const genre = dummyMovieGenres.genres.find(({ id }) => id === genreId)
+    return genre ? genre.name : "Unkown"
   } else if (type === "TV") {
-    dummyTVGenres.genres.forEach(({ id, name }) => {
-      if (id === genreId) {
-        console.log(name)
-        return name
-      }
-    })
+    const genre = dummyTVGenres.genres.find(({ id }) => id === genreId)
+    return genre ? genre.name : "Unkown"
   }
-  return "Unknown"
+  return "Unkown"
 }
