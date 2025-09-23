@@ -119,7 +119,7 @@ export default function MovieDialog({
               )}
 
               {/* Scroll-Container nur für Text + CTA */}
-              <div className="mt-3 sm:mt-4 max-h-[28svh] sm:max-h-[32svh] overflow-y-auto pr-1 border border-red-500">
+              <div className="mt-3 sm:mt-4 max-h-[28svh] sm:max-h-[32svh] overflow-y-auto pr-1">
                 {overview && (
                   <p className="mt-1 sm:mt-2 text-sm sm:text-base md:text-lg text-neutral-200">{overview}</p>
                 )}
