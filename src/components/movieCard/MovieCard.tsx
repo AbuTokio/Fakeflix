@@ -1,31 +1,73 @@
 import StarRating from "../starRating/StarRating"
 
 // FIXME Typesierung ändern
-type Movie = {
+type MovieInput = {
   id: number
-  title: string
-  posterUrl: string
-  rating: number
+  // Titel-Varianten (Movies / TV / Originaltitel)
+  title?: string
+  original_title?: string
+  name?: string
+
+  // Bild-Varianten
+  poster_path?: string | null
+  backdrop_path?: string | null
+  posterUrl?: string | null // falls du irgendwo schon eine fertige URL hast
+
+  // Rating-Varianten
+  vote_average?: number
+  rating?: number
 }
 
-export default function MovieCard({ movie, onOpen }: { movie: Movie; onOpen?: (id: number) => void }) {
-  const { id, title, posterUrl, rating } = movie
+type MovieCardProps = {
+  movie: MovieInput
+  onOpen?: (id: number) => void
+  imgSize?: "w185" | "w342" | "w500" | "original" // optional steuerbar
+  className?: string
+  showRating?: boolean
+}
+
+const TMDB_IMG_BASE = "https://image.tmdb.org/t/p"
+
+export default function MovieCard({
+  movie,
+  onOpen,
+  imgSize = "w342",
+  className = "",
+  showRating = true,
+}: MovieCardProps) {
+  const { id } = movie
+
+  const title = movie.title ?? movie.original_title ?? movie.name ?? "Untitled"
+
+  const posterUrl =
+    movie.posterUrl ??
+    (movie.poster_path ? `${TMDB_IMG_BASE}/${imgSize}${movie.poster_path}` : null) ??
+    (movie.backdrop_path ? `${TMDB_IMG_BASE}/${imgSize}${movie.backdrop_path}` : null)
+
+  const rating = movie.vote_average ?? movie.rating ?? 0
+
+  const handleOpen = () => onOpen?.(id)
 
   return (
     <div
       role="button"
       tabIndex={0}
-      onClick={() => {}}
-      onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && onOpen?.(id)}
-      className="group cursor-pointer select-none outline-none w-full flex flex-col">
+      onClick={handleOpen}
+      onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && handleOpen()}
+      className={`group cursor-pointer select-none outline-none w-full flex flex-col ${className}`}>
       {/* Poster mit Ratio */}
       <div className="w-full aspect-[2/3] overflow-hidden rounded-md bg-neutral-900">
-        <img
-          src={posterUrl}
-          alt={title}
-          className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
-          draggable={false}
-        />
+        {posterUrl ? (
+          <img
+            src={posterUrl}
+            alt={title}
+            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+            draggable={false}
+            loading="lazy"
+          />
+        ) : (
+          <div className="h-full w-full grid place-items-center text-neutral-500 text-xs">No image</div>
+        )}
       </div>
 
       {/* Text + Rating */}
@@ -33,9 +75,12 @@ export default function MovieCard({ movie, onOpen }: { movie: Movie; onOpen?: (i
         <div className="text-sm font-semibold text-red-500 truncate" title={title}>
           {title}
         </div>
-        <div className="shrink-0">
-          <StarRating value={rating} max={10} size={16} />
-        </div>
+
+        {showRating && (
+          <div className="shrink-0">
+            <StarRating value={rating} max={10} size={16} />
+          </div>
+        )}
       </div>
     </div>
   )

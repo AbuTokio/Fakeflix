@@ -1,31 +1,22 @@
 import { useEffect } from "react"
-import StarRating from "../starRating/StarRating"
 import { Link } from "react-router"
-import Badge from "../badge/Badge"
+import StarRating from "../starRating/StarRating"
+import type { MovieDetails, ResultMovieSimilar } from "../../interface/Movie"
+import { TMDB_IMG_BASE, TmdbImageSize } from "../../enum/TmdbImage"
 
-export type DialogMovieData = {
-  id: number
-  title: string
-  year?: number | string
-  certification?: string
-  kindLabel?: string
-  genres?: string[]
-  overview?: string
-  backdropUrl?: string
-  rating?: number
-}
+type MovieDialogData = MovieDetails | ResultMovieSimilar
 
 type MovieDialogProps = {
   open: boolean
   onClose: () => void
-  data: DialogMovieData
+  data: MovieDialogData
+  genreById?: Record<number, string>
   ctaLabel?: string
   ctaHref?: string
   onCtaClick?: () => void
   className?: string
 }
 
-// FIXME Typen / Props eventuell noch anpassen noch anpassen
 export default function MovieDialog({
   open,
   onClose,
@@ -49,15 +40,28 @@ export default function MovieDialog({
 
   if (!open) return null
 
-  const { title, year, certification, kindLabel = "Film", genres = [], overview, backdropUrl, rating } = data
+  // ----- Titel -----
+  const title = (data as any).title ?? (data as any).original_title ?? "Untitled"
+
+  // ----- Bildquelle -----
+  const backdrop_path = data.backdrop_path
+  const poster_path = data.poster_path
+  const heroSrc =
+    (backdrop_path ? `${TMDB_IMG_BASE}/${TmdbImageSize.BACKDROP_SIZE}${backdrop_path}` : null) ??
+    (poster_path ? `${TMDB_IMG_BASE}/${TmdbImageSize.POSTER_SIZE}${poster_path}` : null)
+
+  // ----- Rating -----
+  const rating = typeof data.vote_average === "number" ? data.vote_average : undefined
+
+  // ----- Overview -----
+  const overview = (data as any).overview as string | undefined
 
   return (
-    // DialogWindow
     <div
       className="fixed inset-0 z-50 p-4 sm:p-6 flex items-center"
       role="dialog"
-      onMouseDown={(event) => {
-        if (event.target === event.currentTarget) onClose()
+      onMouseDown={(e) => {
+        if (e.target === e.currentTarget) onClose()
       }}>
       {/* Backdrop */}
       <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={onClose} />
@@ -66,21 +70,24 @@ export default function MovieDialog({
       <div
         className={[
           "relative mx-auto w-full max-w-[900px] rounded-2xl shadow-2xl overflow-hidden",
-          "max-h-[90svh] bg-neutral-900",
+          "max-h-[96svh] bg-neutral-900",
           className || "",
         ].join(" ")}>
         {/* Media / Hero */}
-        <div className="relative h-[56svh] sm:h-auto sm:aspect-video bg-neutral-900">
-          {backdropUrl && (
+        <div className="relative h-[clamp(360px,65svh,820px)] bg-neutral-900">
+          {heroSrc ? (
             <img
-              src={backdropUrl}
+              src={heroSrc}
               alt={title}
-              className="absolute inset-0 h-full w-full object-cover"
+              className="absolute inset-0 h-full w-full object-cover object-center md:object-[50%_35%]"
+              loading="lazy"
               draggable={false}
             />
+          ) : (
+            <div className="absolute inset-0 grid place-items-center text-neutral-500 text-xs">No image</div>
           )}
-          {/* Gradient */}
-          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black via-black/40 to-black/10 " />
+
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/5" />
 
           {/* Close */}
           <button
@@ -90,7 +97,7 @@ export default function MovieDialog({
             ✕
           </button>
 
-          {/* Content-Overlay (scrollt intern bei viel Text) */}
+          {/* Content */}
           <div className="absolute inset-x-0 bottom-0">
             <div className="px-4 pb-4 pt-6 sm:px-8 sm:pb-8 sm:pt-10">
               <h2
@@ -99,26 +106,14 @@ export default function MovieDialog({
                 {title}
               </h2>
 
-              {/* Badges */}
-              <div className="mt-3 sm:mt-4 flex flex-wrap items-center gap-2">
-                {year && <Badge>{year}</Badge>}
-                {certification && <Badge>{certification}</Badge>}
-                {kindLabel && <Badge>{kindLabel}</Badge>}
-                {genres.slice(0, 4).map((g) => (
-                  <Badge key={g} muted>
-                    {g}
-                  </Badge>
-                ))}
-              </div>
-
               {/* Rating */}
-              {typeof rating === "number" && (
+              {typeof rating === "number" && !Number.isNaN(rating) && (
                 <div className="mt-3 sm:mt-4">
                   <StarRating value={rating} max={10} size={18} showNumber />
                 </div>
               )}
 
-              {/* Scroll-Container nur für Text + CTA */}
+              {/* Scroll-Container */}
               <div className="mt-3 sm:mt-4 max-h-[28svh] sm:max-h-[32svh] overflow-y-auto pr-1">
                 {overview && (
                   <p className="mt-1 sm:mt-2 text-sm sm:text-base md:text-lg text-neutral-200">{overview}</p>
