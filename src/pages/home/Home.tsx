@@ -32,7 +32,7 @@ export default function Home() {
         />
       </Animation>
       <section className="p-6">
-        <MovieSection title="Top Rated" viewAllHref="/movies/top">
+        <MovieSection title="Top Rated" viewAllHref="/genres">
           <CardCarousel
             cards={
               loading
