@@ -5,7 +5,7 @@ interface CarouselTagProps {
   className?: string
 }
 
-// TODO entfernen und in badge rein
+// TODO löschen
 
 export default function CarouselTag({ filled, label, imgUrl, className }: CarouselTagProps) {
   return (

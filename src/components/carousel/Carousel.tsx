@@ -5,7 +5,7 @@ import { dummyMoviePopular } from "../../dummy/data"
 export default function Carousel() {
   const [activeCard, setActiveCard] = useState<number>(0)
   const [moveActiveCard, setMoveActiveCard] = useState<boolean>(false)
-  const movies = [...dummyMoviePopular.results]
+  const movies = [...dummyMoviePopular.results.slice(0, 5)]
 
   const switchSlide = () => {
     if (activeCard < movies.length - 1) {
@@ -33,6 +33,7 @@ export default function Carousel() {
     }, 5000)
     return () => clearInterval(intervalId)
   })
+  console.log(movies.length)
 
   // TODO mit children dynamisch gestalten und in der page mappen
 
@@ -54,13 +55,13 @@ export default function Carousel() {
         )
       })}
 
-      <div className="flex gap-4 absolute bottom-4 left-1/2 -translate-x-1/2 w-fit">
+      <div className="flex gap-4 absolute bottom-2 left-1/2 -translate-x-1/2 w-fit p-2">
         {movies.map((movie, index) => (
           <div key={index}>
             <div
-              className={`w-5 h-5 ${
+              className={`w-1 h-1 ${
                 activeCard === index ? "w-15 bg-red-600" : "w-5 bg-white cursor-pointer"
-              } h-5 rounded-full transition-all duration-150`}
+              } md:h-5 rounded-full transition-all duration-150`}
               onClick={() => {
                 setMoveActiveCard(true)
                 act(() => {

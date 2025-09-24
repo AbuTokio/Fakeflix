@@ -1,5 +1,6 @@
 import type { dummyMoviePopular } from "../../dummy/data"
 import { TmdbImageSize } from "../../enum/TmdbImage"
+import { useResponsive } from "../../hooks/ResponsiveHooks"
 import GenreIdToString from "../../utility/GenreIdToString"
 import TmdbImage from "../../utility/TmdbImage"
 import Button from "../button/Button"
@@ -10,6 +11,8 @@ interface CarouselCardProps {
 }
 
 export default function CarouselCard({ movie }: CarouselCardProps) {
+  const bp = useResponsive()
+
   return (
     <>
       <img
@@ -17,15 +20,25 @@ export default function CarouselCard({ movie }: CarouselCardProps) {
         src={TmdbImage(movie.backdrop_path, TmdbImageSize.BACKDROP_SIZE)}
         alt={`${movie.title}-backdrop`}
       />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent"></div>
       <div className="absolute h-full w-full top-0 left-0 flex flex-col gap-6 justify-center items-center">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex gap-6 justify-center items-center">
-          <Button filled label="Watch Now" imgUrl="/src/assets/img/play.svg" />
-          <Button label="Watch Later" imgUrl="/src/assets/img/clock.svg" />
-        </div>
-        <div className="absolute bottom-20 left-1/2 -translate-x-1/2 w-full px-12">
+        {bp.isMd && (
+          <div
+            className={`absolute w-full ${
+              bp.isMd ? "top-1/2" : "bottom-2/9"
+            } left-1/2 -translate-x-1/2 md:-translate-y-1/2 flex gap-6 justify-center items-center`}>
+            <Button filled label="See Details" imgUrl="/img/play.svg" />
+            <Button label="+ Watchlist" imgUrl="/img/clock.svg" />
+          </div>
+        )}
+        <div
+          className={`absolute h-fit ${
+            bp.isMd ? "bottom-20" : "bottom-8"
+          } md:left-1/2 md:-translate-x-1/2 w-full px-4 md:px-12`}>
           <CarouselInfo
             title={movie.title}
             tags={movie.genre_ids.map((genreId) => GenreIdToString("movie", genreId))}
+            info={{ releaseDate: movie.release_date, rating: movie.vote_average }}
             description={movie.overview}
           />
         </div>
