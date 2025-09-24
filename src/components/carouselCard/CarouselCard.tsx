@@ -4,10 +4,10 @@ import { TmdbImageSize } from "../../enum/TmdbImage"
 import { useResponsive } from "../../hooks/ResponsiveHooks"
 import GenreIdToString from "../../utility/GenreIdToString"
 import TmdbImage from "../../utility/TmdbImage"
-import Animation from "../animation/Animation"
 import Button from "../button/Button"
 import CarouselInfo from "../carouselInfo/CarouselInfo"
 import { Navigate } from "react-router"
+import { useMain } from "../../hooks/ContextHooks"
 
 interface CarouselCardProps {
   movie: (typeof dummyMoviePopular.results)[0]
@@ -16,6 +16,7 @@ interface CarouselCardProps {
 export default function CarouselCard({ movie }: CarouselCardProps) {
   const [navigate, setNavigate] = useState(false)
   const bp = useResponsive()
+  const mainCtx = useMain()
 
   return (
     <>
@@ -40,7 +41,8 @@ export default function CarouselCard({ movie }: CarouselCardProps) {
                 label="+ Watchlist"
                 imgUrl="/img/clock.svg"
                 onClick={() => {
-                  /*TODO Watchlist Function hinzufügen*/
+                  mainCtx.setWatchlist((prev) => [...prev, movie])
+                  localStorage.setItem("watchlist", JSON.stringify([...mainCtx.watchlist, movie]))
                 }}
               />
             </div>
