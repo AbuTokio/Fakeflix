@@ -2,11 +2,13 @@ interface ButtonProps {
   filled?: boolean
   label?: string
   imgUrl?: string
+  onClick?: React.MouseEventHandler<HTMLButtonElement> | undefined
 }
 
-export default function Button({ filled, label, imgUrl }: ButtonProps) {
+export default function Button({ filled, label, imgUrl, onClick }: ButtonProps) {
   return (
     <button
+      onClick={onClick}
       className={`${
         filled
           ? "bg-red-600 text-white active:bg-gray-100/80 active:text-red-600"

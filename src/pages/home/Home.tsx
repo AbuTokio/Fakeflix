@@ -5,6 +5,7 @@ import MovieSection from "../../components/movieSection/MovieSection"
 import MovieCard from "../../components/movieCard/MovieCard"
 import MovieDialog from "../../components/movieDialog/MovieDialog"
 import { dummyMoviePopular } from "../../dummy/data"
+import CarouselCard from "../../components/carouselCard/CarouselCard"
 
 export default function Home() {
   const [openId, setOpenId] = useState<number | null>(null)
@@ -21,7 +22,11 @@ export default function Home() {
   const selected = movies.find((m) => m.id === openId)!
   return (
     <>
-      <Carousel />
+      <Carousel
+        cards={movies.slice(0, 5).map((movie) => (
+          <CarouselCard movie={movie} />
+        ))}
+      />
       <section className="p-6">
         <MovieSection title="Top Rated" viewAllHref="/movies/top">
           {loading

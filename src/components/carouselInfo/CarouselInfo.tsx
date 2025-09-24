@@ -1,5 +1,6 @@
 import { useResponsive } from "../../hooks/ResponsiveHooks"
 import Badge from "../badge/Badge"
+import StarRating from "../starRating/StarRating"
 
 interface CarouselInfoProps {
   title: string
@@ -18,10 +19,7 @@ export default function CarouselInfo({ title, tags, info, description }: Carouse
           <img src="/img/calendar.svg" alt="calendar" />
           {info.releaseDate}
         </Badge>
-        <Badge muted hero>
-          <img src="/img/star.svg" alt="star" />
-          {info.rating}
-        </Badge>
+        <StarRating value={info.rating} />
       </>
     )
   }
