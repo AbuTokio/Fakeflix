@@ -1,4 +1,5 @@
-import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from "react-router"
+// import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from "react-router"
+import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from "react-router-dom"
 import Layout from "./layout/Layout"
 import Home from "./pages/home/Home"
 import Movies from "./pages/movies/Movies"
@@ -9,6 +10,7 @@ import SeriesDetail from "./pages/series/seriesDetail/SeriesDetail"
 import MainProvider from "./context/MainProvider"
 import SeriesProvider from "./context/SeriesProvider"
 import MoviesProvider from "./context/MoviesProvider"
+import TestGenres from "./components/testGenres/TestGenres"
 
 function App() {
   // useEffect(() => useScrollToTop())
@@ -23,6 +25,7 @@ function App() {
           </MainProvider>
         }>
         <Route index element={<Home />} />
+        <Route path="/test-genres" element={<TestGenres />} />
 
         <Route
           path="/movies"

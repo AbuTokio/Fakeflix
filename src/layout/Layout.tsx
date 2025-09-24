@@ -1,4 +1,6 @@
-import { Outlet, useLocation } from "react-router"
+// import { Outlet, useLocation } from "react-router"
+// ✅ richtig
+import { Outlet, useLocation } from "react-router-dom"
 import Header from "../components/header/Header"
 
 export default function Layout() {
