@@ -8,7 +8,7 @@ export default function Intro() {
   const navigate = useNavigate()
 
   const handleIntroDone = () => {
-    navigate("/movies")
+    navigate("/home")
   }
 
   useEffect(() => {
