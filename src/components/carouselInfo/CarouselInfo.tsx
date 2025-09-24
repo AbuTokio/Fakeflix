@@ -1,25 +1,45 @@
-import CarouselTag from "../carouselTag/CarouselTag"
+import { useResponsive } from "../../hooks/ResponsiveHooks"
+import Badge from "../badge/Badge"
 
 interface CarouselInfoProps {
   title: string
   tags: string[]
+  info: { releaseDate: string; rating: number }
   description: string
 }
 
-export default function CarouselInfo({ title, tags, description }: CarouselInfoProps) {
+export default function CarouselInfo({ title, tags, info, description }: CarouselInfoProps) {
+  const bp = useResponsive()
+
+  const mutedTags = () => {
+    return (
+      <>
+        <Badge muted hero>
+          <img src="/img/calendar.svg" alt="calendar" />
+          {info.releaseDate}
+        </Badge>
+        <Badge muted hero>
+          <img src="/img/star.svg" alt="star" />
+          {info.rating}
+        </Badge>
+      </>
+    )
+  }
+
   return (
     <>
-      <div className="text-white font-nunito min-w-1/2 max-w-3/4 flex flex-col gap-4">
-        <h2 className="text-4xl font-extrabold">{title}</h2>
-        <div className="flex gap-4 w-full">
+      <div className="text-white font-nunito min-w-1/2 md:max-w-3/4 flex flex-col gap-2 md:gap-4">
+        <h2 className="text-xl md:text-4xl font-extrabold">{title}</h2>
+        <div className="flex flex-wrap gap-2 md:gap-4 w-full">
           {tags.map((tag, index) => (
-            <CarouselTag key={index} filled label={tag} />
+            <Badge key={index} hero>
+              {tag}
+            </Badge>
           ))}
-          <CarouselTag label="2022" imgUrl="/src/assets/img/calendar.svg" />
-          <CarouselTag label="3:12:00" imgUrl="/src/assets/img/duration.svg" />
-          <CarouselTag label="8.5" imgUrl="/src/assets/img/star.svg" />
+          {bp.isMd && mutedTags()}
         </div>
-        <p>{description}</p>
+        {!bp.isMd && <div className="flex">{mutedTags()}</div>}
+        {bp.isMd && <p>{description}</p>}
       </div>
     </>
   )

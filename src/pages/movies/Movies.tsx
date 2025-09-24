@@ -8,7 +8,7 @@ import { dummyMoviePopular } from "../../dummy/data"
 
 export default function Movies() {
   const [openId, setOpenId] = useState<number | null>(null)
-  const [loading, setLoading] = useState(false)
+  const [loading] = useState(false)
 
   const movies = dummyMoviePopular.results
 

@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { NavLink } from "react-router"
+import Searchbar from "../searchbar/Searchbar"
 
 export default function Burger() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -30,6 +31,8 @@ export default function Burger() {
             className="absolute bottom-14 left-0 right-0 bg-white shadow-lg rounded-t-lg p-4"
             onClick={(e) => e.stopPropagation()}>
             <div className="flex flex-col space-y-3">
+              // TODO Searchbar anpassen
+              <Searchbar />
               {menuItems.map((item, index) => {
                 return (
                   <NavLink
