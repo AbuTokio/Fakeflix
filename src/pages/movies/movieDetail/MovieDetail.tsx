@@ -13,7 +13,6 @@ import MediaPlayer from "../../../components/mediaPlayer/MediaPlayer"
 import Animation from "../../../components/animation/Animation"
 import Button from "../../../components/button/Button"
 import { useMain } from "../../../hooks/ContextHooks"
-import AddToWatchlist from "../../../utility/AddToWatchlist"
 
 function InfoItem({ label, value, className }: { label: string; value: React.ReactNode; className?: string }) {
   return (
@@ -148,7 +147,11 @@ export default function MovieDetail() {
                         </div>
                         <div>
                           {/* TODO Add onclick */}
-                          <Button label="+ Watchlist" />
+                          <Button
+                            label="+ Watchlist"
+                            filled
+                            className="!py-1 !px-2 !text-xs shadow-[0_6px_0_rgba(220,38,38,0.35)] active:bg-red-600 active:text-white active:scale-90"
+                          />
                         </div>
                       </div>
                     </Animation>
