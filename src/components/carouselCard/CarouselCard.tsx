@@ -30,21 +30,23 @@ export default function CarouselCard({ movie }: CarouselCardProps) {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent"></div>
         <div className="absolute h-full w-full top-0 left-0 flex flex-col gap-6 justify-center items-center">
-          {bp.isMd && (
-            <div
-              className={`absolute w-full ${
-                bp.isMd ? "top-1/2" : "bottom-2/9"
-              } left-1/2 -translate-x-1/2 md:-translate-y-1/2 flex gap-6 justify-center items-center`}>
-              <Button filled label="See Details" imgUrl="/img/play.svg" onClick={() => setNavigate(true)} />
-              <Button
-                label="+ Watchlist"
-                imgUrl="/img/clock.svg"
-                onClick={() => {
-                  /*TODO Watchlist Function hinzufügen*/
-                }}
-              />
-            </div>
-          )}
+          <Animation className="w-full">
+            {bp.isMd && (
+              <div
+                className={`absolute w-full ${
+                  bp.isMd ? "top-1/2" : "bottom-2/9"
+                } left-1/2 -translate-x-1/2 md:-translate-y-1/2 flex gap-6 justify-center items-center`}>
+                <Button filled label="See Details" imgUrl="/img/play.svg" onClick={() => setNavigate(true)} />
+                <Button
+                  label="+ Watchlist"
+                  imgUrl="/img/clock.svg"
+                  onClick={() => {
+                    /*TODO Watchlist Function hinzufügen*/
+                  }}
+                />
+              </div>
+            )}
+          </Animation>
           <div
             className={`absolute h-fit ${
               bp.isMd ? "bottom-20" : "bottom-8"
