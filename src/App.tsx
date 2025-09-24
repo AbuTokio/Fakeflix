@@ -9,6 +9,8 @@ import SeriesDetail from "./pages/series/seriesDetail/SeriesDetail"
 import MainProvider from "./context/MainProvider"
 import SeriesProvider from "./context/SeriesProvider"
 import MoviesProvider from "./context/MoviesProvider"
+import Genres from "./pages/genre/genres"
+import GenreDetail from "./pages/genre/genreDetail/GenreDetail"
 
 function App() {
   // useEffect(() => useScrollToTop())
@@ -45,6 +47,10 @@ function App() {
         />
         <Route path="/series/genre/:genre" element={""} />
         <Route path="/series/detail/:id" element={<SeriesDetail />} />
+
+        <Route path="/genres" element={<Genres />} />
+        <Route path="/genres/:name" element={<GenreDetail />} />
+
         <Route path="*" element={<NotFound />} />
       </Route>
     )

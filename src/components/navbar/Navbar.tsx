@@ -22,7 +22,7 @@ export default function Navbar() {
         {bp.isMd && (
           <>
             <Searchbar />
-            <NavigationLink label="Genres" to="/countries" />
+            <NavigationLink label="Genres" to="/genres" />
             <NavigationLink label="Random" to="/random" />
           </>
         )}
