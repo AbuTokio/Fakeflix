@@ -33,6 +33,8 @@ export default function MovieDetail() {
   const [openId, setOpenId] = useState<number | null>(null)
   const [loading, setLoading] = useState(false)
 
+  // dummy
+
   const movies = dummyMoviePopular.results
 
   const handleOpen = useCallback((id: number) => {
@@ -62,7 +64,7 @@ export default function MovieDetail() {
     }
   }, [movieId])
 
-  // dummy
+  // dummy Image Builder behalten
   const data = useMemo(() => {
     const backdrop_path = details.backdrop_path
     const poster_path = details.poster_path
@@ -89,69 +91,90 @@ export default function MovieDetail() {
 
   return (
     <>
-      {/* TODO Youtube Link richtig einbinden nicht hardcoden */}
-      <section className="border border-red-500">
-        <MediaPlayer youtubeKey={"3SgL3ygGm1s"} posterUrl={data.backdropUrl} />
+      {/* Hero / Trailer */}
+      <section className="w-full overflow-hidden ">
+        <MediaPlayer
+          youtubeKey={"3SgL3ygGm1s"}
+          // TODO: dynamisch
+          posterUrl={data.backdropUrl}
+          className="w-full max-w-[1920px] mx-auto"
+        />
       </section>
-      <section className="bg-black text-zinc-100 border border-green-500">
-        {/* FIXME Layout anpassen */}
-        <div className="grid grid-cols-[352px_1fr] gap-10 w-[80%] m-auto py-12 border border-pink-600">
-          {/* Poster */}
-          <div className="mx-auto -mt-24">
-            {data.posterUrl ? (
-              <img
-                src={data.posterUrl}
-                alt={`${data.title} Poster`}
-                className="rounded-xl shadow-[0_12px_40px_rgba(0,0,0,0.6)] w-[352px] aspect-[2/3] object-cover"
-              />
-            ) : (
-              <div className="w-[352px] aspect-[2/3] rounded-xl bg-neutral-800 grid place-items-center text-neutral-400">
-                No poster
-              </div>
-            )}
-          </div>
 
-          {/* Content */}
-          <div className="space-y-4 py-4 px-2">
-            <div className="flex justify-between items-start">
-              <div>
-                <h1 className="text-4xl font-bold">{data.title}</h1>
-
-                <div className="mt-3 flex flex-wrap items-center gap-2">
-                  {data.genres.map((genre) => (
-                    <Badge key={genre}>{genre}</Badge>
-                  ))}
+      {/* Content */}
+      <section className="bg-black text-zinc-100">
+        <div className="w-full max-w-[1200px] xl:max-w-[1360px] 2xl:max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 lg:py-12">
+          {/* Grid: stack auf mobil*/}
+          <div className="grid gap-6 sm:gap-8 lg:gap-10 grid-cols-1 md:grid-cols-[260px_1fr] lg:grid-cols-[300px_1fr] xl:grid-cols-[352px_1fr]">
+            {/* Poster */}
+            <div className="mx-auto hidden md:block md:mx-0 ">
+              {data.posterUrl ? (
+                <img
+                  src={data.posterUrl}
+                  alt={`${data.title} Poster`}
+                  loading="lazy"
+                  className=" rounded-xl shadow-[0_12px_40px_rgba(0,0,0,0.6)] aspect-[2/3] object-cover w-full "
+                />
+              ) : (
+                <div className="aspect-[2/3] object-cover w-full rounded-xl bg-neutral-800 grid place-items-center text-neutral-400">
+                  No poster
                 </div>
-
-                <div className="mt-2 flex flex-wrap items-center gap-4">
-                  <CarouselTag label={data.year || "—"} imgUrl="/src/assets/img/calendar.svg" />
-                  <CarouselTag label={formatRuntime(data.runtimeMin)} imgUrl="/src/assets/img/duration.svg" />
-                  <StarRating value={data.rating} showNumber />
-                </div>
-              </div>
+              )}
             </div>
 
-            {/* Overview */}
-            {data.overview && <p className="max-w-[70ch] text-sm leading-relaxed text-zinc-300">{data.overview}</p>}
+            {/* Right column */}
+            <div className="space-y-4 sm:space-y-5 lg:space-y-6 py-2">
+              <div className="flex justify-between items-start gap-4">
+                <div>
+                  <h1 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold leading-tight">{data.title}</h1>
 
-            <dl className="flex flex-col gap-2">
-              <InfoItem label="Country" value={data.country || "—"} />
-              <InfoItem label="Genre" value={data.genres.length ? data.genres.join(", ") : "—"} />
-              <InfoItem label="Date Release" value={data.releaseDate || "—"} />
-              <InfoItem label="Production" value={data.production || "—"} />
-              <InfoItem label="Cast" value={data.cast.length ? data.cast.join(", ") : "—"} className="flex flex-wrap" />
-            </dl>
+                  <div className="mt-3 flex flex-wrap items-center gap-2">
+                    {data.genres.map((genre) => (
+                      <Badge key={genre}>{genre}</Badge>
+                    ))}
+                  </div>
+
+                  <div className="mt-3 flex flex-wrap items-center gap-3 sm:gap-4">
+                    <CarouselTag label={data.year || "—"} imgUrl="/src/assets/img/calendar.svg" />
+                    <CarouselTag label={formatRuntime(data.runtimeMin)} imgUrl="/src/assets/img/duration.svg" />
+                    <StarRating value={data.rating} showNumber />
+                  </div>
+                </div>
+              </div>
+
+              {/* Overview */}
+              {data.overview && (
+                <p className="max-w-prose text-sm sm:text-base leading-relaxed text-zinc-300">{data.overview}</p>
+              )}
+
+              {/* Meta */}
+              <div className="flex flex-col gap-2 sm:gap-3">
+                <InfoItem label="Country" value={data.country || "—"} />
+                <InfoItem label="Genre" value={data.genres.length ? data.genres.join(", ") : "—"} />
+                <InfoItem label="Date Release" value={data.releaseDate || "—"} />
+                <InfoItem label="Production" value={data.production || "—"} />
+                <InfoItem
+                  label="Cast"
+                  value={data.cast.length ? data.cast.join(", ") : "—"}
+                  className="flex flex-wrap"
+                />
+              </div>
+            </div>
           </div>
         </div>
       </section>
-      <section className="border border-yellow-500">
-        {/* FIXME BUG Dialogfenster bleibt offen */}
-        <MovieSection title="You max also like">
-          {loading
-            ? Array.from({ length: 10 }).map((_, i) => <SkeletonCard key={i} />)
-            : movies.map((m) => <MovieCard key={m.id} movie={m} onOpen={handleOpen} />)}
-        </MovieSection>
+
+      {/* Recommendations */}
+      <section className="w-full">
+        <div className="w-full max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
+          <MovieSection title="You may also like">
+            {loading
+              ? Array.from({ length: 10 }).map((_, i) => <SkeletonCard key={i} />)
+              : movies.map((m) => <MovieCard key={m.id} movie={m} onOpen={handleOpen} />)}
+          </MovieSection>
+        </div>
       </section>
+
       {openId !== null && (
         <MovieDialog open ctaHref={`/movies/detail/${openId}`} onClose={handleClose} data={selected} />
       )}

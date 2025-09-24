@@ -1,4 +1,5 @@
 // components/mediaPlayer/MediaPlayer.tsx
+import { div } from "motion/react-client"
 import { useState } from "react"
 
 type MediaPlayerProps = {
@@ -14,7 +15,10 @@ export default function MediaPlayer({ youtubeKey, posterUrl, className = "", aut
   if (!youtubeKey) {
     return posterUrl ? (
       <div className={`relative aspect-video ${className}`}>
-        <img src={posterUrl} alt="Backdrop" className="absolute inset-0 h-full w-full object-cover" />
+        {/* Poster */}
+        <img src={posterUrl} alt="Backdrop" className="absolute inset-0 h-full w-full object-cover" loading="lazy" />
+        {/* Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black to-black/10 to-transparent" />
       </div>
     ) : null
   }
@@ -38,7 +42,6 @@ export default function MediaPlayer({ youtubeKey, posterUrl, className = "", aut
         ) : (
           <button
             type="button"
-            aria-label="Play trailer"
             onClick={() => setPlaying(true)}
             onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && setPlaying(true)}
             className="group absolute inset-0">
@@ -48,12 +51,12 @@ export default function MediaPlayer({ youtubeKey, posterUrl, className = "", aut
                 src={posterUrl}
                 alt="Trailer poster"
                 loading="lazy"
-                className="absolute inset-0 h-full w-full object-cover"
+                className="absolute inset-0 h-full w-full object-cover "
               />
             )}
 
             {/* Gradient overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/90 to-black/30 to-transparent" />
 
             {/* Play CTA */}
             <div className="absolute inset-0 grid place-items-center">
