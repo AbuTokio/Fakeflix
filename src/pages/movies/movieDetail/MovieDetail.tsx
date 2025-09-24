@@ -11,6 +11,9 @@ import { SkeletonCard } from "../../../components/skeletonCard/SkeletonCard"
 import MovieDialog from "../../../components/movieDialog/MovieDialog"
 import MediaPlayer from "../../../components/mediaPlayer/MediaPlayer"
 import Animation from "../../../components/animation/Animation"
+import Button from "../../../components/button/Button"
+import { useMain } from "../../../hooks/ContextHooks"
+import AddToWatchlist from "../../../utility/AddToWatchlist"
 
 function InfoItem({ label, value, className }: { label: string; value: React.ReactNode; className?: string }) {
   return (
@@ -29,6 +32,7 @@ function formatRuntime(min: number) {
 }
 
 export default function MovieDetail() {
+  const mainCtx = useMain()
   const { id } = useParams<{ id: string }>()
   const movieId = id ? Number(id) : null
   const [openId, setOpenId] = useState<number | null>(null)
@@ -136,10 +140,16 @@ export default function MovieDetail() {
                       </h1>
                     </Animation>
                     <Animation>
-                      <div className="mt-3 flex flex-wrap items-center gap-2">
-                        {data.genres.map((genre) => (
-                          <Badge key={genre}>{genre}</Badge>
-                        ))}
+                      <div className="mt-3 flex flex-wrap items-center justify-between gap-2">
+                        <div className="flex gap-2">
+                          {data.genres.map((genre) => (
+                            <Badge key={genre}>{genre}</Badge>
+                          ))}
+                        </div>
+                        <div>
+                          {/* TODO Add onclick */}
+                          <Button label="+ Watchlist" />
+                        </div>
                       </div>
                     </Animation>
                     <Animation>
