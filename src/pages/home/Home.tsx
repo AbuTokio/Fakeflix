@@ -7,6 +7,7 @@ import MovieDialog from "../../components/movieDialog/MovieDialog"
 import { dummyMoviePopular } from "../../dummy/data"
 import CarouselCard from "../../components/carouselCard/CarouselCard"
 import Animation from "../../components/animation/Animation"
+import CardCarousel from "../../components/cardCarousel/CardCarousel"
 
 export default function Home() {
   const [openId, setOpenId] = useState<number | null>(null)
@@ -30,18 +31,20 @@ export default function Home() {
           ))}
         />
       </Animation>
-      <Animation delay={0.5}>
-        <section className="p-6">
-          <MovieSection title="Top Rated" viewAllHref="/movies/top">
-            {loading
-              ? Array.from({ length: 10 }).map((_, i) => <SkeletonCard key={i} />)
-              : movies.map((m) => <MovieCard key={m.id} movie={m} onOpen={handleOpen} />)}
-          </MovieSection>
-        </section>
-        {openId !== null && (
-          <MovieDialog open ctaHref={`/movies/detail/${openId}`} onClose={handleClose} data={selected} />
-        )}
-      </Animation>
+      <section className="p-6">
+        <MovieSection title="Top Rated" viewAllHref="/movies/top">
+          <CardCarousel
+            cards={
+              loading
+                ? Array.from({ length: 10 }).map((_, i) => <SkeletonCard key={i} />)
+                : movies.map((m) => <MovieCard key={m.id} movie={m} onOpen={handleOpen} />)
+            }
+          />
+        </MovieSection>
+      </section>
+      {openId !== null && (
+        <MovieDialog open ctaHref={`/movies/detail/${openId}`} onClose={handleClose} data={selected} />
+      )}
     </>
   )
 }
