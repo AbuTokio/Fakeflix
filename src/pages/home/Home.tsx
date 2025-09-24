@@ -1,32 +1,37 @@
-import { useEffect, useState } from "react"
-import { useNavigate } from "react-router"
-import FakeflixButton from "../../components/startBtn/StartBtn"
-import IntroLoader from "../introLoader/IntroLoader"
+import { useCallback, useState } from "react"
+import { SkeletonCard } from "../../components/skeletonCard/SkeletonCard"
+import Carousel from "../../components/carousel/Carousel"
+import MovieSection from "../../components/movieSection/MovieSection"
+import MovieCard from "../../components/movieCard/MovieCard"
+import MovieDialog from "../../components/movieDialog/MovieDialog"
+import { dummyMoviePopular } from "../../dummy/data"
 
 export default function Home() {
-  const [phase, setPhase] = useState<"idle" | "animating">("idle")
-  const navigate = useNavigate()
+  const [openId, setOpenId] = useState<number | null>(null)
+  const [loading] = useState(false)
 
-  const handleIntroDone = () => {
-    navigate("/movies")
-  }
+  const movies = dummyMoviePopular.results
 
-  useEffect(() => {
-    const onKey = (event: KeyboardEvent) => {
-      if (phase === "idle" && (event.key === "Enter" || event.key === " ")) {
-        setPhase("animating")
-      }
-    }
-    window.addEventListener("keydown", onKey)
-    return () => window.removeEventListener("keydown", onKey)
-  }, [phase])
+  const handleOpen = useCallback((id: number) => {
+    setOpenId(id)
+  }, [])
+
+  const handleClose = useCallback(() => setOpenId(null), [])
+
+  const selected = movies.find((m) => m.id === openId)!
   return (
     <>
-      <section>
-        {phase === "idle" && <FakeflixButton label="Start" onClick={() => setPhase("animating")} />}
-
-        {phase === "animating" && <IntroLoader letter="F" duration={3800} onComplete={handleIntroDone} />}
+      <Carousel />
+      <section className="p-6">
+        <MovieSection title="Top Rated" viewAllHref="/movies/top">
+          {loading
+            ? Array.from({ length: 10 }).map((_, i) => <SkeletonCard key={i} />)
+            : movies.map((m) => <MovieCard key={m.id} movie={m} onOpen={handleOpen} />)}
+        </MovieSection>
       </section>
+      {openId !== null && (
+        <MovieDialog open ctaHref={`/movies/detail/${openId}`} onClose={handleClose} data={selected} />
+      )}
     </>
   )
 }

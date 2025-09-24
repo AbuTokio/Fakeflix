@@ -11,7 +11,7 @@ export default function Navbar() {
       {bp.isMd && <p className="font-bebasneue text-4xl text-red-600 select-none">Fakeflix</p>}
       <div className="flex justify-center items-center gap-4">
         {/* TODO routes anpassen */}
-        <NavigationLink icon={!bp.isMd ? "home" : null} label="Home" to="/movies" />
+        <NavigationLink icon={!bp.isMd ? "home" : null} label="Home" to="/home" />
         <NavigationLink icon={!bp.isMd ? "watchlist" : null} label={bp.isMd ? "Watchlist" : ""} to="/watchlist" />
         {!bp.isMd && (
           <>
