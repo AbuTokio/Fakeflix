@@ -1,65 +1,15 @@
-import React from "react"
+import React, { useCallback, useMemo, useState } from "react"
+import { useParams } from "react-router"
 import StarRating from "../../../components/starRating/StarRating"
 import Badge from "../../../components/badge/Badge"
 import CarouselTag from "../../../components/carouselTag/CarouselTag"
-import MovieOpenController, { type Movie } from "../../../components/movieOpenController/MovieOpenController"
-import type { DialogMovieData } from "../../../components/movieDialog/MovieDialog"
-
-export type MovieDetailData = {
-  id: number
-  title: string
-  year: string
-  runtimeMin: number
-  rating: number
-  overview: string
-  posterUrl: string
-  genres: string[]
-  country?: string
-  releaseDate?: string
-  production?: string
-  cast?: string[]
-}
-
-function toDialogData(m: Movie): DialogMovieData {
-  return {
-    id: m.id,
-    title: m.title,
-    backdropUrl: m.posterUrl,
-    rating: m.rating,
-    year: "2023",
-    certification: "PG-13",
-    kindLabel: "Film",
-    genres: ["Animation", "Fantasy"],
-    overview: "Kurzbeschreibung / Overview zum Film. Ersetze das mit echten Daten aus deiner Quelle.",
-  }
-}
-
-const DUMMY: MovieDetailData = {
-  id: 1,
-  title: "Mein Nachbar Totoro",
-  year: "2023",
-  runtimeMin: 50,
-  rating: 8.5,
-  overview:
-    "In einer zerstörten Zukunft lebt eine Gemeinschaft in einem gigantischen unterirdischen Silo. Regeln halten die Ordnung, doch wer sie infrage stellt, riskiert alles.",
-  posterUrl: "/246907730f03f9d29d217e7943f72688.png",
-  genres: ["Drama", "Science Fiction"],
-  country: "United States",
-  releaseDate: "May 05, 2023",
-  production: "AMC Studios",
-  cast: ["Tim Robbins", "Rebecca Ferguson", "Avi Nash", "Rashida Jones", "David Oyelowo"],
-}
-
-const MOVIES_DUMMY: Movie[] = [
-  { id: 101, title: "Totoro", posterUrl: "/246907730f03f9d29d217e7943f72688.png", rating: 8.5 },
-  { id: 102, title: "Spirited Away", posterUrl: "/246907730f03f9d29d217e7943f72688.png", rating: 8.6 },
-  { id: 103, title: "Princess Mononoke", posterUrl: "/246907730f03f9d29d217e7943f72688.png", rating: 8.7 },
-  { id: 104, title: "Howl's Moving Castle", posterUrl: "/246907730f03f9d29d217e7943f72688.png", rating: 8.2 },
-  { id: 105, title: "Kiki's Delivery Service", posterUrl: "/246907730f03f9d29d217e7943f72688.png", rating: 7.9 },
-  { id: 106, title: "Princess Mononoke", posterUrl: "/246907730f03f9d29d217e7943f72688.png", rating: 8.7 },
-  { id: 107, title: "Howl's Moving Castle", posterUrl: "/246907730f03f9d29d217e7943f72688.png", rating: 8.2 },
-  { id: 108, title: "Kiki's Delivery Service", posterUrl: "/246907730f03f9d29d217e7943f72688.png", rating: 7.9 },
-]
+import { dummyMovieDetails, dummyMoviePopular } from "../../../dummy/data"
+import { TMDB_IMG_BASE, TmdbImageSize } from "../../../enum/TmdbImage"
+import MovieSection from "../../../components/movieSection/MovieSection"
+import MovieCard from "../../../components/movieCard/MovieCard"
+import { SkeletonCard } from "../../../components/skeletonCard/SkeletonCard"
+import MovieDialog from "../../../components/movieDialog/MovieDialog"
+import MediaPlayer from "../../../components/mediaPlayer/MediaPlayer"
 
 function InfoItem({ label, value, className }: { label: string; value: React.ReactNode; className?: string }) {
   return (
@@ -77,59 +27,157 @@ function formatRuntime(min: number) {
   return h > 0 ? `${h}h ${m.toString().padStart(2, "0")}m` : `${m}m`
 }
 
-export default function MovieDetail({ data = DUMMY }: { data?: MovieDetailData }) {
-  return (
-    <section className="min-h-screen bg-black text-zinc-100">
-      <div className=" grid grid-cols-[352px_1fr] w-[80%] m-auto py-20">
-        <div className="mx-auto">
-          <img
-            src={data.posterUrl}
-            alt={`${data.title} Poster`}
-            className="rounded-xl shadow-[0_12px_40px_rgba(0,0,0,0.6)]"
-          />
-        </div>
+export default function MovieDetail() {
+  const { id } = useParams<{ id: string }>()
+  const movieId = id ? Number(id) : null
+  const [openId, setOpenId] = useState<number | null>(null)
+  const [loading, setLoading] = useState(false)
 
-        <div className="space-y-4 py-10 px-10 ">
-          <div className="flex justify-between">
-            <div>
-              <h1 className="text-4xl font-bold">{data.title}</h1>
-              <div className="mt-3 flex flex-wrap items-center gap-2">
-                {data.genres.map((genre) => (
-                  <Badge key={genre}>{genre}</Badge>
-                ))}
+  // dummy
+
+  const movies = dummyMoviePopular.results
+
+  const handleOpen = useCallback((id: number) => {
+    setOpenId(id)
+  }, [])
+
+  const handleClose = useCallback(() => setOpenId(null), [])
+
+  const selected = movies.find((m) => m.id === openId)!
+
+  // dummy
+  const details = useMemo(() => {
+    if (!movieId) return dummyMovieDetails
+    const fromList = dummyMoviePopular.results.find((m) => m.id === movieId)
+    if (!fromList) return { ...dummyMovieDetails, id: movieId }
+
+    return {
+      ...dummyMovieDetails,
+      id: movieId,
+      title: fromList.title ?? dummyMovieDetails.title,
+      original_title: fromList.original_title ?? dummyMovieDetails.original_title,
+      poster_path: fromList.poster_path ?? dummyMovieDetails.poster_path,
+      backdrop_path: fromList.backdrop_path ?? dummyMovieDetails.backdrop_path,
+      release_date: fromList.release_date ?? dummyMovieDetails.release_date,
+      vote_average: fromList.vote_average ?? dummyMovieDetails.vote_average,
+      overview: fromList.overview ?? dummyMovieDetails.overview,
+    }
+  }, [movieId])
+
+  // dummy Image Builder behalten
+  const data = useMemo(() => {
+    const backdrop_path = details.backdrop_path
+    const poster_path = details.poster_path
+
+    const posterUrl = poster_path ? `${TMDB_IMG_BASE}/${TmdbImageSize.POSTER_SIZE}${poster_path}` : null
+    const backdropUrl = backdrop_path ? `${TMDB_IMG_BASE}/${TmdbImageSize.BACKDROP_SIZE}${backdrop_path}` : null
+
+    return {
+      id: details.id,
+      title: details.title || details.original_title,
+      genres: (details.genres ?? []).map((g) => g.name),
+      posterUrl,
+      backdropUrl,
+      year: (details.release_date ?? "").slice(0, 4),
+      runtimeMin: details.runtime ?? 0,
+      rating: details.vote_average ?? 0,
+      overview: details.overview ?? "",
+      country: (details.production_countries ?? []).map((c) => c.name).join(", "),
+      releaseDate: details.release_date ?? "",
+      production: (details.production_companies ?? []).map((c) => c.name).join(", "),
+      cast: [] as string[],
+    }
+  }, [details])
+
+  return (
+    <>
+      {/* Hero / Trailer */}
+      <section className="w-full overflow-hidden ">
+        <MediaPlayer
+          youtubeKey={"3SgL3ygGm1s"}
+          // TODO: dynamisch
+          posterUrl={data.backdropUrl}
+          className="w-full max-w-[1920px] mx-auto"
+        />
+      </section>
+
+      {/* Content */}
+      <section className="bg-black text-zinc-100">
+        <div className="w-full max-w-[1200px] xl:max-w-[1360px] 2xl:max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 lg:py-12">
+          {/* Grid: stack auf mobil*/}
+          <div className="grid gap-6 sm:gap-8 lg:gap-10 grid-cols-1 md:grid-cols-[260px_1fr] lg:grid-cols-[300px_1fr] xl:grid-cols-[352px_1fr]">
+            {/* Poster */}
+            <div className="mx-auto hidden md:block md:mx-0 ">
+              {data.posterUrl ? (
+                <img
+                  src={data.posterUrl}
+                  alt={`${data.title} Poster`}
+                  loading="lazy"
+                  className=" rounded-xl shadow-[0_12px_40px_rgba(0,0,0,0.6)] aspect-[2/3] object-cover w-full "
+                />
+              ) : (
+                <div className="aspect-[2/3] object-cover w-full rounded-xl bg-neutral-800 grid place-items-center text-neutral-400">
+                  No poster
+                </div>
+              )}
+            </div>
+
+            {/* Right column */}
+            <div className="space-y-4 sm:space-y-5 lg:space-y-6 py-2">
+              <div className="flex justify-between items-start gap-4">
+                <div>
+                  <h1 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold leading-tight">{data.title}</h1>
+
+                  <div className="mt-3 flex flex-wrap items-center gap-2">
+                    {data.genres.map((genre) => (
+                      <Badge key={genre}>{genre}</Badge>
+                    ))}
+                  </div>
+
+                  <div className="mt-3 flex flex-wrap items-center gap-3 sm:gap-4">
+                    <CarouselTag label={data.year || "—"} imgUrl="/src/assets/img/calendar.svg" />
+                    <CarouselTag label={formatRuntime(data.runtimeMin)} imgUrl="/src/assets/img/duration.svg" />
+                    <StarRating value={data.rating} showNumber />
+                  </div>
+                </div>
               </div>
 
-              <div className="mt-2 flex flex-wrap items-center -ml-3">
-                <CarouselTag
-                  label={data.year}
-                  imgUrl="/src/assets/img/calendar.svg"
-                  className="inline-flex items-center gap-2 text-sm text-zinc-300 h-4 w-4 "
+              {/* Overview */}
+              {data.overview && (
+                <p className="max-w-prose text-sm sm:text-base leading-relaxed text-zinc-300">{data.overview}</p>
+              )}
+
+              {/* Meta */}
+              <div className="flex flex-col gap-2 sm:gap-3">
+                <InfoItem label="Country" value={data.country || "—"} />
+                <InfoItem label="Genre" value={data.genres.length ? data.genres.join(", ") : "—"} />
+                <InfoItem label="Date Release" value={data.releaseDate || "—"} />
+                <InfoItem label="Production" value={data.production || "—"} />
+                <InfoItem
+                  label="Cast"
+                  value={data.cast.length ? data.cast.join(", ") : "—"}
+                  className="flex flex-wrap"
                 />
-                <CarouselTag
-                  label={formatRuntime(data.runtimeMin)}
-                  imgUrl="/src/assets/img/duration.svg"
-                  className="inline-flex items-center gap-2 text-sm text-zinc-300"
-                />
-                <StarRating value={data.rating} showNumber />
               </div>
             </div>
           </div>
-
-          {/* Overview */}
-          <p className="max-w-[70ch] text-sm leading-relaxed text-zinc-300">{data.overview}</p>
-
-          <dl className="flex flex-col">
-            <InfoItem label="Country" value={data.country ?? "—"} />
-            <InfoItem label="Genre" value={data.genres.join(", ")} />
-            <InfoItem label="Date Release" value={data.releaseDate ?? "—"} />
-            <InfoItem label="Production" value={data.production ?? "—"} />
-            <InfoItem label="Cast" value={(data.cast ?? []).join(", ")} className="flex flex-wrap" />
-          </dl>
         </div>
-      </div>
-      <div>
-        <MovieOpenController title="You may also Like" items={MOVIES_DUMMY} limit={8} toDialogData={toDialogData} />
-      </div>
-    </section>
+      </section>
+
+      {/* Recommendations */}
+      <section className="w-full">
+        <div className="w-full max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
+          <MovieSection title="You may also like">
+            {loading
+              ? Array.from({ length: 10 }).map((_, i) => <SkeletonCard key={i} />)
+              : movies.map((m) => <MovieCard key={m.id} movie={m} onOpen={handleOpen} />)}
+          </MovieSection>
+        </div>
+      </section>
+
+      {openId !== null && (
+        <MovieDialog open ctaHref={`/movies/detail/${openId}`} onClose={handleClose} data={selected} />
+      )}
+    </>
   )
 }
