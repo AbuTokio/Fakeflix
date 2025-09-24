@@ -27,12 +27,12 @@ export default function MovieSection({ title, viewAllHref, children, className, 
             )}
           </div>
 
-        {/* Grid */}
-        <Animation delay={0.5}>
-          <div
-            className={
-              grid
-                ? `
+          {/* Grid */}
+          <Animation delay={0.5}>
+            <div
+              className={
+                grid
+                  ? `
                   grid gap-3 sm:gap-4 justify-center
                   [grid-template-columns:repeat(auto-fit,minmax(140px,160px))]
                   md:[grid-template-columns:repeat(auto-fit,minmax(180px,220px))]
@@ -40,12 +40,13 @@ export default function MovieSection({ title, viewAllHref, children, className, 
                   xl:[grid-template-columns:repeat(auto-fill,minmax(280px,280px))]
                   2xl:[grid-template-columns:repeat(auto-fill,minmax(300px,300px))]
                 `
-                : ""
-            }>
-            {children}
-          </div>
-        </Animation>
-      </section>
+                  : ""
+              }>
+              {children}
+            </div>
+          </Animation>
+        </section>
+      </Animation>
     </>
   )
 }
