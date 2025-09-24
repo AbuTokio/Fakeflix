@@ -31,7 +31,7 @@ export default function Carousel({ cards }: CarouselProps) {
   useEffect(() => {
     const intervalId = setInterval(() => {
       switchSlide()
-    }, 5000)
+    }, 6000)
     return () => clearInterval(intervalId)
   })
 
@@ -43,7 +43,7 @@ export default function Carousel({ cards }: CarouselProps) {
             {index === activeCard && (
               <div
                 key={index}
-                className={`animate-blendin w-full h-full transition-all duration-300 ${
+                className={`animate-blendin w-full h-full transition-all duration-500 ${
                   moveActiveCard && "animate-blendout"
                 }`}>
                 {card}
