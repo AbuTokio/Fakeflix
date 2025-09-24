@@ -30,10 +30,9 @@ export default function Carousel() {
   useEffect(() => {
     const intervalId = setInterval(() => {
       switchSlide()
-    }, 5000)
+    }, 6000)
     return () => clearInterval(intervalId)
   })
-  console.log(movies.length)
 
   // TODO mit children dynamisch gestalten und in der page mappen
 
@@ -45,7 +44,7 @@ export default function Carousel() {
             {index === activeCard && (
               <div
                 key={index}
-                className={`animate-blendin w-full h-full transition-all duration-300 ${
+                className={`animate-blendin w-full h-full transition-all duration-500 ${
                   moveActiveCard && "animate-blendout"
                 }`}>
                 <CarouselCard movie={movie} />
