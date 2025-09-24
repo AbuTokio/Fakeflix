@@ -4,10 +4,10 @@ import { TmdbImageSize } from "../../enum/TmdbImage"
 import { useResponsive } from "../../hooks/ResponsiveHooks"
 import GenreIdToString from "../../utility/GenreIdToString"
 import TmdbImage from "../../utility/TmdbImage"
-import Animation from "../animation/Animation"
 import Button from "../button/Button"
 import CarouselInfo from "../carouselInfo/CarouselInfo"
 import { Navigate } from "react-router"
+import { useMain } from "../../hooks/ContextHooks"
 
 interface CarouselCardProps {
   movie: (typeof dummyMoviePopular.results)[0]
@@ -16,6 +16,7 @@ interface CarouselCardProps {
 export default function CarouselCard({ movie }: CarouselCardProps) {
   const [navigate, setNavigate] = useState(false)
   const bp = useResponsive()
+  const mainCtx = useMain()
 
   return (
     <>
@@ -30,23 +31,22 @@ export default function CarouselCard({ movie }: CarouselCardProps) {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent"></div>
         <div className="absolute h-full w-full top-0 left-0 flex flex-col gap-6 justify-center items-center">
-          <Animation className="w-full">
-            {bp.isMd && (
-              <div
-                className={`absolute w-full ${
-                  bp.isMd ? "top-1/2" : "bottom-2/9"
-                } left-1/2 -translate-x-1/2 md:-translate-y-1/2 flex gap-6 justify-center items-center`}>
-                <Button filled label="See Details" imgUrl="/img/play.svg" onClick={() => setNavigate(true)} />
-                <Button
-                  label="+ Watchlist"
-                  imgUrl="/img/clock.svg"
-                  onClick={() => {
-                    /*TODO Watchlist Function hinzufügen*/
-                  }}
-                />
-              </div>
-            )}
-          </Animation>
+          {bp.isMd && (
+            <div
+              className={`absolute w-full ${
+                bp.isMd ? "top-1/2" : "bottom-2/9"
+              } left-1/2 -translate-x-1/2 md:-translate-y-1/2 flex gap-6 justify-center items-center`}>
+              <Button filled label="See Details" imgUrl="/img/play.svg" onClick={() => setNavigate(true)} />
+              <Button
+                label="+ Watchlist"
+                imgUrl="/img/clock.svg"
+                onClick={() => {
+                  mainCtx.setWatchlist((prev) => [...prev, movie])
+                  localStorage.setItem("watchlist", JSON.stringify([...mainCtx.watchlist, movie]))
+                }}
+              />
+            </div>
+          )}
           <div
             className={`absolute h-fit ${
               bp.isMd ? "bottom-20" : "bottom-8"

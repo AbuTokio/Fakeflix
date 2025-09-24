@@ -8,10 +8,7 @@ export default function Burger() {
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen)
   const closeMenu = () => setIsMenuOpen(false)
 
-  const menuItems = [
-    { label: "Menü 1", to: "/profile" },
-    { label: "Menü 2", to: "/settings" },
-  ]
+  const menuItems = [{ label: "Genres", to: "/genres" }]
 
   return (
     <>
@@ -28,11 +25,11 @@ export default function Burger() {
       {isMenuOpen && (
         <div className="fixed inset-0 z-40" onClick={closeMenu}>
           <div
-            className="absolute bottom-14 left-0 right-0 bg-white shadow-lg rounded-t-lg p-4"
+            className="absolute bottom-18 left-0 right-0 top-50 bg-white shadow-lg rounded-t-lg p-4"
             onClick={(e) => e.stopPropagation()}>
             <div className="flex flex-col space-y-3">
-              // TODO Searchbar anpassen
               <Searchbar />
+              <p className="mt-6 text-xl text-black font-bold">See also...</p>
               {menuItems.map((item, index) => {
                 return (
                   <NavLink
