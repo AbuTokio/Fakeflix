@@ -32,7 +32,7 @@ export default function Home() {
       </Animation>
       <Animation delay={0.5}>
         <section className="p-6">
-          <MovieSection title="Top Rated" viewAllHref="/movies/top">
+          <MovieSection title="Top Rated" viewAllHref="/movies/top" grid>
             {loading
               ? Array.from({ length: 10 }).map((_, i) => <SkeletonCard key={i} />)
               : movies.map((m) => <MovieCard key={m.id} movie={m} onOpen={handleOpen} />)}

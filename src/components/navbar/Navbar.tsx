@@ -1,3 +1,4 @@
+import { useMain } from "../../hooks/ContextHooks"
 import { useResponsive } from "../../hooks/ResponsiveHooks"
 import Burger from "../burger/Burger"
 import NavigationLink from "../navigationLink/NavigationLink"
@@ -5,6 +6,7 @@ import Searchbar from "../searchbar/Searchbar"
 
 export default function Navbar() {
   const bp = useResponsive()
+  const mainCtx = useMain()
 
   return (
     <nav className="px-16 py-4 w-full flex justify-center items-center font-nunito bg-black text-white md:justify-between md:p-4">
@@ -12,10 +14,17 @@ export default function Navbar() {
       <div className="flex justify-center items-center gap-4">
         {/* TODO routes anpassen */}
         <NavigationLink icon={!bp.isMd ? "home" : null} label="Home" to="/home" />
-        <NavigationLink icon={!bp.isMd ? "watchlist" : null} label={bp.isMd ? "Watchlist" : ""} to="/watchlist" />
+        <div className="relative cursor-pointer">
+          {mainCtx.watchlist.length > 0 && (
+            <div className="absolute bg-red-600 border-2 border-black top-0 -left-1 rounded-full w-4.5 h-4.5 text-[9px] text-center">
+              {mainCtx.watchlist.length}
+            </div>
+          )}
+          <NavigationLink icon={!bp.isMd ? "watchlist" : null} label="Watchlist" to="/watchlist" />
+        </div>
         {!bp.isMd && (
           <>
-            <NavigationLink icon="login" to="/login" />
+            <NavigationLink icon="login" label="Login" to="/login" />
             <Burger />
           </>
         )}
@@ -23,18 +32,11 @@ export default function Navbar() {
           <>
             <Searchbar />
             <NavigationLink label="Genres" to="/genres" />
-            <NavigationLink label="Random" to="/random" />
-          </>
-        )}
-      </div>
-      <div className="flex justify-center items-center gap-4">
-        {bp.isMd && (
-          <>
             <NavigationLink label="Login" to="/login" />
-            <img src="/img/bell.svg" alt="notifications" />
           </>
         )}
       </div>
+      <div className="flex justify-center items-center gap-4"></div>
     </nav>
   )
 }
