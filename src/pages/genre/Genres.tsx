@@ -1,4 +1,3 @@
-import MovieCard from "../../components/movieCard/MovieCard"
 import MovieSection from "../../components/movieSection/MovieSection"
 import { dummyMovieGenres } from "../../dummy/data"
 

@@ -1,5 +1,4 @@
 // components/mediaPlayer/MediaPlayer.tsx
-import { div } from "motion/react-client"
 import { useState } from "react"
 
 type MediaPlayerProps = {

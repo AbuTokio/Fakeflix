@@ -9,7 +9,7 @@ import SeriesDetail from "./pages/series/seriesDetail/SeriesDetail"
 import MainProvider from "./context/MainProvider"
 import SeriesProvider from "./context/SeriesProvider"
 import MoviesProvider from "./context/MoviesProvider"
-import Genres from "./pages/genre/genres"
+import Genres from "./pages/genre/Genres"
 import GenreDetail from "./pages/genre/genreDetail/GenreDetail"
 
 function App() {
