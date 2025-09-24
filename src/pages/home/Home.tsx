@@ -24,11 +24,11 @@ export default function Home() {
   return (
     <>
       <Animation className="w-full h-full">
-       <Carousel
-        cards={movies.slice(0, 5).map((movie) => (
-          <CarouselCard movie={movie} />
-        ))}
-      />
+        <Carousel
+          cards={movies.slice(0, 5).map((movie) => (
+            <CarouselCard movie={movie} />
+          ))}
+        />
       </Animation>
       <Animation delay={0.5}>
         <section className="p-6">
@@ -40,7 +40,8 @@ export default function Home() {
         </section>
         {openId !== null && (
           <MovieDialog open ctaHref={`/movies/detail/${openId}`} onClose={handleClose} data={selected} />
-        )}  
+        )}
+      </Animation>
     </>
   )
 }
