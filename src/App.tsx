@@ -12,6 +12,7 @@ import GenreDetail from "./pages/genre/genreDetail/GenreDetail"
 import Intro from "./pages/home/Intro"
 import Home from "./pages/home/Home"
 import Watchlist from "./pages/watchlist/Watchlist"
+import Login from "./pages/login/Login"
 
 function App() {
   // useEffect(() => useScrollToTop())
@@ -53,6 +54,8 @@ function App() {
         <Route path="/genres/:name" element={<GenreDetail />} />
 
         <Route path="/watchlist" element={<Watchlist />} />
+
+        <Route path="/login" element={<Login />} />
 
         <Route path="*" element={<NotFound />} />
       </Route>

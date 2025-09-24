@@ -6,7 +6,9 @@ export default function NotFound() {
       <div className="flex items-center justify-center flex-col">
         <p className=" text-xl font-bold">404</p>
         <h1 className="text-[clamp(32px,6vw,72px)] font-extrabold leading-[1.05] text-white">Page not found</h1>
-        <p className="mt-4 text-base md:text-lg text-slate-400">Sorry, we couldn’t find the page you’re looking for.</p>
+        <p className="text-center mt-4 text-base md:text-lg text-slate-400">
+          Sorry, we couldn’t find the page you’re looking for.
+        </p>
         <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
           <Link
             to="/movies"

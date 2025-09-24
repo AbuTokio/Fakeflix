@@ -8,6 +8,7 @@ import Button from "../button/Button"
 import CarouselInfo from "../carouselInfo/CarouselInfo"
 import { Navigate } from "react-router"
 import { useMain } from "../../hooks/ContextHooks"
+import AddToWatchlist from "../../utility/AddToWatchlist"
 
 interface CarouselCardProps {
   movie: (typeof dummyMoviePopular.results)[0]
@@ -40,10 +41,7 @@ export default function CarouselCard({ movie }: CarouselCardProps) {
               <Button
                 label="+ Watchlist"
                 imgUrl="/img/clock.svg"
-                onClick={() => {
-                  mainCtx.setWatchlist((prev) => [...prev, movie])
-                  localStorage.setItem("watchlist", JSON.stringify([...mainCtx.watchlist, movie]))
-                }}
+                onClick={() => AddToWatchlist(mainCtx.user, mainCtx.watchlist, mainCtx.setWatchlist, movie)}
               />
             </div>
           )}
