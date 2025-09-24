@@ -1,61 +1,127 @@
 import { useMain } from "../../hooks/ContextHooks"
+import { useState } from "react"
 
 export default function TestGenres() {
-  const { movieGenres, moviePopular, movieTopRated, loading, error } = useMain()
+  const {
+    movieGenres,
+    moviePopular,
+    movieTopRated,
+    movieUpcoming,
+    movieDetails,
+    movieSimilar,
+    movieVideos,
+    movieSearch,
+    movieDiscover,
+    loading,
+    error,
+  } = useMain()
+
+  const [searchQuery, setSearchQuery] = useState("")
 
   return (
-    <div className="p-4 space-y-6 text-white">
+    <div className="p-4 space-y-10 text-white">
       {/* === Genres Section === */}
-      <section>
-        <h2 className="font-bold text-white text-lg">🎬 Movie Genres</h2>
-
-        {loading.genres && <p>Genres werden geladen...</p>}
-        {error.genres && <p className="text-red-500">{error.genres}</p>}
-
-        {!loading.genres && !error.genres && (
-          <ul className="list-disc pl-6">
-            {movieGenres.map((g) => (
-              <li key={g.id}>{g.name}</li>
-            ))}
-          </ul>
-        )}
-      </section>
+      <Section title="🎬 Movie Genres" loading={loading.genres} error={error.genres}>
+        <ul className="list-disc pl-6">
+          {movieGenres.map((g) => (
+            <li key={g.id}>{g.name}</li>
+          ))}
+        </ul>
+      </Section>
 
       {/* === Popular Movies Section === */}
-      <section>
-        <h2 className="font-bold text-white text-lg">🌟 Popular Movies</h2>
-
-        {loading.popular && <p>Beliebte Filme werden geladen...</p>}
-        {error.popular && <p className="text-red-500">{error.popular}</p>}
-
-        {!loading.popular && !error.popular && (
-          <ul className="list-decimal pl-6">
-            {moviePopular.map((m) => (
-              <li key={m.id}>
-                {m.title} <span className="text-gray-400">({m.vote_average.toFixed(1)})</span>
-              </li>
-            ))}
-          </ul>
-        )}
-      </section>
+      <Section title="🌟 Popular Movies" loading={loading.popular} error={error.popular}>
+        <MovieList movies={moviePopular} />
+      </Section>
 
       {/* === Top Rated Movies Section === */}
-      <section>
-        <h2 className="font-bold text-white text-lg">🌟 TopRated Movies</h2>
+      <Section title="🏆 Top Rated Movies" loading={loading.topRated} error={error.topRated}>
+        <MovieList movies={movieTopRated} />
+      </Section>
 
-        {loading.topRated && <p>Top Rated Filme werden geladen...</p>}
-        {error.topRated && <p className="text-red-500">{error.popular}</p>}
+      {/* === Upcoming Movies Section === */}
+      <Section title="📅 Upcoming Movies" loading={loading.upcoming} error={error.upcoming}>
+        <MovieList movies={movieUpcoming} />
+      </Section>
 
-        {!loading.topRated && !error.topRated && (
-          <ul className="list-decimal pl-6">
-            {movieTopRated.map((m) => (
-              <li key={m.id}>
-                {m.title} <span className="text-gray-400">({m.vote_average.toFixed(1)})</span>
-              </li>
-            ))}
-          </ul>
-        )}
+      {/* === Details Example === */}
+      <Section title="🎞️ Details zu Beispiel-Film (ID: 550)" loading={loading.details} error={error.details}>
+        <p className="font-semibold">{movieDetails?.title}</p>
+        <p className="text-sm">{movieDetails?.overview}</p>
+        <p className="text-gray-400 text-sm">Genres: {movieDetails?.genres.map((g) => g.name).join(", ")}</p>
+      </Section>
+
+      {/* === Similar Movies Section === */}
+      <Section title="🧩 Ähnliche Filme (zu ID: 550)" loading={loading.similar} error={error.similar}>
+        <MovieList movies={movieSimilar} />
+      </Section>
+
+      {/* === Videos === */}
+      <Section title="🎥 Trailer & Videos (zu ID: 550)" loading={loading.videos} error={error.videos}>
+        <ul className="list-disc pl-6">
+          {movieVideos.map((v) => (
+            <li key={v.id}>
+              {v.name} ({v.type})
+            </li>
+          ))}
+        </ul>
+      </Section>
+
+      {/* === Discover Example (Genre: Action ID 28) === */}
+      <Section title="🔍 Discover Movies (Genre: Action)" loading={loading.discover} error={error.discover}>
+        <MovieList movies={movieDiscover} />
+      </Section>
+
+      {/* === Search Function === */}
+      <section className="space-y-4">
+        <h2 className="font-bold text-lg">🔎 Movie Search</h2>
+        <input
+          type="text"
+          placeholder="Film suchen..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="p-2 rounded text-black w-full max-w-md"
+        />
+        {loading.search && <p>Suche läuft...</p>}
+        {error.search && <p className="text-red-500">{error.search}</p>}
+        {!loading.search && !error.search && movieSearch.length > 0 && <MovieList movies={movieSearch} />}
+        {!loading.search && searchQuery && movieSearch.length === 0 && <p className="text-gray-400">Keine Treffer</p>}
       </section>
     </div>
+  )
+}
+
+// --- Reusable Section Wrapper ---
+function Section({
+  title,
+  loading,
+  error,
+  children,
+}: {
+  title: string
+  loading: boolean
+  error: string | null
+  children: React.ReactNode
+}) {
+  return (
+    <section>
+      <h2 className="font-bold text-white text-lg mb-2">{title}</h2>
+      {loading && <p className="text-gray-400">Lade...</p>}
+      {error && <p className="text-red-500">{error}</p>}
+      {!loading && !error && children}
+    </section>
+  )
+}
+
+// --- Movie List Renderer ---
+function MovieList({ movies }: { movies: { id: number; title: string; vote_average: number }[] }) {
+  return (
+    <ul className="list-decimal pl-6">
+      {movies.map((m) => (
+        <li key={m.id}>
+          {m.title} <span className="text-gray-400">({m.vote_average?.toFixed(1) ?? "n/a"})</span>
+        </li>
+      ))}
+    </ul>
   )
 }
