@@ -37,10 +37,10 @@ export default function CarouselCard({ movie }: CarouselCardProps) {
               className={`absolute w-full ${
                 bp.isMd ? "top-1/2" : "bottom-2/9"
               } left-1/2 -translate-x-1/2 md:-translate-y-1/2 flex gap-6 justify-center items-center`}>
-              <Button filled label="See Details" imgUrl="/img/play.svg" onClick={() => setNavigate(true)} />
+              <Button filled label="See Details" imgUrl="/src/assets/img/play.svg" onClick={() => setNavigate(true)} />
               <Button
                 label="+ Watchlist"
-                imgUrl="/img/clock.svg"
+                imgUrl="/src/assets/img/clock.svg"
                 onClick={() => AddToWatchlist(mainCtx.user, mainCtx.watchlist, mainCtx.setWatchlist, movie)}
               />
             </div>
