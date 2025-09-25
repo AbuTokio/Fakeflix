@@ -6,7 +6,7 @@ import StarRating from "../starRating/StarRating"
 interface CarouselInfoProps {
   title: string
   tags: string[]
-  info: { releaseDate: string; rating: number }
+  info: { releaseDate: Date; rating: number }
   description: string
 }
 
@@ -18,7 +18,7 @@ export default function CarouselInfo({ title, tags, info, description }: Carouse
       <>
         <Badge muted hero>
           <img src="/img/Calendar.svg" alt="calendar" />
-          {info.releaseDate}
+          {String(info.releaseDate)}
         </Badge>
         <StarRating value={info.rating} />
       </>
