@@ -24,7 +24,7 @@ export default function Home() {
       </Animation>
 
       <section className="p-6">
-        <MovieSection title="Top Rated" viewAllHref="/genres/toprated">
+        <MovieSection title="Top Rated" viewAllHref="/discover/toprated">
           <CardCarousel
             cards={
               loading
@@ -37,7 +37,7 @@ export default function Home() {
         </MovieSection>
       </section>
       <section className="p-6">
-        <MovieSection title="Popular" viewAllHref="/genres/popular">
+        <MovieSection title="Popular" viewAllHref="/discover/popular">
           <CardCarousel
             cards={
               loading
@@ -50,7 +50,7 @@ export default function Home() {
         </MovieSection>
       </section>
       <section className="p-6">
-        <MovieSection title="Upcoming" viewAllHref="/genres/upcoming">
+        <MovieSection title="Upcoming" viewAllHref="/discover/upcoming">
           <CardCarousel
             cards={
               loading

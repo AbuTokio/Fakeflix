@@ -1,10 +1,9 @@
 import { createContext, useCallback, useEffect, useMemo, useState } from "react"
 import type { Genre, MovieGenre } from "../interface/Genre"
 import type { MovieDetails, MovieSimilar, MovieVideos, ResultVideo } from "../interface/Movie"
-import type { ResultMovieList } from "../interface/MovieList"
+import type { ResponseMovieList, ResultMovieList } from "../interface/MovieList"
 import { tmdb } from "../api/tmdb"
 import type { ResultMovie } from "../interface/Search"
-import gsap from "gsap"
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const mainContext = createContext<MainContextProps | null>(null)
@@ -51,6 +50,7 @@ interface MainContextProps {
     discover: string | null
   }
 
+  fetchPopular: (page: number) => Promise<void>
   fetchMovieDetails: (id: number) => Promise<void>
   fetchMovieSimilar: (id: number) => Promise<void>
   fetchMovieVideos: (id: number) => Promise<void>
@@ -58,6 +58,10 @@ interface MainContextProps {
   discoverMovies: (genreId: number, force?: boolean) => Promise<void>
   loadingByGenre: Record<number, boolean>
   errorByGenre: Record<number, string | null>
+  page: number
+  setPage: React.Dispatch<React.SetStateAction<number>>
+  totalPages: number
+  setTotalPages: React.Dispatch<React.SetStateAction<number>>
 
   watchlist: ResultMovieList[]
   setWatchlist: React.Dispatch<React.SetStateAction<ResultMovieList[]>>
@@ -114,6 +118,9 @@ export default function MainProvider({ children }: { children: React.ReactNode }
     discover: null,
   })
 
+  const [page, setPage] = useState(1)
+  const [totalPages, setTotalPages] = useState(1)
+
   //# GENRES - Movie List - https://developer.themoviedb.org/reference/genre-movie-list
   // https://api.themoviedb.org/3/genre/movie/list?language=en
   useEffect(() => {
@@ -136,42 +143,45 @@ export default function MainProvider({ children }: { children: React.ReactNode }
 
   //# MOVIE LISTS - Popular - https://developer.themoviedb.org/reference/movie-popular-list
   // "https://api.themoviedb.org/3/movie/popular?language=en-US&page=1"
-  useEffect(() => {
-    async function fetchPopular() {
-      setLoading((prev) => ({ ...prev, popular: true }))
-      setError((prev) => ({ ...prev, popular: null }))
-      try {
-        const res = await tmdb.get<ResultMovieList>("/movie/popular", { params: { page: 1 } })
-        setMoviePopular(res.data.results)
-      } catch (err) {
-        console.error("Fehler beim Laden der populären Filme", err)
-        setError((prev) => ({ ...prev, popular: "Populäre Filme konnten nicht geladen werden." }))
-      } finally {
-        setLoading((prev) => ({ ...prev, popular: false }))
-      }
+  async function fetchPopular(page: number) {
+    setLoading((prev) => ({ ...prev, popular: true }))
+    setError((prev) => ({ ...prev, popular: null }))
+    try {
+      const res = await tmdb.get<ResponseMovieList>("/movie/popular", { params: { page: page, region: "US" } })
+      setMoviePopular(res.data.results)
+      setTotalPages(res.data.total_pages)
+    } catch (err) {
+      console.error("Fehler beim Laden der populären Filme", err)
+      setError((prev) => ({ ...prev, popular: "Populäre Filme konnten nicht geladen werden." }))
+    } finally {
+      setLoading((prev) => ({ ...prev, popular: false }))
     }
+  }
+
+  useEffect(() => {
     //Initial die Popular Movies laden
-    fetchPopular()
+    fetchPopular(1)
   }, [])
 
   //# MOVIE LISTS - Top Rated - https://developer.themoviedb.org/reference/movie-top-rated-list
   // "https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1"
-  useEffect(() => {
-    async function fetchTopRated() {
-      setLoading((prev) => ({ ...prev, topRated: true }))
-      setError((prev) => ({ ...prev, topRated: null }))
-      try {
-        const res = await tmdb.get<ResultMovieList>("/movie/top_rated", { params: { page: 1 } })
-        setMovieTopRated(res.data.results)
-      } catch (err) {
-        console.error("Fehler beim Laden der Top Rated Filme", err)
-        setError((prev) => ({ ...prev, topRated: "Top Rated Filme konnten nicht geladen werden." }))
-      } finally {
-        setLoading((prev) => ({ ...prev, topRated: false }))
-      }
+  async function fetchTopRated(page: number) {
+    setLoading((prev) => ({ ...prev, topRated: true }))
+    setError((prev) => ({ ...prev, topRated: null }))
+    try {
+      const res = await tmdb.get<ResultMovieList>("/movie/top_rated", { params: { page: page } })
+      setMovieTopRated(res.data.results)
+    } catch (err) {
+      console.error("Fehler beim Laden der Top Rated Filme", err)
+      setError((prev) => ({ ...prev, topRated: "Top Rated Filme konnten nicht geladen werden." }))
+    } finally {
+      setLoading((prev) => ({ ...prev, topRated: false }))
     }
+  }
+
+  useEffect(() => {
     //Initial die Top Rated Movies laden
-    fetchTopRated()
+    fetchTopRated(1)
   }, [])
 
   //# MOVIE LISTS - Upcoming - https://developer.themoviedb.org/reference/movie-upcoming-list
@@ -277,6 +287,7 @@ export default function MainProvider({ children }: { children: React.ReactNode }
       })
       setDiscoveredMovies((prev) => ({ ...prev, [genreId]: res.data.results }))
     } catch (err) {
+      console.error("Fehler bei der Filmsuche", err)
       setErrorByGenre((prev) => ({ ...prev, [genreId]: "Discover-Filme konnten nicht geladen werden." }))
     } finally {
       setLoadingByGenre((prev) => ({ ...prev, [genreId]: false }))
@@ -324,6 +335,11 @@ export default function MainProvider({ children }: { children: React.ReactNode }
       dialog,
       openMovieDialog,
       closeMovieDialog,
+      fetchPopular,
+      page,
+      setPage,
+      totalPages,
+      setTotalPages,
     }),
     [
       movieGenres,
@@ -342,6 +358,10 @@ export default function MainProvider({ children }: { children: React.ReactNode }
       dialog,
       openMovieDialog,
       closeMovieDialog,
+      page,
+      setPage,
+      totalPages,
+      setTotalPages,
     ]
   )
 

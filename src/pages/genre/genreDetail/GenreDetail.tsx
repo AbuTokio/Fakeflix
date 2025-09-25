@@ -4,6 +4,8 @@ import { useEffect, useMemo } from "react"
 import { SkeletonCard } from "../../../components/skeletonCard/SkeletonCard"
 import { EmptyCard } from "../Genres"
 import MovieCard from "../../../components/movieCard/MovieCard"
+import MovieSection from "../../../components/movieSection/MovieSection"
+import type { ResultMovieList } from "../../../interface/MovieList"
 
 export default function GenreDetail() {
   const { id } = useParams<{ id: string }>()
@@ -31,25 +33,25 @@ export default function GenreDetail() {
   return (
     <>
       <div className="p-6 space-y-6">
-        <h3 className="text-red-500 text-3xl font-bold">{genre?.name ?? "Unknown Genre"}</h3>
-
-        {loading && movies.length === 0 ? (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-            {Array.from({ length: 10 }).map((_, i) => (
-              <SkeletonCard key={i} />
-            ))}
-          </div>
-        ) : error ? (
-          <div className="text-red-400">{error}</div>
-        ) : movies.length === 0 ? (
-          <EmptyCard />
-        ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-            {movies.map((m: any) => (
-              <MovieCard key={m.id} movie={m} onOpen={() => openMovieDialog(m)} />
-            ))}
-          </div>
-        )}
+        <MovieSection titleClassName="!text-3xl !font-bold" title={`Genre ${genre?.name ?? "Unknown"}`}>
+          {loading && movies.length === 0 ? (
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+              {Array.from({ length: 10 }).map((_, i) => (
+                <SkeletonCard key={i} />
+              ))}
+            </div>
+          ) : error ? (
+            <div className="text-red-400">{error}</div>
+          ) : movies.length === 0 ? (
+            <EmptyCard />
+          ) : (
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+              {movies.map((m: ResultMovieList) => (
+                <MovieCard key={m.id} movie={m} onOpen={() => openMovieDialog(m)} />
+              ))}
+            </div>
+          )}
+        </MovieSection>
       </div>
     </>
   )

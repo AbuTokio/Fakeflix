@@ -15,7 +15,7 @@ export default function Layout() {
   return (
     <>
       {!noHeader.includes(path.pathname) && bp.isMd && <Header />}
-      <main>
+      <main className={`${!bp.isMd && "mb-[72px]"}`}>
         <Outlet />
       </main>
       {!noHeader.includes(path.pathname) && !bp.isMd && <Footer />}

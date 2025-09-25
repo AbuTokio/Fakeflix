@@ -15,6 +15,7 @@ import Home from "./pages/home/Home"
 import Watchlist from "./pages/watchlist/Watchlist"
 import Login from "./pages/login/Login"
 import Search from "./pages/search/Search"
+import DiscoverDetail from "./pages/discover/discoverDetail/DiscoverDetail"
 // import TestGenres from "./components/testGenres/TestGenres"
 
 function App() {
@@ -55,6 +56,8 @@ function App() {
 
         <Route path="/genres" element={<Genres />} />
         <Route path="/genres/:id" element={<GenreDetail />} />
+
+        <Route path="/discover/:discover" element={<DiscoverDetail />} />
 
         <Route path="/search/:query" element={<Search />} />
 
