@@ -17,7 +17,7 @@ export default function CarouselInfo({ title, tags, info, description }: Carouse
     return (
       <>
         <Badge muted hero>
-          <img src="/img/calendar.svg" alt="calendar" />
+          <img src="/img/Calendar.svg" alt="calendar" />
           {info.releaseDate}
         </Badge>
         <StarRating value={info.rating} />
