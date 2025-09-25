@@ -32,7 +32,7 @@ export default function CarouselCard({ movie }: CarouselCardProps) {
             variant="parallax"
             parallaxStrength={160}
             parallaxAnchor="top"
-            className="absolute inset-0"
+            className="absolute inset-0 w-full h-full"
             freeze={!bp.isMd}>
             <img
               className="w-full h-full object-cover"
