@@ -2,6 +2,7 @@ import { useMain } from "../../hooks/ContextHooks"
 import { useEffect, useState } from "react"
 
 export default function TestGenres() {
+  // Daten von mainProvider mit useMain holen
   const {
     movieGenres,
     moviePopular,
@@ -23,7 +24,7 @@ export default function TestGenres() {
 
   const [searchQuery, setSearchQuery] = useState("")
 
-  // Trigger detail/similar/video/discover example fetches on mount
+  // Beispieldaten für bestimmten Film / genre laden
   useEffect(() => {
     const exampleMovieId = 550 // Fight Club
     const exampleGenreId = 28 // Action
@@ -31,15 +32,13 @@ export default function TestGenres() {
     fetchMovieSimilar(exampleMovieId)
     fetchMovieVideos(exampleMovieId)
     discoverMovies(exampleGenreId)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  // Trigger movie search when query changes (basic debounce-like guard)
+  // Suche
   useEffect(() => {
     if (searchQuery.trim().length >= 2) {
       searchMovies(searchQuery.trim())
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchQuery])
 
   return (

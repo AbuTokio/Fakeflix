@@ -1,29 +1,22 @@
 import { createContext, useEffect, useState } from "react"
 import type { Genre, MovieGenre } from "../interface/Genre"
-import type { MovieDetails, MovieSimilar, MovieVideos, ResultMovieSimilar, ResultVideo } from "../interface/Movie"
-import type {
-  MovieListPopular,
-  MovieListTopRated,
-  MovieListUpcoming,
-  ResultPopular,
-  ResultTopRated,
-  ResultUpcoming,
-} from "../interface/MovieList"
+import type { MovieDetails, MovieSimilar, MovieVideos, ResultVideo } from "../interface/Movie"
+import type { ResultMovieList } from "../interface/MovieList"
 import { tmdb } from "../api/tmdb"
 
 export const mainContext = createContext<MainContextProps | null>(null)
 
 interface MainContextProps {
   movieGenres: Genre[]
-  moviePopular: ResultPopular[]
-  movieTopRated: ResultTopRated[]
-  movieUpcoming: ResultUpcoming[]
+  moviePopular: ResultMovieList[]
+  movieTopRated: ResultMovieList[]
+  movieUpcoming: ResultMovieList[]
   movieDetails: MovieDetails | null
-  movieSimilar: ResultMovieSimilar[]
+  movieSimilar: ResultMovieList[]
   movieVideos: ResultVideo[]
   // todo richtigen type verwenden
-  searchedMovies: ResultPopular[]
-  discoveredMovies: ResultPopular[]
+  searchedMovies: ResultMovieList[]
+  discoveredMovies: ResultMovieList[]
 
   loading: {
     genres: boolean
@@ -56,14 +49,14 @@ interface MainContextProps {
 
 export default function MainProvider({ children }: { children: React.ReactNode }) {
   const [movieGenres, setMovieGenres] = useState<Genre[]>([])
-  const [moviePopular, setMoviePopular] = useState<ResultPopular[]>([])
-  const [movieTopRated, setMovieTopRated] = useState<ResultTopRated[]>([])
-  const [movieUpcoming, setMovieUpcoming] = useState<ResultUpcoming[]>([])
+  const [moviePopular, setMoviePopular] = useState<ResultMovieList[]>([])
+  const [movieTopRated, setMovieTopRated] = useState<ResultMovieList[]>([])
+  const [movieUpcoming, setMovieUpcoming] = useState<ResultMovieList[]>([])
   const [movieDetails, setMovieDetails] = useState<MovieDetails | null>(null)
-  const [movieSimilar, setMovieSimilar] = useState<ResultMovieSimilar[]>([])
+  const [movieSimilar, setMovieSimilar] = useState<ResultMovieList[]>([])
   const [movieVideos, setMovieVideos] = useState<ResultVideo[]>([])
-  const [searchedMovies, setSearchedMovies] = useState<ResultPopular[]>([])
-  const [discoveredMovies, setDiscoveredMovies] = useState<ResultPopular[]>([])
+  const [searchedMovies, setSearchedMovies] = useState<ResultMovieList[]>([])
+  const [discoveredMovies, setDiscoveredMovies] = useState<ResultMovieList[]>([])
 
   const [loading, setLoading] = useState({
     genres: false,
@@ -116,7 +109,7 @@ export default function MainProvider({ children }: { children: React.ReactNode }
       setLoading((prev) => ({ ...prev, popular: true }))
       setError((prev) => ({ ...prev, popular: null }))
       try {
-        const res = await tmdb.get<MovieListPopular>("/movie/popular", { params: { page: 1 } })
+        const res = await tmdb.get<ResultMovieList>("/movie/popular", { params: { page: 1 } })
         setMoviePopular(res.data.results)
       } catch (err) {
         console.error("Fehler beim Laden der populären Filme", err)
@@ -136,7 +129,7 @@ export default function MainProvider({ children }: { children: React.ReactNode }
       setLoading((prev) => ({ ...prev, topRated: true }))
       setError((prev) => ({ ...prev, topRated: null }))
       try {
-        const res = await tmdb.get<MovieListTopRated>("/movie/top_rated", { params: { page: 1 } })
+        const res = await tmdb.get<ResultMovieList>("/movie/top_rated", { params: { page: 1 } })
         setMovieTopRated(res.data.results)
       } catch (err) {
         console.error("Fehler beim Laden der Top Rated Filme", err)
@@ -156,7 +149,7 @@ export default function MainProvider({ children }: { children: React.ReactNode }
       setLoading((prev) => ({ ...prev, upcoming: true }))
       setError((prev) => ({ ...prev, upcoming: null }))
       try {
-        const res = await tmdb.get<MovieListUpcoming>("/movie/upcoming", { params: { page: 1 } })
+        const res = await tmdb.get<ResultMovieList>("/movie/upcoming", { params: { page: 1 } })
         setMovieUpcoming(res.data.results)
       } catch (err) {
         console.error("Fehler beim Laden der kommenden Filme", err)
@@ -223,7 +216,7 @@ export default function MainProvider({ children }: { children: React.ReactNode }
     setLoading((prev) => ({ ...prev, search: true }))
     setError((prev) => ({ ...prev, search: null }))
     try {
-      const res = await tmdb.get<MovieListPopular>("/search/movie", {
+      const res = await tmdb.get<ResultMovieList>("/search/movie", {
         params: { query, include_adult: false, page: 1 },
       })
       setSearchedMovies(res.data.results)
@@ -241,7 +234,7 @@ export default function MainProvider({ children }: { children: React.ReactNode }
     setLoading((prev) => ({ ...prev, discover: true }))
     setError((prev) => ({ ...prev, discover: null }))
     try {
-      const res = await tmdb.get<MovieListPopular>("/discover/movie", {
+      const res = await tmdb.get<ResultMovieList>("/discover/movie", {
         params: {
           with_genres: genreId,
           include_adult: false,
