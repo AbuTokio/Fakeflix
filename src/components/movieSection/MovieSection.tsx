@@ -8,16 +8,24 @@ type MovieSectionProps = {
   children: React.ReactNode
   className?: string
   grid?: boolean
+  titleClassName?: string
 }
 
-export default function MovieSection({ title, viewAllHref, children, className, grid = false }: MovieSectionProps) {
+export default function MovieSection({
+  title,
+  viewAllHref,
+  children,
+  className,
+  grid = false,
+  titleClassName = "",
+}: MovieSectionProps) {
   return (
     <>
       <Animation delay={0.2}>
         <section className={["mx-auto w-full max-w-screen px-4 sm:px-6 lg:px-8 space-y-4", className || ""].join(" ")}>
           {/* Header */}
           <div className="flex flex-wrap items-center justify-between gap-3">
-            <h3 className="text-red-500  text-lg font-semibold">{title}</h3>
+            <h3 className={["text-red-500 text-lg font-semibold", titleClassName].join(" ")}>{title}</h3>
             {viewAllHref && (
               <Link
                 to={viewAllHref}
