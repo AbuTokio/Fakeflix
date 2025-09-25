@@ -34,11 +34,11 @@ export default function MovieSection({ title, viewAllHref, children, className, 
                 grid
                   ? `
                   grid gap-3 sm:gap-4 justify-center
-                  [grid-template-columns:repeat(auto-fit,minmax(140px,160px))]
+                  [grid-template-columns:repeat(auto-fit,minmax(140px,150px))]
                   md:[grid-template-columns:repeat(auto-fit,minmax(180px,220px))]
                   lg:[grid-template-columns:repeat(auto-fill,minmax(220px,1fr))]
                   xl:[grid-template-columns:repeat(auto-fill,minmax(280px,280px))]
-                  2xl:[grid-template-columns:repeat(auto-fill,minmax(300px,300px))] 
+                  2xl:[grid-template-columns:repeat(auto-fill,minmax(300px,300px))]
                 `
                   : ""
               }>
