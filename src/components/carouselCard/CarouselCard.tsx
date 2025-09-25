@@ -23,30 +23,23 @@ export default function CarouselCard({ movie }: CarouselCardProps) {
   return (
     <>
       <div
-        className="relative aspect-[16/9] overflow-hidden "
+        className="relative aspect-[16/9] overflow-hidden border border-yellow-600"
         onClick={() => {
           if (!bp.isMd) setNavigate(true)
         }}>
-        {bp.isMd ? (
-          <Animation
-            variant="parallax"
-            parallaxStrength={160}
-            parallaxAnchor="top"
-            className="absolute inset-0 w-full h-full"
-            freeze={!bp.isMd}>
-            <img
-              className="w-full h-full object-cover"
-              src={TmdbImage(movie.backdrop_path, TmdbImageSize.BACKDROP_SIZE)}
-              alt={`${movie.title}-backdrop`}
-            />
-          </Animation>
-        ) : (
+        <Animation
+          variant="parallax"
+          parallaxStrength={160}
+          parallaxAnchor="top"
+          className="absolute inset-0 w-full h-full overflow-hidden"
+          freeze={!bp.isMd}
+          markers={false}>
           <img
-            className="w-full h-full object-cover"
+            className="absolute inset-0 w-full h-full object-cover"
             src={TmdbImage(movie.backdrop_path, TmdbImageSize.BACKDROP_SIZE)}
             alt={`${movie.title}-backdrop`}
           />
-        )}
+        </Animation>
 
         {/* Gradient-Overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
@@ -71,7 +64,7 @@ export default function CarouselCard({ movie }: CarouselCardProps) {
             className={`absolute h-fit ${
               bp.isMd ? "bottom-20" : "bottom-8"
             } md:left-1/2 md:-translate-x-1/2 w-full px-4 md:px-12`}>
-            <Animation useParentAsTrigger>
+            <Animation useParentAsTrigger freeze={!bp.isMd}>
               <CarouselInfo
                 title={movie.title}
                 tags={movie.genre_ids.map((genreId) => GenreIdToString("movie", genreId))}

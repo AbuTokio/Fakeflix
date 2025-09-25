@@ -84,7 +84,7 @@ export default function Animation({
         }
       }
 
-      gsap.set(target, { willChange: "transform", scale: 1.05 })
+      gsap.set(target, { willChange: "transform", scale: 1 })
 
       const triggerEl = useParentAsTrigger && el.parentElement ? el.parentElement : el
 

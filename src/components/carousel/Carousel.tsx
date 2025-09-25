@@ -36,7 +36,7 @@ export default function Carousel({ cards }: CarouselProps) {
   })
 
   return (
-    <div className="relative w-screen h-fit max-h-[80vh] border overflow-hidden bg-black">
+    <div className="relative w-screen h-fit max-h-[80vh] border overflow-hidden bg-black border border-green-600">
       {cards.map((card, index) => {
         return (
           <div key={index}>
