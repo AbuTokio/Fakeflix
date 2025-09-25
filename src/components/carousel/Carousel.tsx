@@ -36,6 +36,7 @@ export default function Carousel({ cards }: CarouselProps) {
   })
 
   return (
+    // FIXME Buttons nicht mehr anklickbar
     <div className="relative w-full aspect-video max-h-[80vh] overflow-hidden bg-black">
       {cards.map((card, index) => {
         return (
