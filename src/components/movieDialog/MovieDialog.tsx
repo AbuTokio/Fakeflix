@@ -1,16 +1,15 @@
-import { useEffect } from "react"
 import { Link } from "react-router"
 import StarRating from "../starRating/StarRating"
-import type { MovieDetails, ResultMovieSimilar } from "../../interface/Movie"
 import { TMDB_IMG_BASE, TmdbImageSize } from "../../enum/TmdbImage"
 import NavIcon from "../navIcon/NavIcon"
-
-type MovieDialogData = MovieDetails | ResultMovieSimilar
+import type { ResultMovie } from "../../interface/Search"
+import { useMain } from "../../hooks/ContextHooks"
+import type { ResultMovieList } from "../../interface/MovieList"
 
 type MovieDialogProps = {
   open: boolean
   onClose: () => void
-  data: MovieDialogData
+  data: ResultMovie | ResultMovieList
   genreById?: Record<number, string>
   ctaLabel?: string
   ctaHref?: string
@@ -27,17 +26,7 @@ export default function MovieDialog({
   onCtaClick,
   className,
 }: MovieDialogProps) {
-  useEffect(() => {
-    if (!open) return
-    const prev = document.body.style.overflow
-    document.body.style.overflow = "hidden"
-    const onKey = (event: KeyboardEvent) => event.key === "Escape" && onClose()
-    window.addEventListener("keydown", onKey)
-    return () => {
-      document.body.style.overflow = prev
-      window.removeEventListener("keydown", onKey)
-    }
-  }, [open, onClose])
+  const {} = useMain()
 
   if (!open) return null
 
@@ -45,11 +34,12 @@ export default function MovieDialog({
   const title = (data as any).title ?? (data as any).original_title ?? "Untitled"
 
   // ----- Bildquelle -----
-  const backdrop_path = data.backdrop_path
-  const poster_path = data.poster_path
-  const heroSrc =
-    (backdrop_path ? `${TMDB_IMG_BASE}/${TmdbImageSize.BACKDROP_SIZE}${backdrop_path}` : null) ??
-    (poster_path ? `${TMDB_IMG_BASE}/${TmdbImageSize.POSTER_SIZE}${poster_path}` : null)
+
+  const heroSrc = data.poster_path
+    ? `${TMDB_IMG_BASE}/${TmdbImageSize.POSTER_SIZE}${data.poster_path}`
+    : data.backdrop_path
+    ? `${TMDB_IMG_BASE}/${TmdbImageSize.BACKDROP_SIZE}${data.backdrop_path}`
+    : null
 
   // ----- Rating -----
   const rating = typeof data.vote_average === "number" ? data.vote_average : undefined
@@ -125,6 +115,7 @@ export default function MovieDialog({
                   {ctaHref ? (
                     <Link
                       to={ctaHref}
+                      onClick={onClose}
                       className="inline-flex items-center gap-2 rounded-md bg-red-600 px-5 py-2.5 sm:px-6 sm:py-3 text-base font-semibold text-white hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-400">
                       {ctaLabel}
                     </Link>

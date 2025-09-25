@@ -14,7 +14,7 @@ import Intro from "./pages/home/Intro"
 import Home from "./pages/home/Home"
 import Watchlist from "./pages/watchlist/Watchlist"
 import Login from "./pages/login/Login"
-import TestGenres from "./components/testGenres/TestGenres"
+// import TestGenres from "./components/testGenres/TestGenres"
 
 function App() {
   // useEffect(() => useScrollToTop())
@@ -30,7 +30,7 @@ function App() {
         }>
         <Route index element={<Intro />} />
         <Route index element={<Home />} />
-        <Route path="/test-genres" element={<TestGenres />} />
+        {/* <Route path="/test-genres" element={<TestGenres />} /> */}
 
         <Route
           path="/home"

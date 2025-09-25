@@ -1,36 +1,28 @@
+import { TmdbImageSize } from "../../enum/TmdbImage"
 import type { ResultMovieList } from "../../interface/MovieList"
 import StarRating from "../starRating/StarRating"
 
 type MovieCardProps = {
   movie: ResultMovieList
-  onOpen?: (id: number) => void
-  imgSize?: "w185" | "w342" | "w500" | "original"
+  onOpen?: (movie: ResultMovieList) => void
   className?: string
   showRating?: boolean
 }
 
 const TMDB_IMG_BASE = "https://image.tmdb.org/t/p"
 
-export default function MovieCard({
-  movie,
-  onOpen,
-  imgSize = "w342",
-  className = "",
-  showRating = true,
-}: MovieCardProps) {
-  const { id } = movie
-
-  const title = movie.title ?? movie.original_title ?? movie.title ?? "Untitled"
+export default function MovieCard({ movie, onOpen, className = "", showRating = true }: MovieCardProps) {
+  const title = (movie as any).title ?? (movie as any).name ?? "Untitled"
 
   const posterUrl = movie.poster_path
-    ? `${TMDB_IMG_BASE}/${imgSize}${movie.poster_path}`
+    ? `${TMDB_IMG_BASE}/${TmdbImageSize.POSTER_SIZE}${movie.poster_path}`
     : movie.backdrop_path
-    ? `${TMDB_IMG_BASE}/${imgSize}${movie.backdrop_path}`
+    ? `${TMDB_IMG_BASE}/${TmdbImageSize.POSTER_SIZE}${movie.backdrop_path}`
     : null
 
   const rating = movie.vote_average ?? movie.vote_average ?? 0
 
-  const handleOpen = () => onOpen?.(id)
+  const handleOpen = () => onOpen?.(movie)
 
   return (
     <div

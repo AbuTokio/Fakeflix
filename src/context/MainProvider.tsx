@@ -1,12 +1,21 @@
-import { createContext, useEffect, useState } from "react"
+import { createContext, useCallback, useEffect, useMemo, useState } from "react"
 import type { dummyMoviePopular } from "../dummy/data"
 import type { Genre, MovieGenre } from "../interface/Genre"
 import type { MovieDetails, MovieSimilar, MovieVideos, ResultVideo } from "../interface/Movie"
 import type { ResultMovieList } from "../interface/MovieList"
 import { tmdb } from "../api/tmdb"
+import type { ResultMovie } from "../interface/Search"
+import gsap from "gsap"
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const mainContext = createContext<MainContextProps | null>(null)
+
+type DialogData = ResultMovieList | ResultMovie
+type DialogState = {
+  open: boolean
+  movieId: number | null
+  data: DialogData | null
+}
 
 interface MainContextProps {
   movieGenres: Genre[]
@@ -42,6 +51,7 @@ interface MainContextProps {
     search: string | null
     discover: string | null
   }
+
   fetchMovieDetails: (id: number) => Promise<void>
   fetchMovieSimilar: (id: number) => Promise<void>
   fetchMovieVideos: (id: number) => Promise<void>
@@ -51,6 +61,10 @@ interface MainContextProps {
   setWatchlist: React.Dispatch<React.SetStateAction<typeof dummyMoviePopular.results>>
   user: { name: string; email: string } | null
   setUser: React.Dispatch<React.SetStateAction<{ name: string; email: string } | null>>
+
+  dialog: DialogState
+  openMovieDialog: (item: DialogData) => void
+  closeMovieDialog: () => void
 }
 
 export default function MainProvider({ children }: { children: React.ReactNode }) {
@@ -70,6 +84,7 @@ export default function MainProvider({ children }: { children: React.ReactNode }
   const [movieVideos, setMovieVideos] = useState<ResultVideo[]>([])
   const [searchedMovies, setSearchedMovies] = useState<ResultMovieList[]>([])
   const [discoveredMovies, setDiscoveredMovies] = useState<ResultMovieList[]>([])
+  const [dialog, setDialog] = useState<DialogState>({ open: false, movieId: null, data: null })
 
   const [loading, setLoading] = useState({
     genres: false,
@@ -265,29 +280,65 @@ export default function MainProvider({ children }: { children: React.ReactNode }
     }
   }
 
+  //# Dialog
+  const openMovieDialog = useCallback((item: DialogData) => {
+    setDialog({ open: true, movieId: item.id, data: item })
+    document.body.style.overflow = "hidden"
+    // gsap.globalTimeline.pause()
+  }, [])
+
+  const closeMovieDialog = useCallback(() => {
+    setDialog({ open: false, movieId: null, data: null })
+    document.body.style.overflow = ""
+    // gsap.globalTimeline.resume()
+  }, [])
+
   //Für bessere lesbarkeit
-  const value: MainContextProps = {
-    movieGenres,
-    moviePopular,
-    movieTopRated,
-    movieUpcoming,
-    movieDetails,
-    movieSimilar,
-    movieVideos,
-    searchedMovies,
-    discoveredMovies,
-    loading,
-    error,
-    fetchMovieDetails,
-    fetchMovieSimilar,
-    fetchMovieVideos,
-    searchMovies,
-    discoverMovies,
-    watchlist,
-    setWatchlist,
-    user,
-    setUser,
-  }
+  const value = useMemo<MainContextProps>(
+    () => ({
+      movieGenres,
+      moviePopular,
+      movieTopRated,
+      movieUpcoming,
+      movieDetails,
+      movieSimilar,
+      movieVideos,
+      searchedMovies,
+      discoveredMovies,
+      loading,
+      error,
+      fetchMovieDetails,
+      fetchMovieSimilar,
+      fetchMovieVideos,
+      searchMovies,
+      discoverMovies,
+      watchlist,
+      setWatchlist,
+      user,
+      setUser,
+      dialog,
+      openMovieDialog,
+      closeMovieDialog,
+    }),
+    [
+      movieGenres,
+      moviePopular,
+      movieTopRated,
+      movieUpcoming,
+      movieDetails,
+      movieSimilar,
+      movieVideos,
+      searchedMovies,
+      discoveredMovies,
+      loading,
+      error,
+      watchlist,
+      user,
+      dialog,
+      openMovieDialog,
+      closeMovieDialog,
+    ]
+  )
 
   return <mainContext.Provider value={value}>{children}</mainContext.Provider>
 }
