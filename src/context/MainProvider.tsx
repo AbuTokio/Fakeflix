@@ -51,6 +51,8 @@ interface MainContextProps {
   }
 
   fetchPopular: (page: number) => Promise<void>
+  fetchTopRated: (page: number) => Promise<void>
+  fetchUpcoming: (page: number) => Promise<void>
   fetchMovieDetails: (id: number) => Promise<void>
   fetchMovieSimilar: (id: number) => Promise<void>
   fetchMovieVideos: (id: number) => Promise<void>
@@ -169,8 +171,9 @@ export default function MainProvider({ children }: { children: React.ReactNode }
     setLoading((prev) => ({ ...prev, topRated: true }))
     setError((prev) => ({ ...prev, topRated: null }))
     try {
-      const res = await tmdb.get<ResultMovieList>("/movie/top_rated", { params: { page: page } })
+      const res = await tmdb.get<ResultMovieList>("/movie/top_rated", { params: { page: page, region: "US" } })
       setMovieTopRated(res.data.results)
+      setTotalPages(res.data.total_pages)
     } catch (err) {
       console.error("Fehler beim Laden der Top Rated Filme", err)
       setError((prev) => ({ ...prev, topRated: "Top Rated Filme konnten nicht geladen werden." }))
@@ -186,22 +189,23 @@ export default function MainProvider({ children }: { children: React.ReactNode }
 
   //# MOVIE LISTS - Upcoming - https://developer.themoviedb.org/reference/movie-upcoming-list
   // "https://api.themoviedb.org/3/movie/upcoming?language=en-US&page=1"
-  useEffect(() => {
-    async function fetchUpcoming() {
-      setLoading((prev) => ({ ...prev, upcoming: true }))
-      setError((prev) => ({ ...prev, upcoming: null }))
-      try {
-        const res = await tmdb.get<ResultMovieList>("/movie/upcoming", { params: { page: 1 } })
-        setMovieUpcoming(res.data.results)
-      } catch (err) {
-        console.error("Fehler beim Laden der kommenden Filme", err)
-        setError((prev) => ({ ...prev, upcoming: "Kommende Filme konnten nicht geladen werden." }))
-      } finally {
-        setLoading((prev) => ({ ...prev, upcoming: false }))
-      }
+  async function fetchUpcoming(page: number) {
+    setLoading((prev) => ({ ...prev, upcoming: true }))
+    setError((prev) => ({ ...prev, upcoming: null }))
+    try {
+      const res = await tmdb.get<ResultMovieList>("/movie/upcoming", { params: { page: page, region: "US" } })
+      setMovieUpcoming(res.data.results)
+      setTotalPages(res.data.total_pages)
+    } catch (err) {
+      console.error("Fehler beim Laden der kommenden Filme", err)
+      setError((prev) => ({ ...prev, upcoming: "Kommende Filme konnten nicht geladen werden." }))
+    } finally {
+      setLoading((prev) => ({ ...prev, upcoming: false }))
     }
+  }
+  useEffect(() => {
     //Initial die Upcoming Movies laden
-    fetchUpcoming()
+    fetchUpcoming(1)
   }, [])
 
   //# MOVIES - Details - https://developer.themoviedb.org/reference/movie-details
@@ -336,6 +340,8 @@ export default function MainProvider({ children }: { children: React.ReactNode }
       openMovieDialog,
       closeMovieDialog,
       fetchPopular,
+      fetchTopRated,
+      fetchUpcoming,
       page,
       setPage,
       totalPages,
