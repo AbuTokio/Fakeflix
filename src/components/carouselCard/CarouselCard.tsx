@@ -20,10 +20,6 @@ export default function CarouselCard({ movie }: CarouselCardProps) {
   const bp = useResponsive()
   const mainCtx = useMain()
 
-  const backdropUrl = movie.backdrop_path
-    ? TmdbImage(movie.backdrop_path, TmdbImageSize.BACKDROP_SIZE)
-    : "/img/placeholder-backdrop.jpg"
-
   return (
     <>
       <div
@@ -37,13 +33,17 @@ export default function CarouselCard({ movie }: CarouselCardProps) {
             parallaxStrength={160}
             parallaxAnchor="top"
             className="absolute inset-0"
-            markers>
-            <img className="w-full h-full object-cover" src={backdropUrl} alt={`${movie.title}-backdrop`} />
+            freeze={!bp.isMd}>
+            <img
+              className="w-full h-full object-cover"
+              src={TmdbImage(movie.backdrop_path, TmdbImageSize.BACKDROP_SIZE)}
+              alt={`${movie.title}-backdrop`}
+            />
           </Animation>
         ) : (
           <img
-            className="absolute inset-0 w-full h-full object-cover"
-            src={backdropUrl}
+            className="w-full h-full object-cover"
+            src={TmdbImage(movie.backdrop_path, TmdbImageSize.BACKDROP_SIZE)}
             alt={`${movie.title}-backdrop`}
           />
         )}
@@ -52,7 +52,7 @@ export default function CarouselCard({ movie }: CarouselCardProps) {
         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
 
         {/* Inhalt */}
-        <div className="absolute inset-0 flex flex-col gap-6 justify-center items-center">
+        <div className="absolute inset-0 flex flex-col gap-6 justify-center items-center border border-red-500">
           {bp.isMd && (
             <div
               className={`absolute w-full ${
