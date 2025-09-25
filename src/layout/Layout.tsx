@@ -1,10 +1,9 @@
-// import { Outlet, useLocation } from "react-router"
-// ✅ richtig
 import { Outlet, useLocation } from "react-router"
 import Header from "../components/header/Header"
 import useScrollToTop from "../utility/Scroll"
 import Footer from "../components/footer/Footer"
 import { useResponsive } from "../hooks/ResponsiveHooks"
+import GlobalDialog from "../components/globalDialog/GlobalDialog"
 
 export default function Layout() {
   const path = useLocation()
@@ -19,6 +18,7 @@ export default function Layout() {
         <Outlet />
       </main>
       {!noHeader.includes(path.pathname) && !bp.isMd && <Footer />}
+      <GlobalDialog />
     </>
   )
 }

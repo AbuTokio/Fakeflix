@@ -37,9 +37,8 @@ export default function MovieDetail() {
     fetchMovieSimilar,
     fetchMovieVideos,
     loading,
-    dialog,
+
     openMovieDialog,
-    closeMovieDialog,
   } = useMain()
 
   const { id } = useParams<{ id: string }>()
@@ -179,10 +178,6 @@ export default function MovieDetail() {
           </MovieSection>
         </div>
       </section>
-
-      {dialog.open && dialog.data && (
-        <MovieDialog open data={dialog.data} ctaHref={`/movies/detail/${dialog.movieId}`} onClose={closeMovieDialog} />
-      )}
     </>
   )
 }

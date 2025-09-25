@@ -43,9 +43,6 @@ export default function Watchlist() {
                 : mainCtx.watchlist.map((m) => <MovieCard key={m.id} movie={m} onOpen={handleOpen} />)}
             </MovieSection>
           </section>
-          {openId !== null && (
-            <MovieDialog open ctaHref={`/movies/detail/${openId}`} onClose={handleClose} data={selected} />
-          )}
         </Animation>
       )}
     </>

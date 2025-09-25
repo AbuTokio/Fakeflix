@@ -3,14 +3,13 @@ import { SkeletonCard } from "../../components/skeletonCard/SkeletonCard"
 import Carousel from "../../components/carousel/Carousel"
 import MovieSection from "../../components/movieSection/MovieSection"
 import MovieCard from "../../components/movieCard/MovieCard"
-import MovieDialog from "../../components/movieDialog/MovieDialog"
 import CarouselCard from "../../components/carouselCard/CarouselCard"
 import Animation from "../../components/animation/Animation"
 import CardCarousel from "../../components/cardCarousel/CardCarousel"
 import { useMain } from "../../hooks/ContextHooks"
 
 export default function Home() {
-  const { moviePopular, movieTopRated, movieUpcoming, dialog, openMovieDialog, closeMovieDialog } = useMain()
+  const { moviePopular, movieTopRated, movieUpcoming, openMovieDialog } = useMain()
   const [loading] = useState()
 
   return (
@@ -62,9 +61,6 @@ export default function Home() {
           />
         </MovieSection>
       </section>
-      {dialog.open && dialog.data && (
-        <MovieDialog open ctaHref={`/movies/detail/${dialog.movieId}`} onClose={closeMovieDialog} data={dialog.data} />
-      )}
     </>
   )
 }
