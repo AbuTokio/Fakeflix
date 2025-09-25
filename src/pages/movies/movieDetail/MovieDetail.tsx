@@ -157,9 +157,14 @@ export default function MovieDetail() {
                     </Animation>
                     <Animation>
                       <div className="mt-3 flex flex-wrap items-center gap-3 sm:gap-4">
-                        <Badge>{data.year || "—"}</Badge>
-                        {/* <Badge label= imgUrl="/src/assets/img/calendar.svg" /> */}
-                        <CarouselTag label={formatRuntime(data.runtimeMin)} imgUrl="/src/assets/img/duration.svg" />
+                        <Badge muted hero>
+                          <img src="/img/Calendar.svg" alt="" />
+                          {data.year || "—"}
+                        </Badge>
+                        <Badge muted hero>
+                          <img src="/img/clock.svg" alt="" />
+                          {formatRuntime(data.runtimeMin)}
+                        </Badge>
                         <StarRating value={data.rating} showNumber />
                       </div>
                     </Animation>
