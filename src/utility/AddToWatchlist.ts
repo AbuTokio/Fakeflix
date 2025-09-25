@@ -1,12 +1,12 @@
 import type React from "react"
-import type { dummyMoviePopular } from "../dummy/data"
+import type { ResultMovieList } from "../interface/MovieList"
 
 export default function AddToWatchlist(
   user: { name: string; email: string } | null,
-  watchlist: typeof dummyMoviePopular.results,
-  setWatchlist: React.Dispatch<React.SetStateAction<typeof dummyMoviePopular.results>>,
-  movie: (typeof dummyMoviePopular.results)[0]
+  watchlist: ResultMovieList[],
+  setWatchlist: React.Dispatch<React.SetStateAction<ResultMovieList[]>>,
+  movie: ResultMovieList
 ) {
-  setWatchlist((prev) => [...prev, movie])
+  setWatchlist((prev: ResultMovieList[]) => [...prev, movie])
   localStorage.setItem(`watchlist_${user?.email}`, JSON.stringify([...watchlist, movie]))
 }

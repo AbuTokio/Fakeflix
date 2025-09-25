@@ -1,5 +1,4 @@
 import { createContext, useEffect, useState } from "react"
-import type { dummyMoviePopular } from "../dummy/data"
 import type { Genre, MovieGenre } from "../interface/Genre"
 import type { MovieDetails, MovieSimilar, MovieVideos, ResultVideo } from "../interface/Movie"
 import type { ResultMovieList } from "../interface/MovieList"
@@ -47,14 +46,14 @@ interface MainContextProps {
   fetchMovieVideos: (id: number) => Promise<void>
   searchMovies: (query: string) => Promise<void>
   discoverMovies: (genreId: number) => Promise<void>
-  watchlist: typeof dummyMoviePopular.results
-  setWatchlist: React.Dispatch<React.SetStateAction<typeof dummyMoviePopular.results>>
+  watchlist: ResultMovieList[]
+  setWatchlist: React.Dispatch<React.SetStateAction<ResultMovieList[]>>
   user: { name: string; email: string } | null
   setUser: React.Dispatch<React.SetStateAction<{ name: string; email: string } | null>>
 }
 
 export default function MainProvider({ children }: { children: React.ReactNode }) {
-  const [watchlist, setWatchlist] = useState<typeof dummyMoviePopular.results>([])
+  const [watchlist, setWatchlist] = useState<ResultMovieList[]>([])
   const [user, setUser] = useState<{ name: string; email: string } | null>(null)
 
   useEffect(() => {

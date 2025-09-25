@@ -18,7 +18,7 @@ export interface ResultMovieList {
 }
 
 //# Popular
-export interface ResultMovieList {
+export interface ResponseMovieList {
   page: number
   results: ResultMovieList[]
   total_pages: number
