@@ -53,7 +53,7 @@ export default function Searchbar() {
           </svg>
         </button>
       </div>
-      {navigate && inputRef.current && <Navigate to={`/search/${inputRef.current.value}`} />}
+      {navigate && inputRef.current && <Navigate to={`/search/${inputRef.current.value.trim()}`} />}
     </>
   )
 }

@@ -15,6 +15,7 @@ import Home from "./pages/home/Home"
 import Watchlist from "./pages/watchlist/Watchlist"
 import Login from "./pages/login/Login"
 import TestGenres from "./components/testGenres/TestGenres"
+import Search from "./pages/search/Search"
 
 function App() {
   // useEffect(() => useScrollToTop())
@@ -56,6 +57,8 @@ function App() {
 
         <Route path="/genres" element={<Genres />} />
         <Route path="/genres/:name" element={<GenreDetail />} />
+
+        <Route path="/search/:query" element={<Search />} />
 
         <Route path="/watchlist" element={<Watchlist />} />
 
