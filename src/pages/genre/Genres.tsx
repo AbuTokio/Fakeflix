@@ -4,6 +4,7 @@ import { useMain } from "../../hooks/ContextHooks"
 import { SkeletonCard } from "../../components/skeletonCard/SkeletonCard"
 import MovieCard from "../../components/movieCard/MovieCard"
 import CardCarousel from "../../components/cardCarousel/CardCarousel"
+import MovieDialog from "../../components/movieDialog/MovieDialog"
 
 export function EmptyCard() {
   return (
@@ -14,7 +15,16 @@ export function EmptyCard() {
 }
 
 export default function Genres() {
-  const { movieGenres, discoverMovies, discoveredMovies, loadingByGenre, errorByGenre, openMovieDialog } = useMain()
+  const {
+    movieGenres,
+    discoverMovies,
+    discoveredMovies,
+    loadingByGenre,
+    errorByGenre,
+    openMovieDialog,
+    dialog,
+    closeMovieDialog,
+  } = useMain()
 
   useEffect(() => {
     movieGenres.forEach((g) => {
@@ -51,6 +61,9 @@ export default function Genres() {
           )
         })}
       </div>
+      {dialog.open && dialog.data && (
+        <MovieDialog open ctaHref={`/movies/detail/${dialog.movieId}`} onClose={closeMovieDialog} data={dialog.data} />
+      )}
     </>
   )
 }
