@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState, useEffect, useState } from "react"
+import { createContext, useEffect, useState } from "react"
 import type { dummyMoviePopular } from "../dummy/data"
 import type { Genre, MovieGenre } from "../interface/Genre"
 import type { MovieDetails, MovieSimilar, MovieVideos, ResultVideo } from "../interface/Movie"
@@ -47,8 +47,6 @@ interface MainContextProps {
   fetchMovieVideos: (id: number) => Promise<void>
   searchMovies: (query: string) => Promise<void>
   discoverMovies: (genreId: number) => Promise<void>
-}
-interface MainContextProps {
   watchlist: typeof dummyMoviePopular.results
   setWatchlist: React.Dispatch<React.SetStateAction<typeof dummyMoviePopular.results>>
   user: { name: string; email: string } | null
@@ -63,13 +61,6 @@ export default function MainProvider({ children }: { children: React.ReactNode }
     setWatchlist(JSON.parse(localStorage.getItem(`watchlist_${user?.email}`) ?? "[]"))
   }, [user])
 
-  const value: MainContextProps = {
-    watchlist,
-    setWatchlist,
-    user,
-    setUser,
-  }
-  return <mainContext.Provider value={value}>{children}</mainContext.Provider>
   const [movieGenres, setMovieGenres] = useState<Genre[]>([])
   const [moviePopular, setMoviePopular] = useState<ResultMovieList[]>([])
   const [movieTopRated, setMovieTopRated] = useState<ResultMovieList[]>([])
@@ -292,6 +283,10 @@ export default function MainProvider({ children }: { children: React.ReactNode }
     fetchMovieVideos,
     searchMovies,
     discoverMovies,
+    watchlist,
+    setWatchlist,
+    user,
+    setUser,
   }
 
   return <mainContext.Provider value={value}>{children}</mainContext.Provider>
