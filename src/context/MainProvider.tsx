@@ -4,7 +4,6 @@ import type { MovieDetails, MovieSimilar, MovieVideos, ResultVideo } from "../in
 import type { ResultMovieList } from "../interface/MovieList"
 import { tmdb } from "../api/tmdb"
 import type { ResultMovie } from "../interface/Search"
-import gsap from "gsap"
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const mainContext = createContext<MainContextProps | null>(null)

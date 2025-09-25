@@ -5,6 +5,7 @@ import { SkeletonCard } from "../../../components/skeletonCard/SkeletonCard"
 import { EmptyCard } from "../Genres"
 import MovieCard from "../../../components/movieCard/MovieCard"
 import MovieSection from "../../../components/movieSection/MovieSection"
+import type { ResultMovieList } from "../../../interface/MovieList"
 
 export default function GenreDetail() {
   const { id } = useParams<{ id: string }>()
@@ -45,7 +46,7 @@ export default function GenreDetail() {
             <EmptyCard />
           ) : (
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-              {movies.map((m: any) => (
+              {movies.map((m: ResultMovieList) => (
                 <MovieCard key={m.id} movie={m} onOpen={() => openMovieDialog(m)} />
               ))}
             </div>
