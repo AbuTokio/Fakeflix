@@ -77,7 +77,7 @@ export default function MovieDetail() {
   return (
     <>
       {/* Hero / Trailer */}
-      <Animation delay={0.1}>
+      <Animation delay={0.3} from={{ opacity: 0, scale: 0.9 }} to={{ opacity: 1, scale: 1, rotate: 0 }}>
         <section className="w-full overflow-hidden">
           <MediaPlayer youtubeKey={trailerKey} posterUrl={backdropUrl} className="w-full max-w-[1920px] mx-auto" />
         </section>
@@ -108,13 +108,13 @@ export default function MovieDetail() {
               <div className="space-y-4 sm:space-y-5 lg:space-y-6 py-2">
                 <div className="flex justify-between items-start gap-4">
                   <div>
-                    <Animation>
+                    <Animation delay={0.5}>
                       <h1 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold leading-tight">
                         {title ?? "—"}
                       </h1>
                     </Animation>
 
-                    <Animation>
+                    <Animation delay={0.6}>
                       <div className="mt-3 flex flex-wrap items-center justify-between gap-2">
                         <div className="flex gap-2">
                           {genres.map((genre) => (
@@ -146,7 +146,7 @@ export default function MovieDetail() {
                       </div>
                     </Animation>
 
-                    <Animation>
+                    <Animation delay={0.7}>
                       <div className="mt-3 flex flex-wrap items-center gap-3 sm:gap-4">
                         <Badge muted hero>
                           <img src="/img/Calendar.svg" alt="" />
@@ -163,19 +163,19 @@ export default function MovieDetail() {
                 </div>
 
                 {/* Overview */}
-                <Animation>
+                <Animation delay={0.8}>
                   {!!overview && (
                     <p className="max-w-prose text-sm sm:text-base leading-relaxed text-zinc-300">{overview}</p>
                   )}
                 </Animation>
 
                 {/* Meta */}
-                <Animation>
+                <Animation delay={0.9}>
                   <div className="flex flex-col gap-2 sm:gap-3">
                     <InfoItem label="Country" value={country || "—"} />
                     <InfoItem label="Genre" value={genres.length ? genres.join(", ") : "—"} />
-                    {/* TODO anpassen */}
-                    <InfoItem label="Date Release" value={releaseDate || "—"} />
+
+                    <InfoItem label="Date Release" value={String(releaseDate) || "—"} />
                     <InfoItem label="Production" value={production || "—"} />
                   </div>
                 </Animation>

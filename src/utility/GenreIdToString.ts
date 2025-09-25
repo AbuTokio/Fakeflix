@@ -1,5 +1,4 @@
-import { dummyMovieGenres, dummyTVGenres } from "../dummy/data"
-
+// TODO drüber schauen
 export default function GenreIdToString(type: "movie" | "TV", genreId: number): string {
   if (type === "movie") {
     const genre = dummyMovieGenres.genres.find(({ id }) => id === genreId)

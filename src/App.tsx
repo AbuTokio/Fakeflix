@@ -3,11 +3,9 @@ import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } 
 import Layout from "./layout/Layout"
 import NotFound from "./pages/notFound/NotFound"
 import MovieDetail from "./pages/movies/movieDetail/MovieDetail"
-import Series from "./pages/series/Series"
-import SeriesDetail from "./pages/series/seriesDetail/SeriesDetail"
+
 import MainProvider from "./context/MainProvider"
-import SeriesProvider from "./context/SeriesProvider"
-import MoviesProvider from "./context/MoviesProvider"
+
 import Genres from "./pages/genre/Genres"
 import GenreDetail from "./pages/genre/genreDetail/GenreDetail"
 import Intro from "./pages/home/Intro"
@@ -32,27 +30,9 @@ function App() {
         <Route index element={<Home />} />
         {/* <Route path="/test-genres" element={<TestGenres />} /> */}
 
-        <Route
-          path="/home"
-          element={
-            <MoviesProvider>
-              <Home />
-            </MoviesProvider>
-          }
-        />
+        <Route path="/home" element={<Home />} />
         <Route path="/movies/genre/:genre" element={""} />
         <Route path="/movies/detail/:id" element={<MovieDetail />} />
-
-        <Route
-          path="/series"
-          element={
-            <SeriesProvider>
-              <Series />
-            </SeriesProvider>
-          }
-        />
-        <Route path="/series/genre/:genre" element={""} />
-        <Route path="/series/detail/:id" element={<SeriesDetail />} />
 
         <Route path="/genres" element={<Genres />} />
         <Route path="/genres/:id" element={<GenreDetail />} />
