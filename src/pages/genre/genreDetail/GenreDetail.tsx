@@ -35,7 +35,7 @@ export default function GenreDetail() {
 
         {loading && movies.length === 0 ? (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-            {Array.from({ length: 12 }).map((_, i) => (
+            {Array.from({ length: 10 }).map((_, i) => (
               <SkeletonCard key={i} />
             ))}
           </div>

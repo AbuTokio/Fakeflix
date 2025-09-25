@@ -55,7 +55,7 @@ function App() {
         <Route path="/series/detail/:id" element={<SeriesDetail />} />
 
         <Route path="/genres" element={<Genres />} />
-        <Route path="/genres/:name" element={<GenreDetail />} />
+        <Route path="/genres/:id" element={<GenreDetail />} />
 
         <Route path="/watchlist" element={<Watchlist />} />
 
