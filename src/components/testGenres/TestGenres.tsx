@@ -1,5 +1,5 @@
 import { useMain } from "../../hooks/ContextHooks"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 export default function TestGenres() {
   const {
@@ -10,13 +10,37 @@ export default function TestGenres() {
     movieDetails,
     movieSimilar,
     movieVideos,
-    movieSearch,
-    movieDiscover,
+    searchedMovies: movieSearch,
+    discoveredMovies: movieDiscover,
+    fetchMovieDetails,
+    fetchMovieSimilar,
+    fetchMovieVideos,
+    searchMovies,
+    discoverMovies,
     loading,
     error,
   } = useMain()
 
   const [searchQuery, setSearchQuery] = useState("")
+
+  // Trigger detail/similar/video/discover example fetches on mount
+  useEffect(() => {
+    const exampleMovieId = 550 // Fight Club
+    const exampleGenreId = 28 // Action
+    fetchMovieDetails(exampleMovieId)
+    fetchMovieSimilar(exampleMovieId)
+    fetchMovieVideos(exampleMovieId)
+    discoverMovies(exampleGenreId)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  // Trigger movie search when query changes (basic debounce-like guard)
+  useEffect(() => {
+    if (searchQuery.trim().length >= 2) {
+      searchMovies(searchQuery.trim())
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchQuery])
 
   return (
     <div className="p-4 space-y-10 text-white">
@@ -61,7 +85,10 @@ export default function TestGenres() {
         <ul className="list-disc pl-6">
           {movieVideos.map((v) => (
             <li key={v.id}>
-              {v.name} ({v.type})
+              {/* {v.name} ({v.type}) */}
+              <a href={`https://www.youtube.com/watch?v=${v.key}`} target="_blank" rel="noopener noreferrer">
+                {`https://www.youtube.com/watch?v=${v.key}`}
+              </a>
             </li>
           ))}
         </ul>
@@ -80,7 +107,7 @@ export default function TestGenres() {
           placeholder="Film suchen..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="p-2 rounded text-black w-full max-w-md"
+          className="p-2 rounded text-black w-full max-w-md bg-white"
         />
         {loading.search && <p>Suche läuft...</p>}
         {error.search && <p className="text-red-500">{error.search}</p>}

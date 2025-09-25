@@ -1,13 +1,6 @@
 import { createContext, useEffect, useState } from "react"
 import type { Genre, MovieGenre } from "../interface/Genre"
-import type {
-  // Movie,
-  MovieDetails,
-  MovieSimilar,
-  MovieVideos,
-  ResultMovieSimilar,
-  ResultVideo,
-} from "../interface/Movie"
+import type { MovieDetails, MovieSimilar, MovieVideos, ResultMovieSimilar, ResultVideo } from "../interface/Movie"
 import type {
   MovieListPopular,
   MovieListTopRated,
@@ -28,8 +21,10 @@ interface MainContextProps {
   movieDetails: MovieDetails | null
   movieSimilar: ResultMovieSimilar[]
   movieVideos: ResultVideo[]
+  // todo richtigen type verwenden
   searchedMovies: ResultPopular[]
   discoveredMovies: ResultPopular[]
+
   loading: {
     genres: boolean
     popular: boolean
@@ -110,6 +105,7 @@ export default function MainProvider({ children }: { children: React.ReactNode }
         setLoading((prev) => ({ ...prev, genres: false }))
       }
     }
+    //Initial die Genres laden
     fetchGenres()
   }, [])
 
@@ -129,6 +125,7 @@ export default function MainProvider({ children }: { children: React.ReactNode }
         setLoading((prev) => ({ ...prev, popular: false }))
       }
     }
+    //Initial die Popular Movies laden
     fetchPopular()
   }, [])
 
@@ -148,6 +145,7 @@ export default function MainProvider({ children }: { children: React.ReactNode }
         setLoading((prev) => ({ ...prev, topRated: false }))
       }
     }
+    //Initial die Top Rated Movies laden
     fetchTopRated()
   }, [])
 
@@ -167,6 +165,7 @@ export default function MainProvider({ children }: { children: React.ReactNode }
         setLoading((prev) => ({ ...prev, upcoming: false }))
       }
     }
+    //Initial die Upcoming Movies laden
     fetchUpcoming()
   }, [])
 
@@ -238,7 +237,6 @@ export default function MainProvider({ children }: { children: React.ReactNode }
 
   //# DISCOVER - Movie - https://developer.themoviedb.org/reference/discover-movie
   // "https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc&with_genres={genre ID}"
-  // todo mit discover soll die ID des Genres verwendet werden
   async function discoverMovies(genreId: number) {
     setLoading((prev) => ({ ...prev, discover: true }))
     setError((prev) => ({ ...prev, discover: null }))
@@ -261,6 +259,7 @@ export default function MainProvider({ children }: { children: React.ReactNode }
     }
   }
 
+  //Für bessere lesbarkeit
   const value: MainContextProps = {
     movieGenres,
     moviePopular,
