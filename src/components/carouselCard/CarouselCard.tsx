@@ -31,9 +31,22 @@ export default function CarouselCard({ movie }: CarouselCardProps) {
         onClick={() => {
           if (!bp.isMd) setNavigate(true)
         }}>
-        <Animation variant="parallax" parallaxStrength={160} parallaxAnchor="top" className="absolute inset-0" markers>
-          <img className="w-full h-full object-cover" src={backdropUrl} alt={`${movie.title}-backdrop`} />
-        </Animation>
+        {bp.isMd ? (
+          <Animation
+            variant="parallax"
+            parallaxStrength={160}
+            parallaxAnchor="top"
+            className="absolute inset-0"
+            markers>
+            <img className="w-full h-full object-cover" src={backdropUrl} alt={`${movie.title}-backdrop`} />
+          </Animation>
+        ) : (
+          <img
+            className="absolute inset-0 w-full h-full object-cover"
+            src={backdropUrl}
+            alt={`${movie.title}-backdrop`}
+          />
+        )}
 
         {/* Gradient-Overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
