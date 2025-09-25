@@ -3,6 +3,7 @@ import { Link } from "react-router"
 import StarRating from "../starRating/StarRating"
 import type { MovieDetails, ResultMovieSimilar } from "../../interface/Movie"
 import { TMDB_IMG_BASE, TmdbImageSize } from "../../enum/TmdbImage"
+import NavIcon from "../navIcon/NavIcon"
 
 type MovieDialogData = MovieDetails | ResultMovieSimilar
 
@@ -93,7 +94,7 @@ export default function MovieDialog({
           <button
             onClick={onClose}
             aria-label="Close dialog"
-            className="absolute right-3 top-3 z-10 rounded-full bg-black/40 px-2 py-1 text-white hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400">
+            className="absolute right-3 top-3 z-10 rounded-full font-semibold bg-black/40 px-2 py-1 text-white hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400 cursor-pointer">
             ✕
           </button>
 
@@ -120,7 +121,7 @@ export default function MovieDialog({
                 )}
 
                 {/* CTA */}
-                <div className="mt-4 sm:mt-6">
+                <div className="mt-4 sm:mt-6 flex items-center gap-4 ">
                   {ctaHref ? (
                     <Link
                       to={ctaHref}
@@ -134,6 +135,10 @@ export default function MovieDialog({
                       {ctaLabel}
                     </button>
                   )}
+                  {/* TODO Onclick Funktion hinzufügen */}
+                  <div className="text-white">
+                    <NavIcon icon={"watchlist"} />
+                  </div>
                 </div>
               </div>
             </div>
