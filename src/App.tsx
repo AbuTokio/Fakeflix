@@ -18,8 +18,6 @@ import Search from "./pages/search/Search"
 // import TestGenres from "./components/testGenres/TestGenres"
 
 function App() {
-  // useEffect(() => useScrollToTop())
-
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route
