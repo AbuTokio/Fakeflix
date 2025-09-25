@@ -60,9 +60,8 @@ export default function MediaPlayer({ youtubeKey, posterUrl, className = "", aut
             {/* Play CTA */}
             <div className="absolute inset-0 grid place-items-center">
               <div className="flex items-center gap-3 sm:gap-4 md:gap-5">
-                <span className="grid place-items-center h-12 w-12 sm:h-14 sm:w-14 md:h-16 md:w-16 lg:h-20 lg:w-20 rounded-full bg-white/90 text-black shadow-lg transition-transform group-hover:scale-105">
-                  <img className="h-5 sm:h-6 md:h-8 lg:h-10" src="/public/img/play-solid-full.svg" alt="play icon" />
-                </span>
+                <img className="h-8 sm:h-10 md:h-12 lg:h-14" src="/public/img/play.svg" alt="play icon" />
+
                 <span className="text-white/90 font-semibold text-sm sm:text-base md:text-lg lg:text-xl">
                   Play Trailer
                 </span>
