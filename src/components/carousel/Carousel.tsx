@@ -53,7 +53,7 @@ export default function Carousel({ cards }: CarouselProps) {
         )
       })}
 
-      <div className="flex gap-4 absolute bottom-2 left-1/2 -translate-x-1/2 w-fit p-2">
+      <div className="flex gap-4 absolute bottom-2 left-1/2 -translate-x-1/2 w-fit p-4">
         {cards.map((card) => (
           <div key={cards.indexOf(card)}>
             <div

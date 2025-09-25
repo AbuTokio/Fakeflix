@@ -13,6 +13,7 @@ import MediaPlayer from "../../../components/mediaPlayer/MediaPlayer"
 import Animation from "../../../components/animation/Animation"
 import Button from "../../../components/button/Button"
 import { useMain } from "../../../hooks/ContextHooks"
+import NavIcon from "../../../components/navIcon/NavIcon"
 
 function InfoItem({ label, value, className }: { label: string; value: React.ReactNode; className?: string }) {
   return (
@@ -145,7 +146,10 @@ export default function MovieDetail() {
                             <Badge key={genre}>{genre}</Badge>
                           ))}
                         </div>
-                        <div>
+                        <div className="flex gap-2">
+                          <div className="text-white w-6 cursor-pointer">
+                            <NavIcon icon="share" />
+                          </div>
                           {/* TODO Add onclick */}
                           <Button
                             label="+ Watchlist"
