@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react"
+import { useState } from "react"
 import Animation from "../../components/animation/Animation"
 import MovieCard from "../../components/movieCard/MovieCard"
 import MovieDialog from "../../components/movieDialog/MovieDialog"
@@ -9,16 +9,7 @@ import { useMain } from "../../hooks/ContextHooks"
 export default function Watchlist() {
   const mainCtx = useMain()
 
-  const [openId, setOpenId] = useState<number | null>(null)
   const [loading] = useState(false)
-
-  const handleOpen = useCallback((id: number) => {
-    setOpenId(id)
-  }, [])
-
-  const handleClose = useCallback(() => setOpenId(null), [])
-
-  const selected = mainCtx.watchlist.find((m) => m.id === openId)!
 
   return (
     <>
@@ -40,11 +31,19 @@ export default function Watchlist() {
             <MovieSection className="capitalize" title={`${mainCtx.user.name}'s Watchlist`} grid>
               {loading
                 ? Array.from({ length: mainCtx.watchlist.length }).map((_, i) => <SkeletonCard key={i} />)
-                : mainCtx.watchlist.map((m) => <MovieCard key={m.id} movie={m} onOpen={handleOpen} />)}
+                : mainCtx.watchlist.map((m) => (
+                    <MovieCard key={m.id} movie={m} onOpen={() => mainCtx.openMovieDialog(m)} />
+                  ))}
             </MovieSection>
           </section>
-          {openId !== null && (
-            <MovieDialog open ctaHref={`/movies/detail/${openId}`} onClose={handleClose} data={selected} />
+
+          {mainCtx.dialog.open && mainCtx.dialog.data && (
+            <MovieDialog
+              open
+              ctaHref={`/movies/detail/${mainCtx.dialog.movieId}`}
+              onClose={mainCtx.closeMovieDialog}
+              data={mainCtx.dialog.data}
+            />
           )}
         </Animation>
       )}

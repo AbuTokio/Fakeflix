@@ -1,7 +1,7 @@
 import { useParams } from "react-router"
 import { useMain } from "../../hooks/ContextHooks"
 import MovieSection from "../../components/movieSection/MovieSection"
-import { useCallback, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { SkeletonCard } from "../../components/skeletonCard/SkeletonCard"
 import MovieCard from "../../components/movieCard/MovieCard"
 import MovieDialog from "../../components/movieDialog/MovieDialog"
@@ -10,16 +10,7 @@ import type { ResultMovieList } from "../../interface/MovieList"
 export default function Search() {
   const { query } = useParams<{ query: string }>()
   const mainCtx = useMain()
-  const [openId, setOpenId] = useState<number | null>(null)
   const [loading] = useState(false)
-
-  const handleOpen = useCallback((id: number) => {
-    setOpenId(id)
-  }, [])
-
-  const handleClose = useCallback(() => setOpenId(null), [])
-
-  const selected = mainCtx.watchlist.find((m) => m.id === openId)!
 
   useEffect(() => {
     if (query) mainCtx.searchMovies(query)
