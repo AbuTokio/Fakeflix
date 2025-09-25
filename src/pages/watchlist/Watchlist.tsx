@@ -1,7 +1,6 @@
 import { useState } from "react"
 import Animation from "../../components/animation/Animation"
 import MovieCard from "../../components/movieCard/MovieCard"
-import MovieDialog from "../../components/movieDialog/MovieDialog"
 import MovieSection from "../../components/movieSection/MovieSection"
 import { SkeletonCard } from "../../components/skeletonCard/SkeletonCard"
 import { useMain } from "../../hooks/ContextHooks"
@@ -36,15 +35,6 @@ export default function Watchlist() {
                   ))}
             </MovieSection>
           </section>
-
-          {mainCtx.dialog.open && mainCtx.dialog.data && (
-            <MovieDialog
-              open
-              ctaHref={`/movies/detail/${mainCtx.dialog.movieId}`}
-              onClose={mainCtx.closeMovieDialog}
-              data={mainCtx.dialog.data}
-            />
-          )}
         </Animation>
       )}
     </>

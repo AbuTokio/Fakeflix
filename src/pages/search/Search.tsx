@@ -4,7 +4,6 @@ import MovieSection from "../../components/movieSection/MovieSection"
 import { useEffect, useState } from "react"
 import { SkeletonCard } from "../../components/skeletonCard/SkeletonCard"
 import MovieCard from "../../components/movieCard/MovieCard"
-import MovieDialog from "../../components/movieDialog/MovieDialog"
 import type { ResultMovieList } from "../../interface/MovieList"
 
 export default function Search() {
@@ -34,15 +33,6 @@ export default function Search() {
               </MovieSection>
             </div>
           </section>
-
-          {mainCtx.dialog.open && mainCtx.dialog.data && (
-            <MovieDialog
-              open
-              ctaHref={`/movies/detail/${mainCtx.dialog.movieId}`}
-              onClose={mainCtx.closeMovieDialog}
-              data={mainCtx.dialog.data}
-            />
-          )}
         </>
       )}
       {!mainCtx.loading.search && query && mainCtx.searchedMovies.length === 0 && (
