@@ -38,14 +38,19 @@ export default function Search() {
                 {loading
                   ? Array.from({ length: 10 }).map((_, i) => <SkeletonCard key={i} />)
                   : mainCtx.searchedMovies.map((m: ResultMovieList) => (
-                      <MovieCard key={m.id} movie={m} onOpen={handleOpen} />
+                      <MovieCard key={m.id} movie={m} onOpen={() => mainCtx.openMovieDialog(m)} />
                     ))}
               </MovieSection>
             </div>
           </section>
 
-          {openId !== null && (
-            <MovieDialog open ctaHref={`/movies/detail/${openId}`} onClose={handleClose} data={selected} />
+          {mainCtx.dialog.open && mainCtx.dialog.data && (
+            <MovieDialog
+              open
+              ctaHref={`/movies/detail/${mainCtx.dialog.movieId}`}
+              onClose={mainCtx.closeMovieDialog}
+              data={mainCtx.dialog.data}
+            />
           )}
         </>
       )}
