@@ -14,7 +14,6 @@ interface MainContextProps {
   movieDetails: MovieDetails | null
   movieSimilar: ResultMovieList[]
   movieVideos: ResultVideo[]
-  // todo richtigen type verwenden
   searchedMovies: ResultMovieList[]
   discoveredMovies: ResultMovieList[]
 
@@ -29,6 +28,7 @@ interface MainContextProps {
     search: boolean
     discover: boolean
   }
+
   error: {
     genres: string | null
     popular: string | null
