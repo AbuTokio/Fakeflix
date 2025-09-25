@@ -1,24 +1,8 @@
+import type { ResultMovieList } from "../../interface/MovieList"
 import StarRating from "../starRating/StarRating"
 
-// FIXME Typesierung ändern
-type MovieInput = {
-  id: number
-  title?: string
-  original_title?: string
-  name?: string
-
-  // Bild-Varianten
-  poster_path?: string | null
-  backdrop_path?: string | null
-  posterUrl?: string | null
-
-  // Rating-Varianten
-  vote_average?: number
-  rating?: number
-}
-
 type MovieCardProps = {
-  movie: MovieInput
+  movie: ResultMovieList
   onOpen?: (id: number) => void
   imgSize?: "w185" | "w342" | "w500" | "original"
   className?: string
@@ -36,14 +20,15 @@ export default function MovieCard({
 }: MovieCardProps) {
   const { id } = movie
 
-  const title = movie.title ?? movie.original_title ?? movie.name ?? "Untitled"
+  const title = movie.title ?? movie.original_title ?? movie.title ?? "Untitled"
 
-  const posterUrl =
-    movie.posterUrl ??
-    (movie.poster_path ? `${TMDB_IMG_BASE}/${imgSize}${movie.poster_path}` : null) ??
-    (movie.backdrop_path ? `${TMDB_IMG_BASE}/${imgSize}${movie.backdrop_path}` : null)
+  const posterUrl = movie.poster_path
+    ? `${TMDB_IMG_BASE}/${imgSize}${movie.poster_path}`
+    : movie.backdrop_path
+    ? `${TMDB_IMG_BASE}/${imgSize}${movie.backdrop_path}`
+    : null
 
-  const rating = movie.vote_average ?? movie.rating ?? 0
+  const rating = movie.vote_average ?? movie.vote_average ?? 0
 
   const handleOpen = () => onOpen?.(id)
 

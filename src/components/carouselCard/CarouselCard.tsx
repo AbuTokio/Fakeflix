@@ -1,5 +1,4 @@
 import { useState } from "react"
-import type { dummyMoviePopular } from "../../dummy/data"
 import { TmdbImageSize } from "../../enum/TmdbImage"
 import { useResponsive } from "../../hooks/ResponsiveHooks"
 import GenreIdToString from "../../utility/GenreIdToString"
@@ -9,9 +8,10 @@ import CarouselInfo from "../carouselInfo/CarouselInfo"
 import { Navigate } from "react-router"
 import { useMain } from "../../hooks/ContextHooks"
 import AddToWatchlist from "../../utility/AddToWatchlist"
+import type { ResultMovieList } from "../../interface/MovieList"
 
 interface CarouselCardProps {
-  movie: (typeof dummyMoviePopular.results)[0]
+  movie: ResultMovieList
 }
 
 export default function CarouselCard({ movie }: CarouselCardProps) {
