@@ -16,6 +16,7 @@ export function EmptyCard() {
 
 export default function Genres() {
   const {
+    page,
     movieGenres,
     discoverMovies,
     discoveredMovies,
@@ -28,9 +29,9 @@ export default function Genres() {
 
   useEffect(() => {
     movieGenres.forEach((g) => {
-      if (!discoveredMovies[g.id]) discoverMovies(g.id)
+      if (!discoveredMovies[g.id]) discoverMovies(g.id, page)
     })
-  }, [movieGenres, discoveredMovies])
+  }, [movieGenres, discoveredMovies, page])
 
   return (
     <>

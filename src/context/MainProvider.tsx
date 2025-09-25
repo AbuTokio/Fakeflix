@@ -57,7 +57,7 @@ interface MainContextProps {
   fetchMovieSimilar: (id: number) => Promise<void>
   fetchMovieVideos: (id: number) => Promise<void>
   searchMovies: (query: string) => Promise<void>
-  discoverMovies: (genreId: number, force?: boolean) => Promise<void>
+  discoverMovies: (genreId: number, page: number) => Promise<void>
   loadingByGenre: Record<number, boolean>
   errorByGenre: Record<number, string | null>
   page: number
@@ -276,7 +276,7 @@ export default function MainProvider({ children }: { children: React.ReactNode }
 
   //# DISCOVER - Movie - https://developer.themoviedb.org/reference/discover-movie
   // "https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc&with_genres={genre ID}"
-  async function discoverMovies(genreId: number) {
+  async function discoverMovies(genreId: number, page: number) {
     setLoadingByGenre((prev) => ({ ...prev, [genreId]: true }))
     setErrorByGenre((prev) => ({ ...prev, [genreId]: null }))
     try {
@@ -286,10 +286,11 @@ export default function MainProvider({ children }: { children: React.ReactNode }
           include_adult: false,
           include_video: false,
           sort_by: "popularity.desc",
-          page: 1,
+          page: page,
         },
       })
       setDiscoveredMovies((prev) => ({ ...prev, [genreId]: res.data.results }))
+      setTotalPages(res.data.total_pages)
     } catch (err) {
       console.error("Fehler bei der Filmsuche", err)
       setErrorByGenre((prev) => ({ ...prev, [genreId]: "Discover-Filme konnten nicht geladen werden." }))
