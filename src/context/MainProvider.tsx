@@ -26,7 +26,7 @@ interface MainContextProps {
   movieSimilar: ResultMovieList[]
   movieVideos: ResultVideo[]
   searchedMovies: ResultMovieList[]
-  discoveredMovies: ResultMovieList[]
+  discoveredMovies: Record<number, ResultMovieList[]>
 
   loading: {
     genres: boolean
@@ -56,7 +56,10 @@ interface MainContextProps {
   fetchMovieSimilar: (id: number) => Promise<void>
   fetchMovieVideos: (id: number) => Promise<void>
   searchMovies: (query: string) => Promise<void>
-  discoverMovies: (genreId: number) => Promise<void>
+  discoverMovies: (genreId: number, force?: boolean) => Promise<void>
+  loadingByGenre: Record<number, boolean>
+  errorByGenre: Record<number, string | null>
+
   watchlist: typeof dummyMoviePopular.results
   setWatchlist: React.Dispatch<React.SetStateAction<typeof dummyMoviePopular.results>>
   user: { name: string; email: string } | null
@@ -83,7 +86,9 @@ export default function MainProvider({ children }: { children: React.ReactNode }
   const [movieSimilar, setMovieSimilar] = useState<ResultMovieList[]>([])
   const [movieVideos, setMovieVideos] = useState<ResultVideo[]>([])
   const [searchedMovies, setSearchedMovies] = useState<ResultMovieList[]>([])
-  const [discoveredMovies, setDiscoveredMovies] = useState<ResultMovieList[]>([])
+  const [discoveredMovies, setDiscoveredMovies] = useState<Record<number, ResultMovieList[]>>({})
+  const [loadingByGenre, setLoadingByGenre] = useState<Record<number, boolean>>({})
+  const [errorByGenre, setErrorByGenre] = useState<Record<number, string | null>>({})
   const [dialog, setDialog] = useState<DialogState>({ open: false, movieId: null, data: null })
 
   const [loading, setLoading] = useState({
@@ -259,8 +264,8 @@ export default function MainProvider({ children }: { children: React.ReactNode }
   //# DISCOVER - Movie - https://developer.themoviedb.org/reference/discover-movie
   // "https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc&with_genres={genre ID}"
   async function discoverMovies(genreId: number) {
-    setLoading((prev) => ({ ...prev, discover: true }))
-    setError((prev) => ({ ...prev, discover: null }))
+    setLoadingByGenre((prev) => ({ ...prev, [genreId]: true }))
+    setErrorByGenre((prev) => ({ ...prev, [genreId]: null }))
     try {
       const res = await tmdb.get<ResultMovieList>("/discover/movie", {
         params: {
@@ -271,12 +276,11 @@ export default function MainProvider({ children }: { children: React.ReactNode }
           page: 1,
         },
       })
-      setDiscoveredMovies(res.data.results)
+      setDiscoveredMovies((prev) => ({ ...prev, [genreId]: res.data.results }))
     } catch (err) {
-      console.error("Fehler beim Laden der Discover-Filme", err)
-      setError((prev) => ({ ...prev, discover: "Discover-Filme konnten nicht geladen werden." }))
+      setErrorByGenre((prev) => ({ ...prev, [genreId]: "Discover-Filme konnten nicht geladen werden." }))
     } finally {
-      setLoading((prev) => ({ ...prev, discover: false }))
+      setLoadingByGenre((prev) => ({ ...prev, [genreId]: false }))
     }
   }
 
@@ -305,6 +309,8 @@ export default function MainProvider({ children }: { children: React.ReactNode }
       movieVideos,
       searchedMovies,
       discoveredMovies,
+      loadingByGenre,
+      errorByGenre,
       loading,
       error,
       fetchMovieDetails,
