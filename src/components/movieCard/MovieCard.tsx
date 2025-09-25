@@ -24,6 +24,7 @@ export default function MovieCard({ movie, onOpen, className = "", showRating = 
 
   const handleOpen = () => onOpen?.(movie)
   // TODO HAndleOpen anpassen
+  // TODO Textfarbe anpassen
   return (
     <div
       role="button"

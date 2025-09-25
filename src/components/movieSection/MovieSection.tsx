@@ -20,6 +20,7 @@ export default function MovieSection({
   titleClassName = "",
 }: MovieSectionProps) {
   return (
+    // TODO Textfabre anpasen
     <>
       <Animation delay={0.2}>
         <section className={["mx-auto w-full max-w-screen px-4 sm:px-6 lg:px-8 space-y-4", className || ""].join(" ")}>
