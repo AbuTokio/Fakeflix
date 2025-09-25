@@ -1,59 +1,75 @@
-import React, { useEffect, useState } from "react"
+import React, { act, useEffect, useState } from "react"
 
 interface CarouselProps {
   cards: React.ReactNode[]
-  autoMs?: number
-  fadeMs?: number
 }
 
-export default function Carousel({ cards, autoMs = 6000, fadeMs = 600 }: CarouselProps) {
-  const [active, setActive] = useState(0)
-  const [fading, setFading] = useState(false)
+export default function Carousel({ cards }: CarouselProps) {
+  const [activeCard, setActiveCard] = useState<number>(0)
+  const [moveActiveCard, setMoveActiveCard] = useState<boolean>(false)
 
-  const goTo = (next: number) => {
-    if (next === active) return
-    setFading(true)
-    setTimeout(() => {
-      setActive(next)
-      setFading(false)
-    }, fadeMs)
+  const switchSlide = () => {
+    if (activeCard < cards.length - 1) {
+      setMoveActiveCard(true)
+      act(() => {
+        setTimeout(() => {
+          setActiveCard(activeCard + 1)
+          setMoveActiveCard(false)
+        }, 600)
+      })
+    } else {
+      setMoveActiveCard(true)
+      act(() => {
+        setTimeout(() => {
+          setActiveCard(0)
+          setMoveActiveCard(false)
+        }, 600)
+      })
+    }
   }
 
   useEffect(() => {
-    if (cards.length === 0) return
-    const id = setInterval(() => {
-      goTo((active + 1) % cards.length)
-    }, autoMs)
-    return () => clearInterval(id)
-  }, [active, cards.length, autoMs])
-
-  if (cards.length === 0) return null
+    const intervalId = setInterval(() => {
+      switchSlide()
+    }, 6000)
+    return () => clearInterval(intervalId)
+  })
 
   return (
     <div className="relative w-full aspect-video max-h-[80vh] overflow-hidden bg-black">
-      {cards.map((card, i) => (
-        <div
-          key={i}
-          className={[
-            "absolute inset-0 w-full h-full transition-opacity",
-            fading && i === active ? "opacity-0 duration-500" : "",
-            i === active ? "opacity-100 duration-500" : "opacity-0 duration-300",
-          ].join(" ")}>
-          <div className="absolute inset-0 w-full h-full">{card}</div>
-        </div>
-      ))}
+      {cards.map((card, index) => {
+        return (
+          <div key={index} className="absolute inset-0 w-full h-full transition-opacity">
+            {index === activeCard && (
+              <div
+                key={index}
+                className={`animate-blendin w-full h-full transition-all duration-500 ${
+                  moveActiveCard && "animate-blendout"
+                }`}>
+                {card}
+              </div>
+            )}
+          </div>
+        )
+      })}
 
-      {/* Dots */}
-      <div className="pointer-events-auto flex gap-2 md:gap-3 absolute bottom-3 left-1/2 -translate-x-1/2 p-2">
-        {cards.map((_, i) => (
-          <button
-            key={i}
-            onClick={() => goTo(i)}
-            className={[
-              "h-1.5 md:h-2 rounded-full transition-all",
-              i === active ? "w-12 md:w-16 bg-red-600" : "w-6 md:w-8 bg-white/70 hover:bg-white",
-            ].join(" ")}
-          />
+      <div className="flex gap-4 absolute bottom-2 left-1/2 -translate-x-1/2 w-fit p-4">
+        {cards.map((card) => (
+          <div key={cards.indexOf(card)}>
+            <div
+              className={`w-1 h-1 ${
+                activeCard === cards.indexOf(card) ? "w-15 bg-red-600" : "w-5 bg-white cursor-pointer"
+              } md:h-5 rounded-full transition-all duration-150`}
+              onClick={() => {
+                setMoveActiveCard(true)
+                act(() => {
+                  setTimeout(() => {
+                    setActiveCard(cards.indexOf(card))
+                    setMoveActiveCard(false)
+                  }, 600)
+                })
+              }}></div>
+          </div>
         ))}
       </div>
     </div>
