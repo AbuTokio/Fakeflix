@@ -1,15 +1,13 @@
 export function SkeletonCard() {
   return (
-    <div className="group w-[256px] h-[392px] cursor-pointer animate-pulse">
-      {/* Poster Placeholder */}
-      <div className="h-[90%] w-full bg-gray-700 rounded-md" />
+    <div className="w-full flex flex-col animate-pulse">
+      {/* Poster mit Ratio */}
+      <div className="w-full aspect-[2/3] overflow-hidden rounded-md bg-neutral-800" />
 
-      {/* Text + Rating Placeholder */}
-      <div className="mt-1 flex flex-row justify-between px-2 items-start gap-0.5">
-        {/* Title Placeholder */}
-        <div className="h-4 w-2/3 bg-gray-700 rounded" />
-        {/* Star Placeholder */}
-        <div className="h-4 w-12 bg-gray-700 rounded" />
+      {/* Text + Rating */}
+      <div className="mt-2 flex items-start justify-between gap-2 px-1">
+        <div className="h-4 w-2/3 rounded bg-neutral-800" />
+        <div className="h-4 w-12 rounded bg-neutral-800" />
       </div>
     </div>
   )

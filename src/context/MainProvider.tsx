@@ -1,11 +1,20 @@
-import { createContext, useEffect, useState } from "react"
+import { createContext, useCallback, useEffect, useMemo, useState } from "react"
 import type { Genre, MovieGenre } from "../interface/Genre"
 import type { MovieDetails, MovieSimilar, MovieVideos, ResultVideo } from "../interface/Movie"
 import type { ResultMovieList } from "../interface/MovieList"
 import { tmdb } from "../api/tmdb"
+import type { ResultMovie } from "../interface/Search"
+import gsap from "gsap"
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const mainContext = createContext<MainContextProps | null>(null)
+
+type DialogData = ResultMovieList | ResultMovie
+type DialogState = {
+  open: boolean
+  movieId: number | null
+  data: DialogData | null
+}
 
 interface MainContextProps {
   movieGenres: Genre[]
@@ -16,7 +25,7 @@ interface MainContextProps {
   movieSimilar: ResultMovieList[]
   movieVideos: ResultVideo[]
   searchedMovies: ResultMovieList[]
-  discoveredMovies: ResultMovieList[]
+  discoveredMovies: Record<number, ResultMovieList[]>
 
   loading: {
     genres: boolean
@@ -41,15 +50,23 @@ interface MainContextProps {
     search: string | null
     discover: string | null
   }
+
   fetchMovieDetails: (id: number) => Promise<void>
   fetchMovieSimilar: (id: number) => Promise<void>
   fetchMovieVideos: (id: number) => Promise<void>
   searchMovies: (query: string) => Promise<void>
-  discoverMovies: (genreId: number) => Promise<void>
+  discoverMovies: (genreId: number, force?: boolean) => Promise<void>
+  loadingByGenre: Record<number, boolean>
+  errorByGenre: Record<number, string | null>
+
   watchlist: ResultMovieList[]
   setWatchlist: React.Dispatch<React.SetStateAction<ResultMovieList[]>>
   user: { name: string; email: string } | null
   setUser: React.Dispatch<React.SetStateAction<{ name: string; email: string } | null>>
+
+  dialog: DialogState
+  openMovieDialog: (item: DialogData) => void
+  closeMovieDialog: () => void
 }
 
 export default function MainProvider({ children }: { children: React.ReactNode }) {
@@ -68,7 +85,10 @@ export default function MainProvider({ children }: { children: React.ReactNode }
   const [movieSimilar, setMovieSimilar] = useState<ResultMovieList[]>([])
   const [movieVideos, setMovieVideos] = useState<ResultVideo[]>([])
   const [searchedMovies, setSearchedMovies] = useState<ResultMovieList[]>([])
-  const [discoveredMovies, setDiscoveredMovies] = useState<ResultMovieList[]>([])
+  const [discoveredMovies, setDiscoveredMovies] = useState<Record<number, ResultMovieList[]>>({})
+  const [loadingByGenre, setLoadingByGenre] = useState<Record<number, boolean>>({})
+  const [errorByGenre, setErrorByGenre] = useState<Record<number, string | null>>({})
+  const [dialog, setDialog] = useState<DialogState>({ open: false, movieId: null, data: null })
 
   const [loading, setLoading] = useState({
     genres: false,
@@ -243,8 +263,8 @@ export default function MainProvider({ children }: { children: React.ReactNode }
   //# DISCOVER - Movie - https://developer.themoviedb.org/reference/discover-movie
   // "https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc&with_genres={genre ID}"
   async function discoverMovies(genreId: number) {
-    setLoading((prev) => ({ ...prev, discover: true }))
-    setError((prev) => ({ ...prev, discover: null }))
+    setLoadingByGenre((prev) => ({ ...prev, [genreId]: true }))
+    setErrorByGenre((prev) => ({ ...prev, [genreId]: null }))
     try {
       const res = await tmdb.get<ResultMovieList>("/discover/movie", {
         params: {
@@ -255,38 +275,75 @@ export default function MainProvider({ children }: { children: React.ReactNode }
           page: 1,
         },
       })
-      setDiscoveredMovies(res.data.results)
+      setDiscoveredMovies((prev) => ({ ...prev, [genreId]: res.data.results }))
     } catch (err) {
-      console.error("Fehler beim Laden der Discover-Filme", err)
-      setError((prev) => ({ ...prev, discover: "Discover-Filme konnten nicht geladen werden." }))
+      setErrorByGenre((prev) => ({ ...prev, [genreId]: "Discover-Filme konnten nicht geladen werden." }))
     } finally {
-      setLoading((prev) => ({ ...prev, discover: false }))
+      setLoadingByGenre((prev) => ({ ...prev, [genreId]: false }))
     }
   }
 
+  //# Dialog
+  const openMovieDialog = useCallback((item: DialogData) => {
+    setDialog({ open: true, movieId: item.id, data: item })
+    document.body.style.overflow = "hidden"
+    // gsap.globalTimeline.pause()
+  }, [])
+
+  const closeMovieDialog = useCallback(() => {
+    setDialog({ open: false, movieId: null, data: null })
+    document.body.style.overflow = ""
+    // gsap.globalTimeline.resume()
+  }, [])
+
   //Für bessere lesbarkeit
-  const value: MainContextProps = {
-    movieGenres,
-    moviePopular,
-    movieTopRated,
-    movieUpcoming,
-    movieDetails,
-    movieSimilar,
-    movieVideos,
-    searchedMovies,
-    discoveredMovies,
-    loading,
-    error,
-    fetchMovieDetails,
-    fetchMovieSimilar,
-    fetchMovieVideos,
-    searchMovies,
-    discoverMovies,
-    watchlist,
-    setWatchlist,
-    user,
-    setUser,
-  }
+  const value = useMemo<MainContextProps>(
+    () => ({
+      movieGenres,
+      moviePopular,
+      movieTopRated,
+      movieUpcoming,
+      movieDetails,
+      movieSimilar,
+      movieVideos,
+      searchedMovies,
+      discoveredMovies,
+      loadingByGenre,
+      errorByGenre,
+      loading,
+      error,
+      fetchMovieDetails,
+      fetchMovieSimilar,
+      fetchMovieVideos,
+      searchMovies,
+      discoverMovies,
+      watchlist,
+      setWatchlist,
+      user,
+      setUser,
+      dialog,
+      openMovieDialog,
+      closeMovieDialog,
+    }),
+    [
+      movieGenres,
+      moviePopular,
+      movieTopRated,
+      movieUpcoming,
+      movieDetails,
+      movieSimilar,
+      movieVideos,
+      searchedMovies,
+      discoveredMovies,
+      loading,
+      error,
+      watchlist,
+      user,
+      dialog,
+      openMovieDialog,
+      closeMovieDialog,
+    ]
+  )
 
   return <mainContext.Provider value={value}>{children}</mainContext.Provider>
 }

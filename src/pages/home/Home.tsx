@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react"
+import { useState } from "react"
 import { SkeletonCard } from "../../components/skeletonCard/SkeletonCard"
 import Carousel from "../../components/carousel/Carousel"
 import MovieSection from "../../components/movieSection/MovieSection"
@@ -10,15 +10,8 @@ import CardCarousel from "../../components/cardCarousel/CardCarousel"
 import { useMain } from "../../hooks/ContextHooks"
 
 export default function Home() {
-  const { moviePopular, movieTopRated, movieUpcoming } = useMain()
-  const [openId, setOpenId] = useState<number | null>(null)
-  const [loading] = useState(false)
-
-  const handleOpen = useCallback((id: number) => {
-    setOpenId(id)
-  }, [])
-
-  const handleClose = useCallback(() => setOpenId(null), [])
+  const { moviePopular, movieTopRated, movieUpcoming, dialog, openMovieDialog, closeMovieDialog } = useMain()
+  const [loading] = useState()
 
   return (
     <>
@@ -36,7 +29,9 @@ export default function Home() {
             cards={
               loading
                 ? Array.from({ length: 10 }).map((_, i) => <SkeletonCard key={i} />)
-                : movieTopRated.slice(0, 10).map((m) => <MovieCard key={m.id} movie={m} onOpen={handleOpen} />)
+                : movieTopRated
+                    .slice(0, 10)
+                    .map((m) => <MovieCard key={m.id} movie={m} onOpen={() => openMovieDialog(m)} />)
             }
           />
         </MovieSection>
@@ -47,7 +42,9 @@ export default function Home() {
             cards={
               loading
                 ? Array.from({ length: 10 }).map((_, i) => <SkeletonCard key={i} />)
-                : moviePopular.slice(0, 10).map((m) => <MovieCard key={m.id} movie={m} onOpen={handleOpen} />)
+                : moviePopular
+                    .slice(0, 10)
+                    .map((m) => <MovieCard key={m.id} movie={m} onOpen={() => openMovieDialog(m)} />)
             }
           />
         </MovieSection>
@@ -58,13 +55,15 @@ export default function Home() {
             cards={
               loading
                 ? Array.from({ length: 10 }).map((_, i) => <SkeletonCard key={i} />)
-                : movieUpcoming.slice(0, 10).map((m) => <MovieCard key={m.id} movie={m} onOpen={handleOpen} />)
+                : movieUpcoming
+                    .slice(0, 10)
+                    .map((m) => <MovieCard key={m.id} movie={m} onOpen={() => openMovieDialog(m)} />)
             }
           />
         </MovieSection>
       </section>
-      {openId !== null && (
-        <MovieDialog open ctaHref={`/movies/detail/${openId}`} onClose={handleClose} data={selected} />
+      {dialog.open && dialog.data && (
+        <MovieDialog open ctaHref={`/movies/detail/${dialog.movieId}`} onClose={closeMovieDialog} data={dialog.data} />
       )}
     </>
   )
