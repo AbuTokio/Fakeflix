@@ -1,12 +1,6 @@
-//# Popular
-export interface MovieListPopular {
-  page: number
-  results: ResultPopular[]
-  total_pages: number
-  total_results: number
-}
+//todo: Interface vereinheitlichen
 
-export interface ResultPopular {
+export interface ResultMovieList {
   adult: boolean
   backdrop_path: string
   genre_ids: number[]
@@ -23,6 +17,31 @@ export interface ResultPopular {
   vote_count: number
 }
 
+//# Popular
+export interface ResultMovieList {
+  page: number
+  results: ResultMovieList[]
+  total_pages: number
+  total_results: number
+}
+
+// export interface ResultPopular {
+//   adult: boolean
+//   backdrop_path: string
+//   genre_ids: number[]
+//   id: number
+//   original_language: OriginalLanguage
+//   original_title: string
+//   overview: string
+//   popularity: number
+//   poster_path: string
+//   release_date: Date
+//   title: string
+//   video: boolean
+//   vote_average: number
+//   vote_count: number
+// }
+
 export enum OriginalLanguage {
   En = "en",
   Es = "es",
@@ -33,33 +52,33 @@ export enum OriginalLanguage {
 //# Top Rated
 export interface MovieListTopRated {
   page: number
-  results: ResultTopRated[]
+  results: ResultMovieList[]
   total_pages: number
   total_results: number
 }
 
-export interface ResultTopRated {
-  adult: boolean
-  backdrop_path: string
-  genre_ids: number[]
-  id: number
-  original_language: string
-  original_title: string
-  overview: string
-  popularity: number
-  poster_path: string
-  release_date: Date
-  title: string
-  video: boolean
-  vote_average: number
-  vote_count: number
-}
+// export interface ResultTopRated {
+//   adult: boolean
+//   backdrop_path: string
+//   genre_ids: number[]
+//   id: number
+//   original_language: string
+//   original_title: string
+//   overview: string
+//   popularity: number
+//   poster_path: string
+//   release_date: Date
+//   title: string
+//   video: boolean
+//   vote_average: number
+//   vote_count: number
+// }
 
 //# Upcoming
 export interface MovieListUpcoming {
   dates: Dates
   page: number
-  results: ResultUpcoming[]
+  results: ResultMovieList[]
   total_pages: number
   total_results: number
 }
@@ -69,19 +88,27 @@ export interface Dates {
   minimum: Date
 }
 
-export interface ResultUpcoming {
-  adult: boolean
-  backdrop_path: string
-  genre_ids: number[]
-  id: number
-  original_language: string
-  original_title: string
-  overview: string
-  popularity: number
-  poster_path: string
-  release_date: Date
-  title: string
-  video: boolean
-  vote_average: number
-  vote_count: number
+// export interface ResultUpcoming {
+//   adult: boolean
+//   backdrop_path: string
+//   genre_ids: number[]
+//   id: number
+//   original_language: string
+//   original_title: string
+//   overview: string
+//   popularity: number
+//   poster_path: string
+//   release_date: Date
+//   title: string
+//   video: boolean
+//   vote_average: number
+//   vote_count: number
+// }
+
+//# Similar
+export interface MovieSimilar {
+  page: number
+  results: ResultMovieList[]
+  total_pages: number
+  total_results: number
 }

@@ -1,3 +1,5 @@
+// import { Outlet, useLocation } from "react-router"
+// ✅ richtig
 import { Outlet, useLocation } from "react-router"
 import Header from "../components/header/Header"
 import useScrollToTop from "../utility/Scroll"
