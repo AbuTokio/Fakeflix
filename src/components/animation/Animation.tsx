@@ -2,7 +2,6 @@ import React, { useLayoutEffect, useRef } from "react"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { useMain } from "../../hooks/ContextHooks"
-import { useResponsive } from "../../hooks/ResponsiveHooks"
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -14,6 +13,7 @@ type AnimationProps = {
   duration?: number
   className?: string
   freeze?: boolean
+  // Parallax
   variant?: "default" | "parallax"
   parallaxStrength?: number
   parallaxAxis?: "y" | "x"
@@ -38,35 +38,20 @@ export default function Animation({
   useParentAsTrigger = false,
 }: AnimationProps) {
   const { dialog } = useMain()
-  const bp = useResponsive()
   const ani = useRef<HTMLDivElement | null>(null)
   const tween = useRef<gsap.core.Tween | null>(null)
 
   const effectiveFreeze = freeze ?? dialog.open
 
-  const getScrollConfig = () => {
-    if (bp.is2xl || bp.isXl) {
-      return { start: "top 10%", end: "bottom 30%", scrub: 0.4, strength: parallaxStrength }
-    }
-    if (bp.isLg) {
-      return { start: "top 10%", end: "bottom 25%", scrub: 0.35, strength: parallaxStrength * 0.85 }
-    }
-    if (bp.isMd) {
-      return { start: "top 10%", end: "bottom 30%", scrub: 0.3, strength: parallaxStrength * 0.7 }
-    }
-    return { start: "top 0%", end: "bottom 15%", scrub: 0.25, strength: parallaxStrength * 0.5 }
-  }
-
   useLayoutEffect(() => {
     if (!ani.current) return
 
-    // Kill vorherige
+    // Clean up vorherigen Tween
     tween.current?.scrollTrigger?.kill()
     tween.current?.kill()
     tween.current = null
 
     const el = ani.current
-    const { start, end, scrub, strength } = getScrollConfig()
 
     if (effectiveFreeze) {
       gsap.set(el, to)
@@ -83,19 +68,19 @@ export default function Animation({
 
       if (parallaxAxis === "y") {
         if (parallaxAnchor === "center") {
-          fromY = -strength / 2
-          toY = strength / 2
+          fromY = -parallaxStrength / 2
+          toY = parallaxStrength / 2
         } else {
           fromY = 0
-          toY = strength
+          toY = parallaxStrength
         }
       } else {
         if (parallaxAnchor === "center") {
-          fromX = -strength / 2
-          toX = strength / 2
+          fromX = -parallaxStrength / 2
+          toX = parallaxStrength / 2
         } else {
           fromX = 0
-          toX = strength
+          toX = parallaxStrength
         }
       }
 
@@ -112,15 +97,16 @@ export default function Animation({
           ease: "none",
           scrollTrigger: {
             trigger: triggerEl,
-            start,
-            end,
-            scrub,
+            start: "top 0%",
+            end: "bottom 20%",
+            scrub: 0.3,
             markers,
             invalidateOnRefresh: true,
           },
         }
       )
     } else {
+      // normale Fade/Move Animation
       tween.current = gsap.fromTo(el, from, { ...to, delay, duration, overwrite: "auto" })
     }
 
@@ -141,7 +127,6 @@ export default function Animation({
     parallaxAnchor,
     markers,
     useParentAsTrigger,
-    bp.active,
   ])
 
   return (
