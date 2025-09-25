@@ -62,12 +62,13 @@ export default function CarouselCard({ movie }: CarouselCardProps) {
 
           <div className={`absolute ${bp.isMd ? "bottom-20" : "bottom-8"} w-full px-4 md:px-12`}>
             <Animation useParentAsTrigger freeze={!bp.isMd}>
-              <CarouselInfo
+              {/* <CarouselInfo
                 title={movie.title}
-                tags={movie.genre_ids.map((g) => GenreIdToString("movie", g))}
+                // tags={movie.genre_ids.map((g) => GenreIdToString("movie", g))}
                 info={{ releaseDate: movie.release_date, rating: movie.vote_average }}
                 description={movie.overview}
-              />
+              /> */}
+              <div></div>
             </Animation>
           </div>
         </div>

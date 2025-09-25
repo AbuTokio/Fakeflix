@@ -174,6 +174,7 @@ export default function MainProvider({ children }: { children: React.ReactNode }
       const res = await tmdb.get<ResultMovieList>("/movie/top_rated", { params: { page: page, region: "US" } })
       setMovieTopRated(res.data.results)
       setTotalPages(res.data.total_pages)
+      // FIXME
     } catch (err) {
       console.error("Fehler beim Laden der Top Rated Filme", err)
       setError((prev) => ({ ...prev, topRated: "Top Rated Filme konnten nicht geladen werden." }))
@@ -196,6 +197,7 @@ export default function MainProvider({ children }: { children: React.ReactNode }
       const res = await tmdb.get<ResultMovieList>("/movie/upcoming", { params: { page: page, region: "US" } })
       setMovieUpcoming(res.data.results)
       setTotalPages(res.data.total_pages)
+      // FIXME
     } catch (err) {
       console.error("Fehler beim Laden der kommenden Filme", err)
       setError((prev) => ({ ...prev, upcoming: "Kommende Filme konnten nicht geladen werden." }))
@@ -266,6 +268,7 @@ export default function MainProvider({ children }: { children: React.ReactNode }
         params: { query, include_adult: false, page: 1 },
       })
       setSearchedMovies(res.data.results)
+      // FIXME
     } catch (err) {
       console.error("Fehler bei der Filmsuche", err)
       setError((prev) => ({ ...prev, search: "Filme konnten nicht gesucht werden." }))
@@ -291,6 +294,7 @@ export default function MainProvider({ children }: { children: React.ReactNode }
       })
       setDiscoveredMovies((prev) => ({ ...prev, [genreId]: res.data.results }))
       setTotalPages(res.data.total_pages)
+      // FIXME
     } catch (err) {
       console.error("Fehler bei der Filmsuche", err)
       setErrorByGenre((prev) => ({ ...prev, [genreId]: "Discover-Filme konnten nicht geladen werden." }))

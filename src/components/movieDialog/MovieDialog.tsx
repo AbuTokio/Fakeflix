@@ -34,8 +34,6 @@ export default function MovieDialog({
   const title = (data as any).title ?? (data as any).original_title ?? "Untitled"
 
   // ----- Bildquelle -----
-  // TODO Hintergrund anpassen backdrop als erstes verwenden
-
   const heroSrc = data.backdrop_path
     ? `${TMDB_IMG_BASE}/${TmdbImageSize.BACKDROP_SIZE}${data.backdrop_path}`
     : data.poster_path

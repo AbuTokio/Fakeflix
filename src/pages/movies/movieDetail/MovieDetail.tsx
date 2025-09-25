@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react"
+import React, { useEffect } from "react"
 import { useParams } from "react-router"
 import StarRating from "../../../components/starRating/StarRating"
 import Badge from "../../../components/badge/Badge"
@@ -75,11 +75,7 @@ export default function MovieDetail() {
   return (
     <>
       {/* Hero / Trailer */}
-      <Animation
-        delay={0.3}
-        variant="poster"
-        from={{ opacity: 0, scale: 0.9 }}
-        to={{ opacity: 1, scale: 1, rotate: 0 }}>
+      <Animation delay={0.3} from={{ opacity: 0, scale: 0.9 }} to={{ opacity: 1, scale: 1, rotate: 0 }}>
         <section className="w-full overflow-hidden">
           <MediaPlayer youtubeKey={trailerKey} posterUrl={backdropUrl} className="w-full max-w-[1920px] mx-auto" />
         </section>
@@ -165,8 +161,8 @@ export default function MovieDetail() {
                   <div className="flex flex-col gap-2 sm:gap-3">
                     <InfoItem label="Country" value={country || "—"} />
                     <InfoItem label="Genre" value={genres.length ? genres.join(", ") : "—"} />
-                    {/* TODO anpassen */}
-                    <InfoItem label="Date Release" value={releaseDate || "—"} />
+
+                    <InfoItem label="Date Release" value={String(releaseDate) || "—"} />
                     <InfoItem label="Production" value={production || "—"} />
                   </div>
                 </Animation>

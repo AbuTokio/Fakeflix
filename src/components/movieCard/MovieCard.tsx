@@ -23,7 +23,7 @@ export default function MovieCard({ movie, onOpen, className = "", showRating = 
   const rating = movie.vote_average ?? movie.vote_average ?? 0
 
   const handleOpen = () => onOpen?.(movie)
-
+  // TODO HAndleOpen anpassen
   return (
     <div
       role="button"
