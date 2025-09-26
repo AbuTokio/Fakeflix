@@ -7,7 +7,7 @@ import Button from "../button/Button"
 import CarouselInfo from "../carouselInfo/CarouselInfo"
 import { Navigate } from "react-router"
 import { useMain } from "../../hooks/ContextHooks"
-import AddToWatchlist from "../../utility/AddToWatchlist"
+import ToggleWatchlist from "../../utility/ToggleWatchlist"
 import type { ResultMovieList } from "../../interface/MovieList"
 import Animation from "../animation/Animation"
 
@@ -53,9 +53,9 @@ export default function CarouselCard({ movie }: CarouselCardProps) {
               } left-1/2 -translate-x-1/2 md:-translate-y-1/2 flex gap-6 justify-center items-center`}>
               <Button filled label="See Details" imgUrl="/src/assets/img/play.svg" onClick={() => setNavigate(true)} />
               <Button
-                label="+ Watchlist"
+                label={`${mainCtx.watchlist.includes(movie) ? "✓" : "+"} Watchlist`}
                 imgUrl="/src/assets/img/clock.svg"
-                onClick={() => AddToWatchlist(mainCtx.user, mainCtx.watchlist, mainCtx.setWatchlist, movie)}
+                onClick={() => ToggleWatchlist(mainCtx.user, mainCtx.watchlist, mainCtx.setWatchlist, movie)}
               />
             </div>
           )}

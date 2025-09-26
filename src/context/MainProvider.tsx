@@ -66,8 +66,8 @@ interface MainContextProps {
   totalPages: number
   setTotalPages: React.Dispatch<React.SetStateAction<number>>
 
-  watchlist: ResultMovieList[]
-  setWatchlist: React.Dispatch<React.SetStateAction<ResultMovieList[]>>
+  watchlist: (MovieDetails | ResultMovieList)[]
+  setWatchlist: React.Dispatch<React.SetStateAction<(MovieDetails | ResultMovieList)[]>>
   user: { name: string; email: string } | null
   setUser: React.Dispatch<React.SetStateAction<{ name: string; email: string } | null>>
 
@@ -77,7 +77,7 @@ interface MainContextProps {
 }
 
 export default function MainProvider({ children }: { children: React.ReactNode }) {
-  const [watchlist, setWatchlist] = useState<ResultMovieList[]>([])
+  const [watchlist, setWatchlist] = useState<(MovieDetails | ResultMovieList)[]>([])
   const [user, setUser] = useState<{ name: string; email: string } | null>(null)
 
   useEffect(() => {

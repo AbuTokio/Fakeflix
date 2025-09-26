@@ -12,7 +12,7 @@ import { TMDB_IMG_BASE, TmdbImageSize } from "../../../enum/TmdbImage"
 import { useMain } from "../../../hooks/ContextHooks"
 import NavIcon from "../../../components/navIcon/NavIcon"
 import ShareDialog from "../../../components/shareDialog/ShareDialog"
-import AddToWatchlist from "../../../utility/AddToWatchlist"
+import AddToWatchlist from "../../../utility/ToggleWatchlist"
 
 function InfoItem({ label, value, className }: { label: string; value: React.ReactNode; className?: string }) {
   return (
