@@ -2,12 +2,12 @@
 
 @font-face {
   font-family: Nunito;
-  src: url("/src/assets/fonts/Nunito.ttf");
+  src: url("/fonts/Nunito.ttf");
 }
 
 @font-face {
   font-family: BebasNeue;
-  src: url("/src/assets/fonts/BebasNeue.ttf");
+  src: url("/fonts/BebasNeue.ttf");
 }
 
 @theme {
