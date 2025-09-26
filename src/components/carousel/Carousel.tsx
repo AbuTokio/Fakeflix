@@ -53,15 +53,7 @@ export default function Carousel({ cards }: CarouselProps) {
               className={`w-1 h-1 ${
                 activeCard === cards.indexOf(card) ? "w-15 bg-red-600" : "w-5 bg-white cursor-pointer"
               } md:h-5 rounded-full transition-all duration-150`}
-              onClick={() => {
-                setMoveActiveCard(true)
-                act(() => {
-                  setTimeout(() => {
-                    setActiveCard(cards.indexOf(card))
-                    setMoveActiveCard(false)
-                  }, 600)
-                })
-              }}></div>
+              onClick={() => setCard(cards.indexOf(card))}></div>
           </div>
         ))}
       </div>
