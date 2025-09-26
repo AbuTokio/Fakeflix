@@ -8,24 +8,17 @@ export default function Carousel({ cards }: CarouselProps) {
   const [activeCard, setActiveCard] = useState<number>(0)
   const [moveActiveCard, setMoveActiveCard] = useState<boolean>(false)
 
+  const setCard = (card: number) => {
+    setMoveActiveCard(true)
+    setTimeout(() => {
+      setActiveCard(card)
+      setMoveActiveCard(false)
+    }, 600)
+  }
+
   const switchSlide = () => {
-    if (activeCard < cards.length - 1) {
-      setMoveActiveCard(true)
-      act(() => {
-        setTimeout(() => {
-          setActiveCard(activeCard + 1)
-          setMoveActiveCard(false)
-        }, 600)
-      })
-    } else {
-      setMoveActiveCard(true)
-      act(() => {
-        setTimeout(() => {
-          setActiveCard(0)
-          setMoveActiveCard(false)
-        }, 600)
-      })
-    }
+    if (activeCard < cards.length - 1) setCard(activeCard + 1)
+    else setCard(0)
   }
 
   useEffect(() => {
