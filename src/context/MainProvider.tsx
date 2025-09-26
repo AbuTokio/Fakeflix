@@ -172,10 +172,9 @@ export default function MainProvider({ children }: { children: React.ReactNode }
     setLoading((prev) => ({ ...prev, topRated: true }))
     setError((prev) => ({ ...prev, topRated: null }))
     try {
-      const res = await tmdb.get<ResultMovieList>("/movie/top_rated", { params: { page: page, region: "US" } })
+      const res = await tmdb.get<ResponseMovieList>("/movie/top_rated", { params: { page: page, region: "US" } })
       setMovieTopRated(res.data.results)
       setTotalPages(res.data.total_pages)
-      // FIXME
     } catch (err) {
       console.error("Fehler beim Laden der Top Rated Filme", err)
       setError((prev) => ({ ...prev, topRated: "Top Rated Filme konnten nicht geladen werden." }))
