@@ -5,6 +5,7 @@ import NavIcon from "../navIcon/NavIcon"
 import type { ResultMovie } from "../../interface/Search"
 import { useMain } from "../../hooks/ContextHooks"
 import type { ResultMovieList } from "../../interface/MovieList"
+import ToggleWatchlist from "../../utility/ToggleWatchlist"
 
 type MovieDialogProps = {
   open: boolean
@@ -26,7 +27,7 @@ export default function MovieDialog({
   onCtaClick,
   className,
 }: MovieDialogProps) {
-  const {} = useMain()
+  const mainCtx = useMain()
 
   if (!open) return null
 
@@ -126,7 +127,13 @@ export default function MovieDialog({
                     </button>
                   )}
                   {/* TODO Onclick Funktion hinzufügen */}
-                  <div className="text-white">
+                  <div
+                    className={`${
+                      mainCtx.watchlist.includes(data as ResultMovieList) ? "text-yellow-300" : "text-white"
+                    }  cursor-pointer`}
+                    onClick={() => {
+                      ToggleWatchlist(mainCtx.user, mainCtx.watchlist, mainCtx.setWatchlist, data as ResultMovieList)
+                    }}>
                     <NavIcon icon={"watchlist"} />
                   </div>
                 </div>
