@@ -39,7 +39,7 @@ export default function Home() {
             cards={
               loading
                 ? Array.from({ length: 10 }).map((_, i) => <SkeletonCard key={i} />)
-                : moviePopular.slice(0, 10).map((m) => <MovieCard key={m.id} movie={m} />)
+                : moviePopular.slice(5, 15).map((m) => <MovieCard key={m.id} movie={m} />)
             }
           />
         </MovieSection>
