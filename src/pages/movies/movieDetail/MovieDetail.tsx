@@ -13,6 +13,7 @@ import { useMain } from "../../../hooks/ContextHooks"
 import NavIcon from "../../../components/navIcon/NavIcon"
 import ShareDialog from "../../../components/shareDialog/ShareDialog"
 import { Toaster } from "react-hot-toast"
+import AddToWatchlist from "../../../utility/AddToWatchlist"
 
 function InfoItem({ label, value, className }: { label: string; value: React.ReactNode; className?: string }) {
   return (
@@ -39,8 +40,9 @@ export default function MovieDetail() {
     fetchMovieSimilar,
     fetchMovieVideos,
     loading,
-
-    openMovieDialog,
+    watchlist,
+    setWatchlist,
+    user,
   } = useMain()
 
   const { id } = useParams<{ id: string }>()
@@ -140,11 +142,13 @@ export default function MovieDetail() {
                               />
                             )}
                           </div>
-                          {/* TODO Add onclick */}
+
                           <Button
                             label="+ Watchlist"
                             filled
                             className="!py-1 !px-2 !text-xs shadow-[0_6px_0_rgba(220,38,38,0.35)] active:bg-red-600 active:text-white active:scale-90"
+                            // onClick={AddToWatchlist(user, watchlist, setWatchlist, "")}
+                            // FIXME
                           />
                         </div>
                       </div>
@@ -195,7 +199,7 @@ export default function MovieDetail() {
           <MovieSection grid title="You may also like">
             {loading.similar
               ? Array.from({ length: 10 }).map((_, i) => <SkeletonCard key={i} />)
-              : movieSimilar.map((m) => <MovieCard key={m.id} movie={m} onOpen={() => openMovieDialog(m)} />)}
+              : movieSimilar.map((m) => <MovieCard key={m.id} movie={m} />)}
           </MovieSection>
         </div>
       </section>

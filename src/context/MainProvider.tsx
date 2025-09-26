@@ -9,6 +9,7 @@ import type { ResultMovie } from "../interface/Search"
 export const mainContext = createContext<MainContextProps | null>(null)
 
 type DialogData = ResultMovieList | ResultMovie
+
 type DialogState = {
   open: boolean
   movieId: number | null
