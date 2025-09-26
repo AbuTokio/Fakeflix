@@ -7,6 +7,7 @@ import CarouselCard from "../../components/carouselCard/CarouselCard"
 import Animation from "../../components/animation/Animation"
 import CardCarousel from "../../components/cardCarousel/CardCarousel"
 import { useMain } from "../../hooks/ContextHooks"
+import SkeletonSection from "../../components/skeletonSection/SkeletonSection"
 
 export default function Home() {
   const { moviePopular, movieTopRated, movieUpcoming, openMovieDialog } = useMain()
@@ -28,9 +29,7 @@ export default function Home() {
             cards={
               loading
                 ? Array.from({ length: 10 }).map((_, i) => <SkeletonCard key={i} />)
-                : movieTopRated
-                    .slice(0, 10)
-                    .map((m) => <MovieCard key={m.id} movie={m} onOpen={() => openMovieDialog(m)} />)
+                : movieTopRated.slice(0, 10).map((m) => <MovieCard key={m.id} movie={m} />)
             }
           />
         </MovieSection>
@@ -41,9 +40,7 @@ export default function Home() {
             cards={
               loading
                 ? Array.from({ length: 10 }).map((_, i) => <SkeletonCard key={i} />)
-                : moviePopular
-                    .slice(0, 10)
-                    .map((m) => <MovieCard key={m.id} movie={m} onOpen={() => openMovieDialog(m)} />)
+                : moviePopular.slice(0, 10).map((m) => <MovieCard key={m.id} movie={m} />)
             }
           />
         </MovieSection>
@@ -54,9 +51,7 @@ export default function Home() {
             cards={
               loading
                 ? Array.from({ length: 10 }).map((_, i) => <SkeletonCard key={i} />)
-                : movieUpcoming
-                    .slice(0, 10)
-                    .map((m) => <MovieCard key={m.id} movie={m} onOpen={() => openMovieDialog(m)} />)
+                : movieUpcoming.slice(0, 10).map((m) => <MovieCard key={m.id} movie={m} />)
             }
           />
         </MovieSection>

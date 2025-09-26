@@ -5,6 +5,8 @@ import { SkeletonCard } from "../../components/skeletonCard/SkeletonCard"
 import MovieCard from "../../components/movieCard/MovieCard"
 import CardCarousel from "../../components/cardCarousel/CardCarousel"
 import MovieDialog from "../../components/movieDialog/MovieDialog"
+import SkeletonSection from "../../components/skeletonSection/SkeletonSection"
+import type { ResultMovieList } from "../../interface/MovieList"
 
 export function EmptyCard() {
   return (
@@ -36,35 +38,43 @@ export default function Genres() {
   return (
     <>
       <div className="space-y-10">
-        {movieGenres.map((genre) => {
-          const movies = (discoveredMovies[genre.id] ?? []).slice(0, 10)
-          const isLoading = !!loadingByGenre[genre.id]
-          const err = errorByGenre[genre.id]
+        {movieGenres.length === 0 ? (
+          <>
+            <SkeletonSection />
+          </>
+        ) : (
+          movieGenres.map((genre) => {
+            const movies: ResultMovieList[] | undefined = discoveredMovies[genre.id]
+            const isLoading = !!loadingByGenre[genre.id] || !movies
+            const err = errorByGenre[genre.id]
+            if (isLoading) {
+              return <SkeletonSection key={`s-${genre.id}`} />
+            }
+            if (err) {
+              return (
+                <MovieSection key={`e-${genre.id}`} title={genre.name} viewAllHref={`/genres/${genre.id}`}>
+                  <div className="w-full aspect-[2/3] rounded-md grid place-items-center text-red-400 text-sm bg-neutral-900">
+                    {String(err)}
+                  </div>
+                </MovieSection>
+              )
+            }
 
-          const cards = isLoading
-            ? Array.from({ length: 10 }).map((_, i) => <SkeletonCard key={i} />)
-            : err
-            ? [
-                <div
-                  key={`err-${genre.id}`}
-                  className="w-full aspect-[2/3] rounded-md grid place-items-center text-red-400 text-sm bg-neutral-900">
-                  {err}
-                </div>,
-              ]
-            : movies.length === 0
-            ? [<EmptyCard key={`empty-${genre.id}`} />]
-            : movies.map((movie) => <MovieCard key={movie.id} movie={movie} onOpen={() => openMovieDialog(movie)} />)
+            // Karten zusammenstellen
+            const list = (movies ?? []).slice(0, 10)
+            const cards =
+              list.length === 0
+                ? [<EmptyCard key={`empty-${genre.id}`} />]
+                : list.map((movie) => <MovieCard key={movie.id} movie={movie} />)
 
-          return (
-            <MovieSection key={genre.id} title={genre.name} viewAllHref={`/genres/${genre.id}`}>
-              <CardCarousel cards={cards} />
-            </MovieSection>
-          )
-        })}
+            return (
+              <MovieSection key={genre.id} title={genre.name} viewAllHref={`/genres/${genre.id}`}>
+                <CardCarousel cards={cards} />
+              </MovieSection>
+            )
+          })
+        )}
       </div>
-      {dialog.open && dialog.data && (
-        <MovieDialog open ctaHref={`/movies/detail/${dialog.movieId}`} onClose={closeMovieDialog} data={dialog.data} />
-      )}
     </>
   )
 }
