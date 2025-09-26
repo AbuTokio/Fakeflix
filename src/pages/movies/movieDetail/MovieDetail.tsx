@@ -12,6 +12,7 @@ import { TMDB_IMG_BASE, TmdbImageSize } from "../../../enum/TmdbImage"
 import { useMain } from "../../../hooks/ContextHooks"
 import NavIcon from "../../../components/navIcon/NavIcon"
 import ShareDialog from "../../../components/shareDialog/ShareDialog"
+import { Toaster } from "react-hot-toast"
 
 function InfoItem({ label, value, className }: { label: string; value: React.ReactNode; className?: string }) {
   return (
@@ -76,6 +77,9 @@ export default function MovieDetail() {
 
   return (
     <>
+      <div className="absolute -top-10 bg-white w-10 h-10 z-999">
+        <Toaster position="top-center" reverseOrder={true} />
+      </div>
       {/* Hero / Trailer */}
       <Animation delay={0.3} from={{ opacity: 0, scale: 0.9 }} to={{ opacity: 1, scale: 1, rotate: 0 }}>
         <section className="w-full overflow-hidden">
