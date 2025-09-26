@@ -8,7 +8,7 @@ function SkeletonLine({ className = "" }: { className?: string }) {
 
 export default function SkeletonSection() {
   return (
-    <MovieSection title="" grid>
+    <MovieSection title="">
       {/* Header-Skeleton */}
       <div className="col-span-full flex flex-wrap items-center justify-between gap-3 my-2 sm:my-4">
         <SkeletonLine className="h-5 w-28 sm:h-6 sm:w-40" />

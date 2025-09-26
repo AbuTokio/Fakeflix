@@ -56,8 +56,6 @@ export default function Home() {
           />
         </MovieSection>
       </section>
-
-      <SkeletonSection />
     </>
   )
 }
