@@ -1,18 +1,27 @@
-import { TmdbImageSize } from "../../enum/TmdbImage"
+import { TMDB_IMG_BASE, TmdbImageSize } from "../../enum/TmdbImage"
+import { useMain } from "../../hooks/ContextHooks"
 import type { ResultMovieList } from "../../interface/MovieList"
+import type { ResultMovie } from "../../interface/Search"
 import StarRating from "../starRating/StarRating"
 
+type CardItem = ResultMovieList | ResultMovie
+
 type MovieCardProps = {
-  movie: ResultMovieList
-  onOpen?: (movie: ResultMovieList) => void
+  movie: CardItem
   className?: string
   showRating?: boolean
+  titleClassName?: string
 }
 
-const TMDB_IMG_BASE = "https://image.tmdb.org/t/p"
+export default function MovieCard({
+  movie,
+  className = "",
+  showRating = true,
+  titleClassName = "text-zinc-200 group-hover:text-white",
+}: MovieCardProps) {
+  const { openMovieDialog } = useMain()
 
-export default function MovieCard({ movie, onOpen, className = "", showRating = true }: MovieCardProps) {
-  const title = (movie as any).title ?? (movie as any).name ?? "Untitled"
+  const title = movie.title ?? movie.original_title ?? "Untitled"
 
   const posterUrl = movie.poster_path
     ? `${TMDB_IMG_BASE}/${TmdbImageSize.POSTER_SIZE}${movie.poster_path}`
@@ -22,15 +31,11 @@ export default function MovieCard({ movie, onOpen, className = "", showRating = 
 
   const rating = movie.vote_average ?? movie.vote_average ?? 0
 
-  const handleOpen = () => onOpen?.(movie)
-  // TODO HAndleOpen anpassen
-  // TODO Textfarbe anpassen
   return (
     <div
       role="button"
       tabIndex={0}
-      onClick={handleOpen}
-      onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && handleOpen()}
+      onClick={() => openMovieDialog(movie)}
       className={`group cursor-pointer select-none outline-none w-full flex flex-col ${className}`}>
       {/* Poster mit Ratio */}
       <div className="w-full aspect-[2/3] overflow-hidden rounded-md bg-neutral-900">
@@ -49,7 +54,7 @@ export default function MovieCard({ movie, onOpen, className = "", showRating = 
 
       {/* Text + Rating */}
       <div className="mt-2 flex items-start justify-between gap-2 px-1">
-        <div className="text-sm font-semibold text-red-500 truncate" title={title}>
+        <div className={["text-sm font-semibold truncate", titleClassName].join(" ")} title={title}>
           {title}
         </div>
 
