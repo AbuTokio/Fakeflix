@@ -1,4 +1,4 @@
-import React, { act, useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 
 interface CarouselProps {
   cards: React.ReactNode[]
@@ -8,24 +8,17 @@ export default function Carousel({ cards }: CarouselProps) {
   const [activeCard, setActiveCard] = useState<number>(0)
   const [moveActiveCard, setMoveActiveCard] = useState<boolean>(false)
 
+  const setCard = (card: number) => {
+    setMoveActiveCard(true)
+    setTimeout(() => {
+      setActiveCard(card)
+      setMoveActiveCard(false)
+    }, 600)
+  }
+
   const switchSlide = () => {
-    if (activeCard < cards.length - 1) {
-      setMoveActiveCard(true)
-      act(() => {
-        setTimeout(() => {
-          setActiveCard(activeCard + 1)
-          setMoveActiveCard(false)
-        }, 600)
-      })
-    } else {
-      setMoveActiveCard(true)
-      act(() => {
-        setTimeout(() => {
-          setActiveCard(0)
-          setMoveActiveCard(false)
-        }, 600)
-      })
-    }
+    if (activeCard < cards.length - 1) setCard(activeCard + 1)
+    else setCard(0)
   }
 
   useEffect(() => {
@@ -60,15 +53,7 @@ export default function Carousel({ cards }: CarouselProps) {
               className={`w-1 h-1 ${
                 activeCard === cards.indexOf(card) ? "w-15 bg-red-600" : "w-5 bg-white cursor-pointer"
               } md:h-5 rounded-full transition-all duration-150`}
-              onClick={() => {
-                setMoveActiveCard(true)
-                act(() => {
-                  setTimeout(() => {
-                    setActiveCard(cards.indexOf(card))
-                    setMoveActiveCard(false)
-                  }, 600)
-                })
-              }}></div>
+              onClick={() => setCard(cards.indexOf(card))}></div>
           </div>
         ))}
       </div>
