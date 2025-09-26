@@ -20,7 +20,7 @@ export interface SearchMovie {
 export interface ResultMovie {
   adult: boolean
   backdrop_path: null | string
-  genre_ids: number[]
+  genre_ids?: number[]
   id: number
   original_language: string
   original_title: string
