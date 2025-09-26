@@ -6,11 +6,12 @@ import type { ResultMovie } from "../../interface/Search"
 import { useMain } from "../../hooks/ContextHooks"
 import type { ResultMovieList } from "../../interface/MovieList"
 import ToggleWatchlist from "../../utility/ToggleWatchlist"
+import type { MovieDetails } from "../../interface/Movie"
 
 type MovieDialogProps = {
   open: boolean
   onClose: () => void
-  data: ResultMovie | ResultMovieList
+  data: ResultMovie | ResultMovieList | MovieDetails
   genreById?: Record<number, string>
   ctaLabel?: string
   ctaHref?: string
