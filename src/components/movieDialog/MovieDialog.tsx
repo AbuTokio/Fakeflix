@@ -94,7 +94,7 @@ export default function MovieDialog({
                     <Link
                       to={ctaHref}
                       onClick={onClose}
-                      className="inline-flex items-center gap-2 rounded-md bg-red-600 px-5 py-2.5 sm:px-6 sm:py-3 text-base font-semibold text-white hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-400">
+                      className="inline-flex items-center gap-2 rounded-md bg-red-600 px-5 py-2.5 sm:px-6 sm:py-3 text-base font-semibold text-white hover:bg-red-500  active:bg-red-600 active:text-white active:scale-90">
                       {ctaLabel}
                     </Link>
                   ) : (
