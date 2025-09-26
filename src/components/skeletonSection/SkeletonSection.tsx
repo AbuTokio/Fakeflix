@@ -1,3 +1,4 @@
+import CardCarousel from "../cardCarousel/CardCarousel"
 import MovieSection from "../movieSection/MovieSection"
 import { SkeletonCard } from "../skeletonCard/SkeletonCard"
 
@@ -13,11 +14,13 @@ export default function SkeletonSection() {
         <SkeletonLine className="h-5 w-28 sm:h-6 sm:w-40" />
         <SkeletonLine className="h-4 w-16 sm:h-5 sm:w-20" />
       </div>
-
-      {/* Karten-Skeletons (füllen die Grid-Spalten automatisch) */}
-      {Array.from({ length: 10 }).map((_, i) => (
-        <SkeletonCard key={i} />
-      ))}
+      <div className="w-full">
+        <CardCarousel
+          cards={Array.from({ length: 10 }).map((_, i) => (
+            <SkeletonCard key={i} />
+          ))}
+        />
+      </div>
     </MovieSection>
   )
 }
