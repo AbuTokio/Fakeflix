@@ -49,7 +49,6 @@ export default function CarouselCard({ movie }: CarouselCardProps) {
             className={`absolute h-fit ${
               bp.isMd ? "bottom-20" : "bottom-8"
             } md:left-1/2 md:-translate-x-1/2 w-full px-4 md:px-12`}>
-            {/* FIXME GenreIDtoString */}
             <CarouselInfo
               title={movie.title}
               tags={movie.genre_ids.map((genreId: number) => GenreIdToString(genreId))}

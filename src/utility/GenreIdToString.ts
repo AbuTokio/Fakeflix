@@ -1,6 +1,5 @@
 import { useMain } from "../hooks/ContextHooks"
 
-// TODO drüber schauen
 export default function GenreIdToString(genreId: number): string {
   const mainCtx = useMain()
 

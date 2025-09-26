@@ -126,7 +126,6 @@ export default function MovieDialog({
                       {ctaLabel}
                     </button>
                   )}
-                  {/* TODO Onclick Funktion hinzufügen */}
                   <div
                     className={`${
                       mainCtx.watchlist.some((m) => m.id === (data as ResultMovieList)?.id)
