@@ -53,7 +53,7 @@ export default function CarouselCard({ movie }: CarouselCardProps) {
               } left-1/2 -translate-x-1/2 md:-translate-y-1/2 flex gap-6 justify-center items-center`}>
               <Button filled label="See Details" imgUrl="/src/assets/img/play.svg" onClick={() => setNavigate(true)} />
               <Button
-                label={`${mainCtx.watchlist.includes(movie) ? "✓" : "+"} Watchlist`}
+                label={`${mainCtx.watchlist.some((m) => m.id === movie.id) ? "✓" : "+"} Watchlist`}
                 imgUrl="/src/assets/img/clock.svg"
                 onClick={() => ToggleWatchlist(mainCtx.user, mainCtx.watchlist, mainCtx.setWatchlist, movie)}
               />

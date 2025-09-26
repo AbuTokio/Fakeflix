@@ -129,7 +129,9 @@ export default function MovieDialog({
                   {/* TODO Onclick Funktion hinzufügen */}
                   <div
                     className={`${
-                      mainCtx.watchlist.includes(data as ResultMovieList) ? "text-yellow-300" : "text-white"
+                      mainCtx.watchlist.some((m) => m.id === (data as ResultMovieList)?.id)
+                        ? "text-yellow-300"
+                        : "text-white"
                     }  cursor-pointer`}
                     onClick={() => {
                       ToggleWatchlist(mainCtx.user, mainCtx.watchlist, mainCtx.setWatchlist, data as ResultMovieList)

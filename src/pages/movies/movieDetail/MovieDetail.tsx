@@ -12,7 +12,8 @@ import { TMDB_IMG_BASE, TmdbImageSize } from "../../../enum/TmdbImage"
 import { useMain } from "../../../hooks/ContextHooks"
 import NavIcon from "../../../components/navIcon/NavIcon"
 import ShareDialog from "../../../components/shareDialog/ShareDialog"
-import AddToWatchlist from "../../../utility/ToggleWatchlist"
+import type { MovieDetails } from "../../../interface/Movie"
+import ToggleWatchlist from "../../../utility/ToggleWatchlist"
 
 function InfoItem({ label, value, className }: { label: string; value: React.ReactNode; className?: string }) {
   return (
@@ -140,11 +141,10 @@ export default function MovieDetail() {
                           </div>
 
                           <Button
-                            label="+ Watchlist"
+                            label={`${watchlist.some((m) => m.id === movieDetails?.id) ? "✓" : "+"} Watchlist`}
                             filled
                             className="!py-1 !px-2 !text-xs shadow-[0_6px_0_rgba(220,38,38,0.35)] active:bg-red-600 active:text-white active:scale-90"
-                            // onClick={AddToWatchlist(user, watchlist, setWatchlist, "")}
-                            // FIXME
+                            onClick={() => ToggleWatchlist(user, watchlist, setWatchlist, movieDetails as MovieDetails)}
                           />
                         </div>
                       </div>
