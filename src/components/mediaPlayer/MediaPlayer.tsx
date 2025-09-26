@@ -51,7 +51,7 @@ export default function MediaPlayer({ youtubeKey, posterUrl, className = "", aut
             <div className="absolute inset-0 bg-gradient-to-t from-black/90 to-black/30 to-transparent" />
             <div className="absolute inset-0 grid place-items-center">
               <div className="flex items-center gap-3 sm:gap-4 md:gap-5">
-                <img className="h-8 sm:h-10 md:h-12 lg:h-14" src="/src/assets/img/play.svg" alt="play icon" />
+                <img className="h-8 sm:h-10 md:h-12 lg:h-14" src="/img/play.svg" alt="play icon" />
 
                 <span className="text-white/90 font-semibold text-sm sm:text-base md:text-lg lg:text-xl">
                   Play Trailer
