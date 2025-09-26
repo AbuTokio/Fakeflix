@@ -80,7 +80,7 @@ export default function MovieDetail() {
     <>
       {/* Hero / Trailer */}
       <Animation delay={0.3} from={{ opacity: 0, scale: 0.9 }} to={{ opacity: 1, scale: 1, rotate: 0 }}>
-        <section className="w-full overflow-hidden">
+        <section className="w-[95%] mx-auto overflow-hidden">
           <MediaPlayer youtubeKey={trailerKey} posterUrl={backdropUrl} className="w-full max-w-[1920px] mx-auto" />
         </section>
       </Animation>
