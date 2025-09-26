@@ -20,18 +20,34 @@ export default function MovieSection({
   titleClassName = "",
 }: MovieSectionProps) {
   return (
-    // TODO Textfabre anpasen
     <>
       <Animation delay={0.2}>
         <section className={["mx-auto w-full max-w-screen px-4 sm:px-6 lg:px-8 space-y-4", className || ""].join(" ")}>
           {/* Header */}
           <div className="flex flex-wrap items-center justify-between gap-3">
-            <h3 className={["text-red-500 text-lg font-semibold", titleClassName].join(" ")}>{title}</h3>
+            <h3
+              className={[
+                "text-white font-semibold leading-tight",
+                "text-base sm:text-lg lg:text-xl xl:text-2xl",
+                "line-clamp-2 sm:line-clamp-1",
+                titleClassName || "",
+              ].join(" ")}
+              title={title}>
+              {title}
+            </h3>
             {viewAllHref && (
               <Link
                 to={viewAllHref}
-                className="text-sm font-medium text-red-500 hover:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-400 rounded">
-                View All →
+                aria-label="View all"
+                className={[
+                  "inline-flex items-center justify-center gap-1 rounded",
+                  "text-white/90 hover:text-red-400",
+                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400",
+                  "text-sm sm:text-base",
+                  "py-1.5 px-2.5 sm:py-2 sm:px-3",
+                  "self-start sm:self-auto",
+                ].join(" ")}>
+                View All
               </Link>
             )}
           </div>
