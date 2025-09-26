@@ -10,7 +10,6 @@ export default function Login() {
     if (mainCtx.user) {
       setLoggedIn(true)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (

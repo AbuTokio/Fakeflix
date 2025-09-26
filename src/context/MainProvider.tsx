@@ -5,10 +5,9 @@ import type { ResponseMovieList, ResultMovieList } from "../interface/MovieList"
 import { tmdb } from "../api/tmdb"
 import type { ResultMovie } from "../interface/Search"
 
-// eslint-disable-next-line react-refresh/only-export-components
 export const mainContext = createContext<MainContextProps | null>(null)
 
-type DialogData = ResultMovieList | ResultMovie
+type DialogData = ResultMovieList | ResultMovie | MovieDetails
 
 type DialogState = {
   open: boolean
@@ -123,16 +122,13 @@ export default function MainProvider({ children }: { children: React.ReactNode }
 
   const [page, setPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
-
-  //# GENRES - Movie List - https://developer.themoviedb.org/reference/genre-movie-list
-  // https://api.themoviedb.org/3/genre/movie/list?language=en
   useEffect(() => {
     async function fetchGenres() {
       setLoading((prev) => ({ ...prev, genres: true }))
       setError((prev) => ({ ...prev, genres: null }))
       try {
         const res = await tmdb.get<MovieGenre>("/genre/movie/list")
-        setMovieGenres(res.data.genres.filter((genre) => genre.id !== 10749)) // Romance rausfiltern
+        setMovieGenres(res.data.genres.filter((genre) => genre.id !== 10749))
       } catch (err) {
         console.error("Fehler beim Laden der Genres", err)
         setError((prev) => ({ ...prev, genres: "Genres konnten nicht geladen werden." }))
@@ -140,12 +136,9 @@ export default function MainProvider({ children }: { children: React.ReactNode }
         setLoading((prev) => ({ ...prev, genres: false }))
       }
     }
-    //Initial die Genres laden
     fetchGenres()
   }, [])
 
-  //# MOVIE LISTS - Popular - https://developer.themoviedb.org/reference/movie-popular-list
-  // "https://api.themoviedb.org/3/movie/popular?language=en-US&page=1"
   async function fetchPopular(page: number) {
     setLoading((prev) => ({ ...prev, popular: true }))
     setError((prev) => ({ ...prev, popular: null }))
@@ -162,12 +155,8 @@ export default function MainProvider({ children }: { children: React.ReactNode }
   }
 
   useEffect(() => {
-    //Initial die Popular Movies laden
     fetchPopular(1)
   }, [])
-
-  //# MOVIE LISTS - Top Rated - https://developer.themoviedb.org/reference/movie-top-rated-list
-  // "https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1"
   async function fetchTopRated(page: number) {
     setLoading((prev) => ({ ...prev, topRated: true }))
     setError((prev) => ({ ...prev, topRated: null }))
@@ -184,12 +173,8 @@ export default function MainProvider({ children }: { children: React.ReactNode }
   }
 
   useEffect(() => {
-    //Initial die Top Rated Movies laden
     fetchTopRated(1)
   }, [])
-
-  //# MOVIE LISTS - Upcoming - https://developer.themoviedb.org/reference/movie-upcoming-list
-  // "https://api.themoviedb.org/3/movie/upcoming?language=en-US&page=1"
   async function fetchUpcoming(page: number) {
     setLoading((prev) => ({ ...prev, upcoming: true }))
     setError((prev) => ({ ...prev, upcoming: null }))
@@ -205,12 +190,9 @@ export default function MainProvider({ children }: { children: React.ReactNode }
     }
   }
   useEffect(() => {
-    //Initial die Upcoming Movies laden
     fetchUpcoming(1)
   }, [])
 
-  //# MOVIES - Details - https://developer.themoviedb.org/reference/movie-details
-  // "https://api.themoviedb.org/3/movie/movie_id?language=en-US"
   async function fetchMovieDetails(id: number) {
     setLoading((prev) => ({ ...prev, details: true }))
     setError((prev) => ({ ...prev, details: null }))
@@ -225,8 +207,6 @@ export default function MainProvider({ children }: { children: React.ReactNode }
     }
   }
 
-  //# MOVIES - Similar - https://developer.themoviedb.org/reference/movie-similar
-  // "https://api.themoviedb.org/3/movie/movie_id/similar?language=en-US&page=1"
   async function fetchMovieSimilar(id: number) {
     setLoading((prev) => ({ ...prev, similar: true }))
     setError((prev) => ({ ...prev, similar: null }))
@@ -241,8 +221,6 @@ export default function MainProvider({ children }: { children: React.ReactNode }
     }
   }
 
-  //# MOVIES - Videos - https://developer.themoviedb.org/reference/movie-videos
-  // https://api.themoviedb.org/3/movie/movie_id/videos?language=en-US
   async function fetchMovieVideos(id: number) {
     setLoading((prev) => ({ ...prev, videos: true }))
     setError((prev) => ({ ...prev, videos: null }))
@@ -257,8 +235,6 @@ export default function MainProvider({ children }: { children: React.ReactNode }
     }
   }
 
-  //# SEARCH - Movie - https://developer.themoviedb.org/reference/search-movie
-  // "https://api.themoviedb.org/3/search/movie?include_adult=false&language=en-US&page=1"
   async function searchMovies(query: string) {
     setLoading((prev) => ({ ...prev, search: true }))
     setError((prev) => ({ ...prev, search: null }))
@@ -275,8 +251,6 @@ export default function MainProvider({ children }: { children: React.ReactNode }
     }
   }
 
-  //# DISCOVER - Movie - https://developer.themoviedb.org/reference/discover-movie
-  // "https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc&with_genres={genre ID}"
   async function discoverMovies(genreId: number, page: number) {
     setLoadingByGenre((prev) => ({ ...prev, [genreId]: true }))
     setErrorByGenre((prev) => ({ ...prev, [genreId]: null }))
@@ -300,20 +274,16 @@ export default function MainProvider({ children }: { children: React.ReactNode }
     }
   }
 
-  //# Dialog
   const openMovieDialog = useCallback((item: DialogData) => {
     setDialog({ open: true, movieId: item.id, data: item })
     document.body.style.overflow = "hidden"
-    // gsap.globalTimeline.pause()
   }, [])
 
   const closeMovieDialog = useCallback(() => {
     setDialog({ open: false, movieId: null, data: null })
     document.body.style.overflow = ""
-    // gsap.globalTimeline.resume()
   }, [])
 
-  //Für bessere lesbarkeit
   const value = useMemo<MainContextProps>(
     () => ({
       movieGenres,

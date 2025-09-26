@@ -50,7 +50,6 @@ export default function MovieDetail() {
 
   const [showShareDialog, setShowShareDialog] = useState(false)
 
-  // Daten laden
   useEffect(() => {
     if (!movieId) return
     fetchMovieDetails(movieId)
@@ -153,11 +152,11 @@ export default function MovieDetail() {
                     <Animation delay={0.7}>
                       <div className="mt-3 flex flex-wrap items-center gap-3 sm:gap-4">
                         <Badge muted hero>
-                          <img src="/img/Calendar.svg" alt="" />
+                          <img src="/src/assets/img/Calendar.svg" alt="" />
                           {year || "—"}
                         </Badge>
                         <Badge muted hero>
-                          <img src="/img/clock.svg" alt="" />
+                          <img src="/src/assets/img/clock.svg" alt="" />
                           {formatRuntime(runtimeMin)}
                         </Badge>
                         <StarRating value={rating} showNumber />

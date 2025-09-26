@@ -13,7 +13,6 @@ export default function Search() {
 
   useEffect(() => {
     if (query) mainCtx.searchMovies(query)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [query])
 
   return (
@@ -27,9 +26,7 @@ export default function Search() {
               <MovieSection grid title={`Search Results for "${query}"`}>
                 {loading
                   ? Array.from({ length: 10 }).map((_, i) => <SkeletonCard key={i} />)
-                  : mainCtx.searchedMovies.map((m: ResultMovieList) => (
-                      <MovieCard key={m.id} movie={m} onOpen={() => mainCtx.openMovieDialog(m)} />
-                    ))}
+                  : mainCtx.searchedMovies.map((m: ResultMovieList) => <MovieCard key={m.id} movie={m} />)}
               </MovieSection>
             </div>
           </section>

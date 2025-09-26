@@ -21,7 +21,6 @@ export default function DiscoverDetail() {
     } else {
       mainCtx.setPage(Number(pageParam))
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pageParam])
 
   useEffect(() => {
@@ -36,7 +35,6 @@ export default function DiscoverDetail() {
         mainCtx.fetchUpcoming(mainCtx.page)
         break
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mainCtx.page])
 
   useEffect(() => {
@@ -51,7 +49,6 @@ export default function DiscoverDetail() {
         setMovies(mainCtx.movieUpcoming)
         break
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mainCtx.moviePopular, mainCtx.movieTopRated, mainCtx.movieUpcoming])
 
   const [loading] = useState(false)
@@ -59,11 +56,11 @@ export default function DiscoverDetail() {
   return (
     <>
       <Animation delay={0.5}>
-        <section className="p-6">
+        <section className="p-2">
           <MovieSection className="capitalize" title={`Discover ${discover}`} grid>
             {loading
               ? Array.from({ length: 20 }).map((_, i) => <SkeletonCard key={i} />)
-              : movies.map((m) => <MovieCard key={m.id} movie={m} onOpen={() => mainCtx.openMovieDialog(m)} />)}
+              : movies.map((m) => <MovieCard key={m.id} movie={m} />)}
           </MovieSection>
         </section>
       </Animation>

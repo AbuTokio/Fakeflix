@@ -1,10 +1,8 @@
 import { useEffect } from "react"
 import MovieSection from "../../components/movieSection/MovieSection"
 import { useMain } from "../../hooks/ContextHooks"
-import { SkeletonCard } from "../../components/skeletonCard/SkeletonCard"
 import MovieCard from "../../components/movieCard/MovieCard"
 import CardCarousel from "../../components/cardCarousel/CardCarousel"
-import MovieDialog from "../../components/movieDialog/MovieDialog"
 import SkeletonSection from "../../components/skeletonSection/SkeletonSection"
 import type { ResultMovieList } from "../../interface/MovieList"
 
@@ -17,17 +15,7 @@ export function EmptyCard() {
 }
 
 export default function Genres() {
-  const {
-    page,
-    movieGenres,
-    discoverMovies,
-    discoveredMovies,
-    loadingByGenre,
-    errorByGenre,
-    openMovieDialog,
-    dialog,
-    closeMovieDialog,
-  } = useMain()
+  const { page, movieGenres, discoverMovies, discoveredMovies, loadingByGenre, errorByGenre } = useMain()
 
   useEffect(() => {
     movieGenres.forEach((g) => {
@@ -60,7 +48,6 @@ export default function Genres() {
               )
             }
 
-            // Karten zusammenstellen
             const list = (movies ?? []).slice(0, 10)
             const cards =
               list.length === 0

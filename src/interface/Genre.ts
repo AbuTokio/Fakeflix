@@ -1,4 +1,3 @@
-//# MovieGenre
 export interface MovieGenre {
   genres: Genre[]
 }
@@ -8,7 +7,6 @@ export interface Genre {
   name: string
 }
 
-//# TVGenre
 export interface TVGenre {
   genres: Genre[]
 }

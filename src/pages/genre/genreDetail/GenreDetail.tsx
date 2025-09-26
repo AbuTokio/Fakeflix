@@ -36,7 +36,6 @@ export default function GenreDetail() {
     } else {
       setPage(Number(pageParam))
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pageParam])
 
   useEffect(() => {
@@ -63,10 +62,7 @@ export default function GenreDetail() {
             <EmptyCard />
           ) : (
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-              {genreId &&
-                discoveredMovies[genreId].map((m: ResultMovieList) => (
-                  <MovieCard key={m.id} movie={m} onOpen={() => openMovieDialog(m)} />
-                ))}
+              {genreId && discoveredMovies[genreId].map((m: ResultMovieList) => <MovieCard key={m.id} movie={m} />)}
             </div>
           )}
         </MovieSection>

@@ -26,13 +26,11 @@ export default function Watchlist() {
 
       {mainCtx.watchlist.length > 0 && mainCtx.user !== null && (
         <Animation delay={0.5}>
-          <section className="p-6">
+          <section className="p-2">
             <MovieSection className="capitalize" title={`${mainCtx.user.name}'s Watchlist`} grid>
               {loading
                 ? Array.from({ length: mainCtx.watchlist.length }).map((_, i) => <SkeletonCard key={i} />)
-                : mainCtx.watchlist.map((m) => (
-                    <MovieCard key={m.id} movie={m} onOpen={() => mainCtx.openMovieDialog(m)} />
-                  ))}
+                : mainCtx.watchlist.map((m) => <MovieCard key={m.id} movie={m} />)}
             </MovieSection>
           </section>
         </Animation>

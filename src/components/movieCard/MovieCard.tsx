@@ -1,10 +1,11 @@
 import { TMDB_IMG_BASE, TmdbImageSize } from "../../enum/TmdbImage"
 import { useMain } from "../../hooks/ContextHooks"
+import type { MovieDetails } from "../../interface/Movie"
 import type { ResultMovieList } from "../../interface/MovieList"
 import type { ResultMovie } from "../../interface/Search"
 import StarRating from "../starRating/StarRating"
 
-type CardItem = ResultMovieList | ResultMovie
+type CardItem = ResultMovieList | ResultMovie | MovieDetails
 
 type MovieCardProps = {
   movie: CardItem
@@ -37,7 +38,6 @@ export default function MovieCard({
       tabIndex={0}
       onClick={() => openMovieDialog(movie)}
       className={`group cursor-pointer select-none outline-none w-full flex flex-col ${className}`}>
-      {/* Poster mit Ratio */}
       <div className="w-full aspect-[2/3] overflow-hidden rounded-md bg-neutral-900">
         {posterUrl ? (
           <img
@@ -51,8 +51,6 @@ export default function MovieCard({
           <div className="h-full w-full grid place-items-center text-neutral-500 text-xs">No image</div>
         )}
       </div>
-
-      {/* Text + Rating */}
       <div className="mt-2 flex items-start justify-between gap-2 px-1">
         <div className={["text-sm font-semibold truncate", titleClassName].join(" ")} title={title}>
           {title}

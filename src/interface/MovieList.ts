@@ -15,7 +15,6 @@ export interface ResultMovieList {
   vote_count: number
 }
 
-//# Popular
 export interface ResponseMovieList {
   page: number
   results: ResultMovieList[]
@@ -30,7 +29,6 @@ export enum OriginalLanguage {
   Nl = "nl",
 }
 
-//# Top Rated
 export interface MovieListTopRated {
   page: number
   results: ResultMovieList[]
@@ -38,7 +36,6 @@ export interface MovieListTopRated {
   total_results: number
 }
 
-//# Upcoming
 export interface MovieListUpcoming {
   dates: Dates
   page: number
@@ -52,7 +49,6 @@ export interface Dates {
   minimum: Date
 }
 
-//# Similar
 export interface MovieSimilar {
   page: number
   results: ResultMovieList[]

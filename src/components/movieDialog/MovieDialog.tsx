@@ -30,21 +30,13 @@ export default function MovieDialog({
   const mainCtx = useMain()
 
   if (!open) return null
-
-  // ----- Titel -----
   const title = (data as any).title ?? (data as any).original_title ?? "Untitled"
-
-  // ----- Bildquelle -----
   const heroSrc = data.backdrop_path
     ? `${TMDB_IMG_BASE}/${TmdbImageSize.BACKDROP_SIZE}${data.backdrop_path}`
     : data.poster_path
     ? `${TMDB_IMG_BASE}/${TmdbImageSize.POSTER_SIZE}${data.poster_path}`
     : null
-
-  // ----- Rating -----
   const rating = typeof data.vote_average === "number" ? data.vote_average : undefined
-
-  // ----- Overview -----
   const overview = (data as any).overview as string | undefined
 
   return (
@@ -54,17 +46,13 @@ export default function MovieDialog({
       onMouseDown={(e) => {
         if (e.target === e.currentTarget) onClose()
       }}>
-      {/* Backdrop */}
       <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={onClose} />
-
-      {/* Card */}
       <div
         className={[
           "relative mx-auto w-full max-w-[900px] rounded-2xl shadow-2xl overflow-hidden",
           "max-h-[96svh] bg-neutral-900",
           className || "",
         ].join(" ")}>
-        {/* Media / Hero */}
         <div className="relative h-[clamp(360px,65svh,820px)] bg-neutral-900">
           {heroSrc ? (
             <img
@@ -77,18 +65,13 @@ export default function MovieDialog({
           ) : (
             <div className="absolute inset-0 grid place-items-center text-neutral-500 text-xs">No image</div>
           )}
-
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/5" />
-
-          {/* Close */}
           <button
             onClick={onClose}
             aria-label="Close dialog"
             className="absolute right-3 top-3 z-10 rounded-full font-semibold bg-black/40 px-2 py-1 text-white hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400 cursor-pointer">
             ✕
           </button>
-
-          {/* Content */}
           <div className="absolute inset-x-0 bottom-0">
             <div className="px-4 pb-4 pt-6 sm:px-8 sm:pb-8 sm:pt-10">
               <h2
@@ -96,21 +79,15 @@ export default function MovieDialog({
                 className="font-extrabold text-white drop-shadow-[0_4px_16px_rgba(0,0,0,0.6)] text-3xl sm:text-4xl md:text-6xl">
                 {title}
               </h2>
-
-              {/* Rating */}
               {typeof rating === "number" && !Number.isNaN(rating) && (
                 <div className="mt-3 sm:mt-4">
                   <StarRating value={rating} max={10} size={18} showNumber />
                 </div>
               )}
-
-              {/* Scroll-Container */}
               <div className="mt-3 sm:mt-4 max-h-[28svh] sm:max-h-[32svh] overflow-y-auto pr-1">
                 {overview && (
                   <p className="mt-1 sm:mt-2 text-sm sm:text-base md:text-lg text-neutral-200">{overview}</p>
                 )}
-
-                {/* CTA */}
                 <div className="mt-4 sm:mt-6 flex items-center gap-4 ">
                   {ctaHref ? (
                     <Link

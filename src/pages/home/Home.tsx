@@ -7,10 +7,9 @@ import CarouselCard from "../../components/carouselCard/CarouselCard"
 import Animation from "../../components/animation/Animation"
 import CardCarousel from "../../components/cardCarousel/CardCarousel"
 import { useMain } from "../../hooks/ContextHooks"
-import SkeletonSection from "../../components/skeletonSection/SkeletonSection"
 
 export default function Home() {
-  const { moviePopular, movieTopRated, movieUpcoming, openMovieDialog } = useMain()
+  const { moviePopular, movieTopRated, movieUpcoming } = useMain()
   const [loading] = useState()
 
   return (

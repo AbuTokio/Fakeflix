@@ -45,8 +45,6 @@ export default function Animation({
 
   useLayoutEffect(() => {
     if (!ani.current) return
-
-    // Clean up vorherigen Tween
     tween.current?.scrollTrigger?.kill()
     tween.current?.kill()
     tween.current = null
@@ -83,11 +81,8 @@ export default function Animation({
           toX = parallaxStrength
         }
       }
-
       gsap.set(target, { willChange: "transform", scale: 1 })
-
       const triggerEl = useParentAsTrigger && el.parentElement ? el.parentElement : el
-
       tween.current = gsap.fromTo(
         target,
         { x: fromX, y: fromY },
@@ -106,7 +101,6 @@ export default function Animation({
         }
       )
     } else {
-      // normale Fade/Move Animation
       tween.current = gsap.fromTo(el, from, { ...to, delay, duration, overwrite: "auto" })
     }
 

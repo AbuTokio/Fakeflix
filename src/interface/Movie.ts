@@ -1,6 +1,5 @@
 import type { ResultMovieList } from "./MovieList"
 
-//# Details
 export interface MovieDetails {
   adult: boolean
   backdrop_path: string
@@ -52,7 +51,6 @@ export interface SpokenLanguage {
   name: string
 }
 
-//# Similar
 export interface MovieSimilar {
   page: number
   results: ResultMovieList[]
@@ -60,7 +58,6 @@ export interface MovieSimilar {
   total_results: number
 }
 
-//# Videos
 export interface MovieVideos {
   id: number
   results: ResultVideo[]

@@ -27,13 +27,10 @@
   background-position: -1950px 0;
 }
 
-/* Attribute-variants for letters */
-
 .fakeflixintro[data-letter="F"] {
   transform-origin: 30% center;
 }
 
-/* Helpers base */
 .fakeflixintro [class*="helper-"] {
   position: absolute;
 }
@@ -60,8 +57,6 @@
   height: 30%;
 }
 
-/* Letter-specific helper geometry + brush timings */
-/* F */
 .fakeflixintro[data-letter="F"] .helper-1 {
   width: 19.5%;
   height: 100%;
@@ -103,7 +98,6 @@
   animation: brush-moving 2s 0.5s forwards;
 }
 
-/* Lumieres */
 .fakeflixintro [class*="helper-"] .effect-lumieres {
   position: absolute;
   width: 100%;
@@ -131,7 +125,6 @@
   box-shadow: 0 0 10px 0 rgba(228, 9, 19, 0.75);
 }
 
-/* Individual fur columns (copied from original) */
 .fakeflixintro .effect-brush .fur-1 {
   left: 0%;
   width: 3.8%;
@@ -288,7 +281,6 @@
   background: linear-gradient(to bottom, #e40913 0%, #e40913 37%, rgba(0, 0, 0, 0) 100%);
 }
 
-/* Lamps positions + colors + animations (subset copied verbatim) */
 .fakeflixintro .effect-lumieres .lamp-1 {
   --color: #ff0100;
   left: 0.7%;
@@ -570,7 +562,6 @@
   animation-delay: 1.08s;
 }
 
-/* Moving groups */
 .fakeflixintro .effect-lumieres .lamp-1,
 .fakeflixintro .effect-lumieres .lamp-3,
 .fakeflixintro .effect-lumieres .lamp-5,
@@ -637,7 +628,6 @@
   animation: lumieres-moving-right 5.5s;
 }
 
-/* Keyframes */
 @keyframes brush-moving {
   0% {
     transform: translateY(0);

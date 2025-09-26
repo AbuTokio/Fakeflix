@@ -1,4 +1,3 @@
-//# Keywords
 export interface SearchKeywords {
   page: number
   results: ResultKeywords[]
@@ -11,7 +10,6 @@ export interface ResultKeywords {
   name: string
 }
 
-//# Movie
 export interface SearchMovie {
   page: number
   results: ResultMovie[]
@@ -36,7 +34,6 @@ export interface ResultMovie {
   vote_count: number
 }
 
-//# Multi
 export interface SearchMulti {
   page: number
   results: ResultMulti[]
@@ -76,7 +73,6 @@ export enum OriginalLanguage {
   Ja = "ja",
 }
 
-//# Tv
 export interface SearchTV {
   page: number
   results: ResultTV[]
