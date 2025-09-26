@@ -1,5 +1,4 @@
 import { useState } from "react"
-import type { dummyMoviePopular } from "../../dummy/data"
 import { TmdbImageSize } from "../../enum/TmdbImage"
 import { useResponsive } from "../../hooks/ResponsiveHooks"
 import GenreIdToString from "../../utility/GenreIdToString"
@@ -10,10 +9,9 @@ import { Navigate } from "react-router"
 import { useMain } from "../../hooks/ContextHooks"
 import ToggleWatchlist from "../../utility/ToggleWatchlist"
 import type { ResultMovieList } from "../../interface/MovieList"
-import Animation from "../animation/Animation"
 
 interface CarouselCardProps {
-  movie: (typeof dummyMoviePopular.results)[0]
+  movie: ResultMovieList
 }
 
 export default function CarouselCard({ movie }: CarouselCardProps) {
@@ -52,12 +50,12 @@ export default function CarouselCard({ movie }: CarouselCardProps) {
               bp.isMd ? "bottom-20" : "bottom-8"
             } md:left-1/2 md:-translate-x-1/2 w-full px-4 md:px-12`}>
             {/* FIXME GenreIDtoString */}
-            {/* <CarouselInfo
+            <CarouselInfo
               title={movie.title}
-              tags={movie.genre_ids.map((genreId) => GenreIdToString("movie", genreId))}
+              tags={movie.genre_ids.map((genreId: number) => GenreIdToString(genreId))}
               info={{ releaseDate: movie.release_date, rating: movie.vote_average }}
               description={movie.overview}
-            /> */}
+            />
           </div>
         </div>
       </div>
