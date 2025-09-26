@@ -132,7 +132,7 @@ export default function MainProvider({ children }: { children: React.ReactNode }
       setError((prev) => ({ ...prev, genres: null }))
       try {
         const res = await tmdb.get<MovieGenre>("/genre/movie/list")
-        setMovieGenres(res.data.genres)
+        setMovieGenres(res.data.genres.filter((genre) => genre.id !== 10749)) // Romance rausfiltern
       } catch (err) {
         console.error("Fehler beim Laden der Genres", err)
         setError((prev) => ({ ...prev, genres: "Genres konnten nicht geladen werden." }))
@@ -151,7 +151,7 @@ export default function MainProvider({ children }: { children: React.ReactNode }
     setError((prev) => ({ ...prev, popular: null }))
     try {
       const res = await tmdb.get<ResponseMovieList>("/movie/popular", { params: { page: page, region: "US" } })
-      setMoviePopular(res.data.results)
+      setMoviePopular(res.data.results.filter((movie) => movie.adult === false))
       setTotalPages(res.data.total_pages)
     } catch (err) {
       console.error("Fehler beim Laden der populären Filme", err)
