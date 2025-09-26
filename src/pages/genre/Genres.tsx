@@ -53,7 +53,7 @@ export default function Genres() {
               ]
             : movies.length === 0
             ? [<EmptyCard key={`empty-${genre.id}`} />]
-            : movies.map((movie) => <MovieCard key={movie.id} movie={movie} onOpen={() => openMovieDialog(movie)} />)
+            : movies.map((movie) => <MovieCard key={movie.id} movie={movie} />)
 
           return (
             <MovieSection key={genre.id} title={genre.name} viewAllHref={`/genres/${genre.id}`}>
@@ -62,9 +62,6 @@ export default function Genres() {
           )
         })}
       </div>
-      {dialog.open && dialog.data && (
-        <MovieDialog open ctaHref={`/movies/detail/${dialog.movieId}`} onClose={closeMovieDialog} data={dialog.data} />
-      )}
     </>
   )
 }
