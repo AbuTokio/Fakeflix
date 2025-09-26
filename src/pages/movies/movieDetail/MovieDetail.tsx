@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import { useParams } from "react-router"
 import StarRating from "../../../components/starRating/StarRating"
 import Badge from "../../../components/badge/Badge"
@@ -11,6 +11,8 @@ import Button from "../../../components/button/Button"
 import { TMDB_IMG_BASE, TmdbImageSize } from "../../../enum/TmdbImage"
 import { useMain } from "../../../hooks/ContextHooks"
 import NavIcon from "../../../components/navIcon/NavIcon"
+import ShareDialog from "../../../components/shareDialog/ShareDialog"
+import { Toaster } from "react-hot-toast"
 
 function InfoItem({ label, value, className }: { label: string; value: React.ReactNode; className?: string }) {
   return (
@@ -44,6 +46,8 @@ export default function MovieDetail() {
   const { id } = useParams<{ id: string }>()
   const movieId = id ? Number(id) : null
 
+  const [showShareDialog, setShowShareDialog] = useState(false)
+
   // Daten laden
   useEffect(() => {
     if (!movieId) return
@@ -63,8 +67,7 @@ export default function MovieDetail() {
     ? `${TMDB_IMG_BASE}/${TmdbImageSize.BACKDROP_SIZE}${movieDetails.backdrop_path}`
     : null
   const genres = (movieDetails?.genres ?? []).map((g) => g.name)
-  // TODO Anpassen
-  const year = (movieDetails?.release_date ?? "").slice(0, 4)
+  const year = String(movieDetails?.release_date ?? "").slice(0, 4)
   const rating = typeof movieDetails?.vote_average === "number" ? movieDetails!.vote_average : 0
   const overview = movieDetails?.overview ?? ""
   const country = (movieDetails?.production_countries ?? []).map((c) => c.name).join(", ")
@@ -74,6 +77,9 @@ export default function MovieDetail() {
 
   return (
     <>
+      <div className="absolute -top-10 bg-white w-10 h-10 z-999">
+        <Toaster position="top-center" reverseOrder={true} />
+      </div>
       {/* Hero / Trailer */}
       <Animation delay={0.3} from={{ opacity: 0, scale: 0.9 }} to={{ opacity: 1, scale: 1, rotate: 0 }}>
         <section className="w-full overflow-hidden">
@@ -120,8 +126,19 @@ export default function MovieDetail() {
                           ))}
                         </div>
                         <div className="flex gap-2">
-                          <div className="text-white w-6 cursor-pointer">
+                          <div
+                            className="text-white w-6 cursor-pointer"
+                            onClick={() => {
+                              setShowShareDialog(true)
+                            }}>
                             <NavIcon icon="share" />
+                            {showShareDialog && (
+                              <ShareDialog
+                                onClose={() => {
+                                  setShowShareDialog(false)
+                                }}
+                              />
+                            )}
                           </div>
                           {/* TODO Add onclick */}
                           <Button
