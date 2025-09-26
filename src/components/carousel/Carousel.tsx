@@ -36,10 +36,10 @@ export default function Carousel({ cards }: CarouselProps) {
   })
 
   return (
-    <div className="relative w-full aspect-video max-h-[80vh] overflow-hidden bg-black">
+    <div className="relative w-screen h-fit max-h-[80vh] border overflow-hidden bg-black">
       {cards.map((card, index) => {
         return (
-          <div key={index} className="absolute inset-0 w-full h-full transition-opacity">
+          <div key={index}>
             {index === activeCard && (
               <div
                 key={index}
@@ -53,7 +53,7 @@ export default function Carousel({ cards }: CarouselProps) {
         )
       })}
 
-      <div className="flex gap-4 absolute bottom-2 left-1/2 -translate-x-1/2 w-fit p-4">
+      <div className="flex gap-4 absolute bottom-2 left-1/2 -translate-x-1/2 w-fit p-2">
         {cards.map((card) => (
           <div key={cards.indexOf(card)}>
             <div
