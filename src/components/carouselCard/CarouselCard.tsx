@@ -59,7 +59,7 @@ export default function CarouselCard({ movie }: CarouselCardProps) {
               />
             </div>
           )}
-
+          {/* TODO GENREIDTOSTRING anpassen */}
           <div className={`absolute ${bp.isMd ? "bottom-20" : "bottom-8"} w-full px-4 md:px-12`}>
             <Animation useParentAsTrigger freeze={!bp.isMd} className="pointer-events-none">
               {/* <CarouselInfo
