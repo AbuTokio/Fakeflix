@@ -31,7 +31,7 @@ export default function CarouselCard({ movie }: CarouselCardProps) {
           variant="parallax"
           parallaxStrength={160}
           parallaxAnchor="top"
-          className="absolute inset-0 w-full h-full overflow-hidden"
+          className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none"
           freeze={!bp.isMd}
           markers={false}>
           <img
@@ -45,7 +45,7 @@ export default function CarouselCard({ movie }: CarouselCardProps) {
         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent pointer-events-none" />
 
         {/* Inhalt */}
-        <div className="absolute inset-0 flex flex-col items-center justify-center gap-6">
+        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-6">
           {bp.isMd && (
             <div
               className={`absolute w-full ${
@@ -61,7 +61,7 @@ export default function CarouselCard({ movie }: CarouselCardProps) {
           )}
 
           <div className={`absolute ${bp.isMd ? "bottom-20" : "bottom-8"} w-full px-4 md:px-12`}>
-            <Animation useParentAsTrigger freeze={!bp.isMd}>
+            <Animation useParentAsTrigger freeze={!bp.isMd} className="pointer-events-none">
               {/* <CarouselInfo
                 title={movie.title}
                 // tags={movie.genre_ids.map((g) => GenreIdToString("movie", g))}
