@@ -12,16 +12,7 @@ export default function GenreDetail() {
   const { id } = useParams<{ id: string }>()
   const genreId = id ? Number(id) : null
 
-  const {
-    page,
-    setPage,
-    movieGenres,
-    discoverMovies,
-    discoveredMovies,
-    loadingByGenre,
-    errorByGenre,
-    openMovieDialog,
-  } = useMain()
+  const { page, setPage, movieGenres, discoverMovies, discoveredMovies, loadingByGenre, errorByGenre } = useMain()
 
   const genre = useMemo(() => movieGenres.find((g) => g.id === genreId), [movieGenres, genreId])
 
