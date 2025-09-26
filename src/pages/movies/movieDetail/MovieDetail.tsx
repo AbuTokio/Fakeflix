@@ -11,6 +11,7 @@ import Button from "../../../components/button/Button"
 import { TMDB_IMG_BASE, TmdbImageSize } from "../../../enum/TmdbImage"
 import { useMain } from "../../../hooks/ContextHooks"
 import NavIcon from "../../../components/navIcon/NavIcon"
+import AddToWatchlist from "../../../utility/AddToWatchlist"
 
 function InfoItem({ label, value, className }: { label: string; value: React.ReactNode; className?: string }) {
   return (
@@ -37,8 +38,9 @@ export default function MovieDetail() {
     fetchMovieSimilar,
     fetchMovieVideos,
     loading,
-
-    openMovieDialog,
+    watchlist,
+    setWatchlist,
+    user,
   } = useMain()
 
   const { id } = useParams<{ id: string }>()
@@ -63,8 +65,7 @@ export default function MovieDetail() {
     ? `${TMDB_IMG_BASE}/${TmdbImageSize.BACKDROP_SIZE}${movieDetails.backdrop_path}`
     : null
   const genres = (movieDetails?.genres ?? []).map((g) => g.name)
-  // TODO Anpassen
-  const year = (movieDetails?.release_date ?? "").slice(0, 4)
+  const year = (movieDetails?.release_date as string | undefined)?.slice(0, 4) ?? ""
   const rating = typeof movieDetails?.vote_average === "number" ? movieDetails!.vote_average : 0
   const overview = movieDetails?.overview ?? ""
   const country = (movieDetails?.production_countries ?? []).map((c) => c.name).join(", ")
@@ -123,11 +124,13 @@ export default function MovieDetail() {
                           <div className="text-white w-6 cursor-pointer">
                             <NavIcon icon="share" />
                           </div>
-                          {/* TODO Add onclick */}
+
                           <Button
                             label="+ Watchlist"
                             filled
                             className="!py-1 !px-2 !text-xs shadow-[0_6px_0_rgba(220,38,38,0.35)] active:bg-red-600 active:text-white active:scale-90"
+                            // onClick={AddToWatchlist(user, watchlist, setWatchlist, "")}
+                            // FIXME
                           />
                         </div>
                       </div>
@@ -178,7 +181,7 @@ export default function MovieDetail() {
           <MovieSection grid title="You may also like">
             {loading.similar
               ? Array.from({ length: 10 }).map((_, i) => <SkeletonCard key={i} />)
-              : movieSimilar.map((m) => <MovieCard key={m.id} movie={m} onOpen={() => openMovieDialog(m)} />)}
+              : movieSimilar.map((m) => <MovieCard key={m.id} movie={m} />)}
           </MovieSection>
         </div>
       </section>
